@@ -67,7 +67,8 @@ void Player::Update(float deltaTime, float Time)
 			std::cout << "AUTO Ä«¸Þ¶ó ON" << std::endl;
 		}
 	}
-	Camera::GetInst()->Side_Scroll(this, 360, AutoCamera);
+	//Camera::GetInst()->Side_Scroll(this, 360, AutoCamera);
+	Camera::GetInst()->Follow(this);
 }
 
 void Player::Render()
@@ -94,6 +95,11 @@ void Player::OnCollision(Object* obj)
 			isUp = true;
 		if (IntersectRect(&rc, &ColBox[3]->m_Collision, &obj->m_Collision))
 			isDown = true;
+	}
+	if (obj->m_Tag == "eBullet") {
+		RECT rc;
+		if (IntersectRect(&rc, &ColBox[4]->m_Collision, &obj->m_Collision))
+			isHit = true;
 	}
 }
 
