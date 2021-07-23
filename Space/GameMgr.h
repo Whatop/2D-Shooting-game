@@ -1,13 +1,14 @@
 #pragma once
-#define GM GameMgr::GetInst()
+#define GameInfo GameMgr::GetInst()
+#define GetPlayer GameMgr::GetInst()->GetPlayerInfo()
 
 class GameMgr : public Singleton<GameMgr>
 {
-	Vec2 PlayerPosition;
-
+	Object* PlayerInfo;
 public:
 	GameMgr();
 	~GameMgr();
+
 
 	bool m_isCreateUI;
 	bool m_DebugMode;
@@ -21,8 +22,9 @@ public:
 
 	void CreatePlayer();
 	void PlayerDeath();
-	void PlayerPosUpdate(Vec2 Pos) { PlayerPosition = Pos; }
-	Vec2 GetPlayerPos() { return PlayerPosition; }
+	void PlayerUpdate(Object* obj) { PlayerInfo = obj; }
+	Object*GetPlayerInfo() { return PlayerInfo; }
+	
 
 	void Update();
 	void Render();

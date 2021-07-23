@@ -31,7 +31,7 @@ void UI::Update()
 void UI::Render()
 {
 	Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
-	m_Test->print(std::to_string(GM->GetPlayerPos().x) + " / " + std::to_string(GM->GetPlayerPos().y), 100, 50);
+	m_Test->print(std::to_string(GetPlayer->m_Position.x) + " / " + std::to_string(GetPlayer->m_Position.y), 100, 50);
 	m_Test->print(std::to_string(gt), 1600, 50);
 	Renderer::GetInst()->GetSprite()->End();
 }

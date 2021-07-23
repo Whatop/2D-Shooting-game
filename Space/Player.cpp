@@ -1,13 +1,15 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Bullet.h"
 
 Player::Player()
 {
 	Init();
 	SetPosition(960, 360);
-	GM->PlayerPosUpdate(m_Position);
+	GameInfo->PlayerUpdate(this);
 	CollisionBox();
 	std::cout << "플레이어 생성" << std::endl;
+	m_Rotation = D3DXToRadian(90);
 }
 
 Player::~Player()
@@ -21,14 +23,16 @@ void Player::Init()
 	m_Player = Sprite::Create(L"Painting/Player/Player0.png");
 	m_Player->SetParent(this);
 	SetScale(0.75f, 0.75f);
-	
+
 	LEFT = 0;
 	RIGHT = 1;
 	UP = 2;
 	DOWN = 3;
 	HIT = 4;
-	m_Speed = 540.f;
+	m_Speed = 440.f;
 	m_Hp = 5;
+	m_Rpm = 0.2f;
+	RpmDelayTime = 0.f;
 	isLeft = false;
 	isRight = false;
 	isUp = false;
@@ -36,16 +40,24 @@ void Player::Init()
 	isHit = false;
 	AutoCamera = false;
 
+
 	ColBox[LEFT] = Sprite::Create(L"Painting/Player/Height.png");
 	ColBox[RIGHT] = Sprite::Create(L"Painting/Player/Height.png");
 	ColBox[UP] = Sprite::Create(L"Painting/Player/Width.png");
 	ColBox[DOWN] = Sprite::Create(L"Painting/Player/Width.png");
 	ColBox[HIT] = Sprite::Create(L"Painting/Player/HitBox.png");
+
+	ColBox[LEFT]->m_Visible = false;
+	ColBox[RIGHT]->m_Visible = false;
+	ColBox[UP]->m_Visible = false;
+	ColBox[DOWN]->m_Visible = false;
+	ColBox[HIT]->m_Visible = false;
 	GameMgr::GetInst()->CreateUI();
 }
 
 void Player::Update(float deltaTime, float Time)
 {
+	RpmDelayTime += dt;
 	isLeft = false;
 	isRight = false;
 	isUp = false;
@@ -56,7 +68,7 @@ void Player::Update(float deltaTime, float Time)
 
 	Move();
 	CollisionBox();
-	GM->PlayerPosUpdate(m_Position);
+	GameInfo->PlayerUpdate(this);
 	if (INPUT->GetKey(VK_F1) == KeyState::DOWN) {
 		if (!AutoCamera) {
 			AutoCamera = true;
@@ -67,8 +79,25 @@ void Player::Update(float deltaTime, float Time)
 			std::cout << "AUTO 카메라 ON" << std::endl;
 		}
 	}
-	//Camera::GetInst()->Side_Scroll(this, 360, AutoCamera);
-	Camera::GetInst()->Follow(this);
+	if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN)&& RpmDelayTime > m_Rpm) {
+		ObjMgr->AddObject(new Bullet, "Bullet");
+		RpmDelayTime = 0;
+	}
+	if (!GameInfo->m_DebugMode) {
+		ColBox[LEFT]->m_Visible = false;
+		ColBox[RIGHT]->m_Visible = false;
+		ColBox[UP]->m_Visible = false;
+		ColBox[DOWN]->m_Visible = false;
+		ColBox[HIT]->m_Visible = false;
+	}
+	else {
+		ColBox[LEFT]->m_Visible = true;
+		ColBox[RIGHT]->m_Visible = true;
+		ColBox[UP]->m_Visible = true;
+		ColBox[DOWN]->m_Visible = true;
+		ColBox[HIT]->m_Visible = true;
+	}
+	Camera::GetInst()->Side_Scroll(this, 360, AutoCamera);
 }
 
 void Player::Render()
@@ -109,23 +138,23 @@ void Player::Move()
 		m_Position.y -= m_Speed * dt;
 	}
 	if (!isDown && INPUT->GetKey(VK_DOWN) == KeyState::PRESS) {
-		m_Position.y += m_Speed * dt;	
+		m_Position.y += m_Speed * dt;
 	}
-	if (!isLeft&& INPUT->GetKey(VK_LEFT) == KeyState::PRESS) {
+	if (!isLeft && INPUT->GetKey(VK_LEFT) == KeyState::PRESS) {
 		m_Position.x -= m_Speed * dt;
 	}
 	if (!isRight && INPUT->GetKey(VK_RIGHT) == KeyState::PRESS) {
 		m_Position.x += m_Speed * dt;
 	}
 	if (AutoCamera) {
-			m_Position.x += 100 * dt;
+		m_Position.x += 100 * dt;
 	}
 }
 
 void Player::CollisionBox()
 {
 	ColBox[LEFT]->SetPosition(m_Position.x - m_Size.x / 2, m_Position.y);
-	ColBox[RIGHT]->SetPosition(m_Position.x + m_Size.x / 2,m_Position.y);
+	ColBox[RIGHT]->SetPosition(m_Position.x + m_Size.x / 2, m_Position.y);
 	ColBox[UP]->SetPosition(m_Position.x, m_Position.y - m_Size.y / 2);
 	ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2);
 	ColBox[HIT]->SetPosition(m_Position);

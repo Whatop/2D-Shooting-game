@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "GameMgr.h"
-#include "Player.h"
 #include "UI.h"
 
 GameMgr::GameMgr()

@@ -19,6 +19,7 @@ public:
 	void CollisionBox();
 
 	//m_Weapon = int or string
-	float m_Hp, m_Speed;
+	float m_Hp, m_Speed, m_Rpm;
+	float RpmDelayTime;
 };
 

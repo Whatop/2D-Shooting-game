@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "MainScene.h"
-#include "Player.h"
 
 MainScene::MainScene()
 {
@@ -14,7 +13,7 @@ void MainScene::Init()
 {
 	m_Map = Sprite::Create(L"Painting/Misson1.png");
 	m_Map->SetPosition(m_Map->m_Size.x / 2, m_Map->m_Size.y / 2);
-	
+
 	UpWall = Sprite::Create(L"Painting/Wall.png");
 	UpWall->SetPosition(5000, -50);
 	UpWall->SetScale(100, 1);
@@ -26,7 +25,7 @@ void MainScene::Init()
 	LeftWall = Sprite::Create(L"Painting/Wall.png");
 	LeftWall->SetPosition(-50, 325);
 	LeftWall->SetScale(1, 6.5f);
-	
+
 	RightWall = Sprite::Create(L"Painting/Wall.png");
 	RightWall->SetPosition(9300, 325);
 	RightWall->SetScale(1, 6.5f);
@@ -36,6 +35,11 @@ void MainScene::Init()
 	ObjMgr->AddObject(DownWall, "Wall");
 	ObjMgr->AddObject(LeftWall, "Wall");
 	ObjMgr->AddObject(RightWall, "Wall");
+
+	UpWall->m_Visible = false;
+	DownWall->m_Visible = false;
+	LeftWall->m_Visible = false;
+	RightWall->m_Visible = false;
 
 	GameMgr::GetInst()->CreatePlayer();
 	std::cout << "메인 장소로 이동" << std::endl;
@@ -47,7 +51,18 @@ void MainScene::Release()
 
 void MainScene::Update(float deltaTime, float time)
 {
-	
+	if (!GameInfo->m_DebugMode) {
+		UpWall->m_Visible = false;
+		DownWall->m_Visible = false;
+		LeftWall->m_Visible = false;
+		RightWall->m_Visible = false;
+	}
+	else {
+		UpWall->m_Visible = true;
+		DownWall->m_Visible = true;
+		LeftWall->m_Visible = true;
+		RightWall->m_Visible = true;
+	}
 }
 
 void MainScene::Render()
