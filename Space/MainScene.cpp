@@ -30,11 +30,20 @@ void MainScene::Init()
 	RightWall->SetPosition(9300, 325);
 	RightWall->SetScale(1, 6.5f);
 
+	Left_Limit = Sprite::Create(L"Painting/Wall.png");
+	Left_Limit->SetPosition(-50, 325);
+	Left_Limit->SetScale(1, 6.5f);
+
+	Right_Limit = Sprite::Create(L"Painting/Wall.png");
+	Right_Limit->SetPosition(1970, 325);
+	Right_Limit->SetScale(1, 6.5f);
 	ObjMgr->AddObject(m_Map, "Map");
 	ObjMgr->AddObject(UpWall, "Wall");
 	ObjMgr->AddObject(DownWall, "Wall");
 	ObjMgr->AddObject(LeftWall, "Wall");
 	ObjMgr->AddObject(RightWall, "Wall");
+	ObjMgr->AddObject(Left_Limit, "Wall");
+	ObjMgr->AddObject(Right_Limit, "Wall");
 
 	UpWall->m_Visible = false;
 	DownWall->m_Visible = false;
@@ -56,12 +65,20 @@ void MainScene::Update(float deltaTime, float time)
 		DownWall->m_Visible = false;
 		LeftWall->m_Visible = false;
 		RightWall->m_Visible = false;
+		Left_Limit->m_Visible = false;
+		Right_Limit->m_Visible = false;
 	}
 	else {
 		UpWall->m_Visible = true;
 		DownWall->m_Visible = true;
 		LeftWall->m_Visible = true;
 		RightWall->m_Visible = true;
+		Left_Limit->m_Visible = true;
+		Right_Limit->m_Visible = true;
+	}
+	if (GameInfo->AutoCamera) {
+		Left_Limit->m_Position.x += 100 * dt;
+		Right_Limit->m_Position.x += 100 * dt;
 	}
 }
 

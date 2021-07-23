@@ -30,7 +30,8 @@ void Player::Init()
 	DOWN = 3;
 	HIT = 4;
 	m_Speed = 440.f;
-	m_Hp = 5;
+	m_MaxHp = 100;
+	m_Hp = m_MaxHp;
 	m_Rpm = 0.2f;
 	RpmDelayTime = 0.f;
 	isLeft = false;
@@ -38,8 +39,7 @@ void Player::Init()
 	isUp = false;
 	isDown = false;
 	isHit = false;
-	AutoCamera = false;
-
+	GameInfo->PlayerHpUpdate(m_MaxHp,m_Hp);
 
 	ColBox[LEFT] = Sprite::Create(L"Painting/Player/Height.png");
 	ColBox[RIGHT] = Sprite::Create(L"Painting/Player/Height.png");
@@ -66,19 +66,12 @@ void Player::Update(float deltaTime, float Time)
 
 	ObjMgr->CollisionCheak(this, "Wall");
 
+	GameInfo->PlayerHpUpdate(m_MaxHp, m_Hp);
+
 	Move();
 	CollisionBox();
 	GameInfo->PlayerUpdate(this);
-	if (INPUT->GetKey(VK_F1) == KeyState::DOWN) {
-		if (!AutoCamera) {
-			AutoCamera = true;
-			std::cout << "AUTO 카메라 OFF" << std::endl;
-		}
-		else {
-			AutoCamera = false;
-			std::cout << "AUTO 카메라 ON" << std::endl;
-		}
-	}
+	
 	if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN)&& RpmDelayTime > m_Rpm) {
 		ObjMgr->AddObject(new Bullet, "Bullet");
 		RpmDelayTime = 0;
@@ -97,7 +90,10 @@ void Player::Update(float deltaTime, float Time)
 		ColBox[DOWN]->m_Visible = true;
 		ColBox[HIT]->m_Visible = true;
 	}
-	Camera::GetInst()->Side_Scroll(this, 360, AutoCamera);
+	if (INPUT->GetKey(VK_F2) == KeyState::DOWN) {
+		m_Hp -= 10;
+	}
+	Camera::GetInst()->Side_Scroll(this, 360, GameInfo->AutoCamera);
 }
 
 void Player::Render()
@@ -146,7 +142,7 @@ void Player::Move()
 	if (!isRight && INPUT->GetKey(VK_RIGHT) == KeyState::PRESS) {
 		m_Position.x += m_Speed * dt;
 	}
-	if (AutoCamera) {
+	if (GameInfo->AutoCamera) {
 		m_Position.x += 100 * dt;
 	}
 }

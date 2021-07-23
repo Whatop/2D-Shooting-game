@@ -6,6 +6,8 @@ class MainScene : public Scene
 	Sprite* DownWall;
 	Sprite* LeftWall;
 	Sprite* RightWall;
+	Sprite* Right_Limit;
+	Sprite* Left_Limit;
 public:
 	MainScene();
 	~MainScene();

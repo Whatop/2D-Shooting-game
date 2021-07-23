@@ -3,7 +3,6 @@ class Player : public Object
 {
 	Sprite* m_Player;// = ColBox
 	Sprite* ColBox[5];// LEFT COLBOX, RIGHT COLBOX, UP COLBOX, DOWN COLBOX, HIT BOX
-	bool AutoCamera;
 	int LEFT, RIGHT, UP, DOWN, HIT;
 	bool isLeft, isRight, isUp, isDown, isHit;
 public:
@@ -19,7 +18,7 @@ public:
 	void CollisionBox();
 
 	//m_Weapon = int or string
-	float m_Hp, m_Speed, m_Rpm;
+	float m_MaxHp, m_Hp, m_Speed, m_Rpm;
 	float RpmDelayTime;
 };
 

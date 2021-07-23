@@ -161,14 +161,14 @@
     <ClInclude Include="GameMgr.h">
       <Filter>Game\Object\Mgr</Filter>
     </ClInclude>
-    <ClInclude Include="UI.h">
-      <Filter>Game\Object\Mgr</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Game\Object</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Game\Object\Mgr</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

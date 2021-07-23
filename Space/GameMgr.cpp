@@ -50,6 +50,7 @@ void GameMgr::PlayerDeath()
 	ObjMgr->DeleteObject("pBullet");
 }
 
+
 void GameMgr::Update()
 {
 	if (INPUT->GetKey('V') == KeyState::DOWN)
@@ -57,6 +58,7 @@ void GameMgr::Update()
 		if (m_DebugMode)
 		{
 			m_DebugMode = false;
+			
 			std::cout << "디버깅 모드 비 활성화" << std::endl;
 		}
 		else if (!m_DebugMode)
@@ -65,6 +67,19 @@ void GameMgr::Update()
 			std::cout << "디버깅 모드 활성화" << std::endl;
 		}
 	}
+	if (INPUT->GetKey(VK_F1) == KeyState::DOWN) {
+		if (!AutoCamera) {
+			AutoCamera = true;
+
+
+			std::cout << "AUTO 카메라 OFF" << std::endl;
+		}
+		else {
+			AutoCamera = false;
+			std::cout << "AUTO 카메라 ON" << std::endl;
+		}
+	}
+
 
 	if (m_isCreateUI)
 		UI::GetInst()->Update();
