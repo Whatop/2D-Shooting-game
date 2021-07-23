@@ -15,7 +15,7 @@ Player::Player()
 Player::~Player()
 {
 	std::cout << "플레이어 삭제" << std::endl;
-	GameMgr::GetInst()->ReleaseUI();
+	GameInfo->ReleaseUI();
 }
 
 void Player::Init()
@@ -52,7 +52,7 @@ void Player::Init()
 	ColBox[UP]->m_Visible = false;
 	ColBox[DOWN]->m_Visible = false;
 	ColBox[HIT]->m_Visible = false;
-	GameMgr::GetInst()->CreateUI();
+	GameInfo->CreateUI();
 }
 
 void Player::Update(float deltaTime, float Time)

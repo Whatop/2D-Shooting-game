@@ -2,6 +2,7 @@
 class UI : public Singleton<UI>
 {
 	Sprite* m_HpBar;
+	Sprite* m_BossBar;
 	TextMgr* m_Test;
 
 public:

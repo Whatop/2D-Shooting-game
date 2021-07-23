@@ -12,6 +12,12 @@ UI::~UI()
 
 void UI::Init()
 {
+	m_HpBar = Sprite::Create(L"Painting/UI/Hp.png");
+	m_HpBar->SetPosition(390, 900);
+
+	ObjMgr->AddObject(m_HpBar, "UI");
+
+
 	m_Test = new TextMgr();
 	m_Test->Init(50, true, false, "±¼¸²");
 	m_Test->SetColor(255, 255, 255, 255);

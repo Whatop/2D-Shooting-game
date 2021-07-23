@@ -34,13 +34,13 @@ inline void SafeDelete(T*& x);
 #include"ObjectMgr.h"
 #include"CollisionMgr.h"
 #include"SceneDirector.h"
-#include"GameMgr.h"
 #include"TextMgr.h"
 #include"SoundMgr.h"
 #include"Camera.h"
 #include"Sprite.h"
 #include"Animation.h"
 #include"EffectMgr.h"
+#include"GameMgr.h"
 #include "Player.h"
 //
 
