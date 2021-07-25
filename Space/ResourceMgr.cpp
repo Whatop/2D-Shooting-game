@@ -11,12 +11,12 @@ ResourceMgr::~ResourceMgr()
 {
 }
 
-Texture* ResourceMgr::CreateTextureFromFile(std::wstring fileName)
+Texture* ResourceMgr::CreateTextureFromFile(std::wstring fileName, D3DCOLOR ColorKey)
 {
 	if (!(m_TextureMap.count(fileName)))
 	{
 		auto texture = new (std::nothrow) Texture();
-		if (texture && texture->Init(fileName))
+		if (texture && texture->Init(fileName, ColorKey))
 		{
 			m_TextureMap[fileName] = texture;
 		}

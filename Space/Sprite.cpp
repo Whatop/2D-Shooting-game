@@ -18,9 +18,9 @@ Sprite::~Sprite()
 {
 }
 
-bool Sprite::Init(std::wstring fileName)
+bool Sprite::Init(std::wstring fileName, D3DCOLOR ColorKey)
 {
-	m_Texture = ResourceMgr::GetInst()->CreateTextureFromFile(fileName);
+	m_Texture = ResourceMgr::GetInst()->CreateTextureFromFile(fileName, ColorKey);
 	if (m_Texture)
 	{
 		m_Size = m_Texture->GetSize();
@@ -31,10 +31,10 @@ bool Sprite::Init(std::wstring fileName)
 		return false;
 }
 
-Sprite* Sprite::Create(std::wstring fileName)
+Sprite* Sprite::Create(std::wstring fileName, D3DCOLOR ColorKey)
 {
 	auto sprite = new (std::nothrow) Sprite();
-	if (sprite && sprite->Init(fileName))
+	if (sprite && sprite->Init(fileName, ColorKey))
 	{
 		return sprite;
 	}
@@ -44,6 +44,8 @@ Sprite* Sprite::Create(std::wstring fileName)
 		return nullptr;
 	}
 }
+
+
 
 
 
@@ -59,12 +61,14 @@ void Sprite::Render()
 				, (m_Parent->m_Position.y + (m_Size.y * 1) / 2));
 
 		}
-		SetRect(&m_Parent->m_Collision,
-			(m_Parent->m_Position.x - (m_Size.x * m_Parent->m_Scale.x) / 2),
-			(m_Parent->m_Position.y - (m_Size.y * m_Parent->m_Scale.y) / 2),
-			(m_Parent->m_Position.x + (m_Size.x * m_Parent->m_Scale.x) / 2)
-			, (m_Parent->m_Position.y + (m_Size.y * m_Parent->m_Scale.y) / 2));
+		else {
+			SetRect(&m_Parent->m_Collision,
+				(m_Parent->m_Position.x - (m_Size.x * m_Parent->m_Scale.x) / 2),
+				(m_Parent->m_Position.y - (m_Size.y * m_Parent->m_Scale.y) / 2),
+				(m_Parent->m_Position.x + (m_Size.x * m_Parent->m_Scale.x) / 2)
+				, (m_Parent->m_Position.y + (m_Size.y * m_Parent->m_Scale.y) / 2));
 
+		}
 		m_Parent->m_Size = m_Size;
 	}
 	else

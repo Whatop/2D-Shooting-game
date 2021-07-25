@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "MainScene.h"
+#include "Boss.h"
 
 MainScene::MainScene()
 {
@@ -44,6 +45,7 @@ void MainScene::Init()
 	ObjMgr->AddObject(RightWall, "Wall");
 	ObjMgr->AddObject(Left_Limit, "Wall");
 	ObjMgr->AddObject(Right_Limit, "Wall");
+	ObjMgr->AddObject(new Boss(), "Boss");
 
 	UpWall->m_Visible = false;
 	DownWall->m_Visible = false;

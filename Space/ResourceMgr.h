@@ -10,7 +10,7 @@ public:
 	ResourceMgr();
 	~ResourceMgr();
 
-	Texture* CreateTextureFromFile(std::wstring fileName);
+	Texture* CreateTextureFromFile(std::wstring fileName, D3DCOLOR ColorKey);
 
 };
 
