@@ -43,6 +43,17 @@ void Animation::NextFrame()
 	}
 }
 
+void Animation::BackFrame()
+{
+	m_CurrentFrame--;
+	m_FrameCount = 0.f;
+
+	if (m_CurrentFrame > m_Anims.size() - 1)
+	{
+		m_CurrentFrame = 0;
+	}
+}
+
 void Animation::Init(float delay, bool play)
 {
 	m_Delay = delay;

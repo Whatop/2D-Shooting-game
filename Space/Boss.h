@@ -5,7 +5,7 @@ class Boss : public Object
 
 	Sprite* BossBody;
 	Sprite* BossTail;
-
+	Sprite* BossWindow;
 	Sprite* BossBehind;
 	
 	Sprite* DestroyBody;
@@ -15,14 +15,18 @@ class Boss : public Object
 	Animation* PilotAttack;
 	Animation* Propeller;
 
-
+	Sprite* m_ColBox;
+	Sprite* ColBox[5];// LEFT COLBOX, RIGHT COLBOX, UP COLBOX, DOWN COLBOX, HIT BOX
+	int LEFT, RIGHT, UP, DOWN, HIT;
+	bool isLeft, isRight, isUp, isDown, isHit;
 
 	Vec2 Dire;
 	
 	float DelayTime;
 	float ShootTime;
 	bool isShoot;
-
+	bool isDire;
+	int Count;
 public:
 	Boss();
 	~Boss();

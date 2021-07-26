@@ -65,6 +65,7 @@ void Player::Update(float deltaTime, float Time)
 	isHit = false;
 
 	ObjMgr->CollisionCheak(this, "Wall");
+	ObjMgr->CollisionCheak(this, "EnemyBullet");
 
 	GameInfo->PlayerHpUpdate(m_MaxHp, m_Hp);
 
@@ -104,7 +105,6 @@ void Player::Render()
 	ColBox[UP]->Render();
 	ColBox[DOWN]->Render();
 	ColBox[HIT]->Render();
-
 }
 
 void Player::OnCollision(Object* obj)
@@ -121,7 +121,7 @@ void Player::OnCollision(Object* obj)
 		if (IntersectRect(&rc, &ColBox[3]->m_Collision, &obj->m_Collision))
 			isDown = true;
 	}
-	if (obj->m_Tag == "eBullet") {
+	if (obj->m_Tag == "EnemyBullet") {
 		RECT rc;
 		if (IntersectRect(&rc, &ColBox[4]->m_Collision, &obj->m_Collision))
 			isHit = true;
