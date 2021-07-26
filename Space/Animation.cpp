@@ -4,7 +4,7 @@
 
 Animation::Animation()
 	: m_AutoPlay(0)
-	, m_CurrentFrame(1)
+	, m_CurrentFrame(0)
 	, m_Delay(0.f)
 	, m_FrameCount(0.f)
 	, A(255)
@@ -32,6 +32,17 @@ void Animation::AddContinueFrame(std::wstring fileName, int firstFrame, int last
 	}
 }
 
+void Animation::NextFrame()
+{
+	m_CurrentFrame++;
+	m_FrameCount = 0.f;
+
+	if (m_CurrentFrame > m_Anims.size() - 1)
+	{
+		m_CurrentFrame = 0;
+	}
+}
+
 void Animation::Init(float delay, bool play)
 {
 	m_Delay = delay;
@@ -55,7 +66,7 @@ void Animation::Update(float deltaTime, float time)
 			m_FrameCount = 0.f;
 		}
 	}
-
+	
 	if (m_CurrentFrame > m_Anims.size() - 1)
 	{
 		m_CurrentFrame = 0;

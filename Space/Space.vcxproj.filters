@@ -28,6 +28,9 @@
     <Filter Include="Game\Object\Mgr">
       <UniqueIdentifier>{19cfe933-c7c6-47a8-8100-a474cff097c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Object\Enemy">
+      <UniqueIdentifier>{e1e3dc5a-ec12-479e-856b-871e77a994aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Space.cpp">
@@ -99,8 +102,17 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Game\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Missile.cpp">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BossBullet.cpp">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClCompile>
     <ClCompile Include="Boss.cpp">
-      <Filter>Game\Object</Filter>
+      <Filter>Game\Object\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -173,8 +185,17 @@
     <ClInclude Include="UI.h">
       <Filter>Game\Object\Mgr</Filter>
     </ClInclude>
+    <ClInclude Include="Missile.h">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BossBullet.h">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClInclude>
     <ClInclude Include="Boss.h">
-      <Filter>Game\Object</Filter>
+      <Filter>Game\Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
