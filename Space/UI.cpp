@@ -41,14 +41,23 @@ void UI::Update()
 
 void UI::Render()
 {
-	float m_HpGage = m_HpBar->m_Size.x / GameInfo->GetPlayerMaxHp();
-	int Hp = GameInfo->GetPlayerMaxHp() - GameInfo->GetPlayerHp();
-	if (GameInfo->GameInfo->GetPlayerHp() >= 0)
+	float m_PlayerHpGage = m_HpBar->m_Size.x / GameInfo->GetPlayerMaxHp();
+	int PlayerHp = GameInfo->GetPlayerMaxHp() - GameInfo->GetPlayerHp();
+	if (GameInfo->GetPlayerHp() >= 0)
 	{
 		SetRect(&m_HpBar->m_Collision, m_HpBar->m_Position.x - m_HpBar->m_Size.x / 2, m_HpBar->m_Position.y - m_HpBar->m_Size.y / 2,
 			m_HpBar->m_Position.x + m_HpBar->m_Size.x / 2, m_HpBar->m_Position.y + m_HpBar->m_Size.y / 2);
 
-		m_HpBar->m_Rect.right = m_HpBar->m_Size.x - (Hp * m_HpGage);
+		m_HpBar->m_Rect.right = m_HpBar->m_Size.x - (PlayerHp * m_PlayerHpGage);
+	}
+	float m_BossHpGage = m_BossBar->m_Size.x / GameInfo->GetBossMaxHp();
+	int BossHp = GameInfo->GetBossMaxHp() - GameInfo->GetBossHp();
+	if (GameInfo->GetBossHp() >= 0)
+	{
+		SetRect(&m_BossBar->m_Collision, m_BossBar->m_Position.x - m_BossBar->m_Size.x / 2, m_BossBar->m_Position.y - m_BossBar->m_Size.y / 2,
+			m_BossBar->m_Position.x + m_BossBar->m_Size.x / 2, m_BossBar->m_Position.y + m_BossBar->m_Size.y / 2);
+
+		m_BossBar->m_Rect.right = m_BossBar->m_Size.x - (BossHp * m_BossHpGage);
 	}
 	Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
 	m_Test->print(std::to_string(GetPlayer->m_Position.x) + " / " + std::to_string(GetPlayer->m_Position.y), 100, 50);

@@ -35,6 +35,7 @@ void Bullet::Render()
 
 void Bullet::OnCollision(Object* obj)
 {
+
 }
 
 void Bullet::Move()

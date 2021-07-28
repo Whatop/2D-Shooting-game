@@ -27,6 +27,12 @@ class Boss : public Object
 	bool isShoot;
 	bool isDire;
 	int Count;
+
+	float m_MaxHp;
+	float m_Hp;
+	float TailHp;
+	float BehindHp;
+	float TopHp;
 public:
 	Boss();
 	~Boss();
@@ -40,5 +46,9 @@ public:
 	void State();
 	void SpawnObstacle();
 	void SpawnMissile();
+
+	float m_Speed;
+	bool isMove;
+
 };
 

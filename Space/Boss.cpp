@@ -39,11 +39,10 @@ Boss::Boss()
 	DestroyTail->SetScale(2, 2);
 	DestroyTop->SetScale(2, 2);
 
-	
-
 	BossBody->SetPosition(m_Position.x + 74, m_Position.y + 20);
 	BossTail->SetPosition(BossBody->m_Position.x - 222 - 74, BossBody->m_Position.y - 138 / 2 - 92 / 2);
 	BossBehind->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
+
 	LEFT = 0;
 	RIGHT = 1;
 	UP = 2;
@@ -59,10 +58,11 @@ Boss::Boss()
 	ColBox[RIGHT]->SetScale(1.5f, 1.5f);
 	ColBox[UP]->SetScale(1.5f, 1.5f);
 	ColBox[DOWN]->SetScale(1.5f, 1.5f);
-	//ColBox[LEFT]->m_Visible = false;
-	//ColBox[RIGHT]->m_Visible = false;
-	//ColBox[UP]->m_Visible = false;
-	//ColBox[DOWN]->m_Visible = false;
+
+	ColBox[LEFT]->m_Visible = false;
+	ColBox[RIGHT]->m_Visible = false;
+	ColBox[UP]->m_Visible = false;
+	ColBox[DOWN]->m_Visible = false;
 	//ColBox[HIT]->m_Visible = false;
 
 	Count = 0;
@@ -76,7 +76,8 @@ Boss::Boss()
 	DestroyTail->m_Visible = false;
 	DestroyTop->m_Visible = false;
 
-
+	m_MaxHp = 5000.f;
+	m_Hp = m_MaxHp;
 }
 
 Boss::~Boss()
@@ -85,8 +86,27 @@ Boss::~Boss()
 
 void Boss::Update(float deltaTime, float Time)
 {
+	ObjMgr->CollisionCheak(this, "Bullet");
 	DelayTime += dt;
 	Propeller->Update(deltaTime, Time);
+
+	if (!GameInfo->m_DebugMode) {
+		m_ColBox->m_Visible = false;
+		ColBox[LEFT]->m_Visible = false;
+		ColBox[RIGHT]->m_Visible = false;
+		ColBox[UP]->m_Visible = false;
+		ColBox[DOWN]->m_Visible = false;
+		//ColBox[HIT]->m_Visible = false;
+	}
+	else {
+		m_ColBox->m_Visible = true;
+		ColBox[LEFT]->m_Visible = true;
+		ColBox[RIGHT]->m_Visible = true;
+		ColBox[UP]->m_Visible = true;
+		ColBox[DOWN]->m_Visible = true;
+		//ColBox[HIT]->m_Visible = true;
+	}
+	if(isMove)
 	Move();
 
 	Fire();
@@ -95,7 +115,7 @@ void Boss::Update(float deltaTime, float Time)
 }
 
 void Boss::Render()
-{
+{	
 	m_Boss->Render();
 	BossBody->Render();
 	BossTail->Render();
@@ -128,6 +148,13 @@ void Boss::OnCollision(Object* obj)
 			isUp = true;
 		if (IntersectRect(&rc, &ColBox[3]->m_Collision, &obj->m_Collision))
 			isDown = true;
+	}
+	if (obj->m_Tag == "Bullet") {
+		RECT rc;
+		if (IntersectRect(&rc, &DestroyTail->m_Collision, &obj->m_Collision)) {
+			m_Hp -= 10;
+			obj->m_Destroy = true;
+		}
 	}
 }
 
@@ -203,6 +230,7 @@ void Boss::Fire()
 
 void Boss::State()
 {
+	GameInfo->BossHpUpdate(m_MaxHp, m_Hp);
 	BossBody->SetPosition(m_Position.x + 74, m_Position.y + 20);
 	BossTail->SetPosition(BossBody->m_Position.x - 222 - 74, BossBody->m_Position.y - 138 / 2 - 92 / 2);
 	BossBehind->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
@@ -221,8 +249,8 @@ void Boss::State()
 	ColBox[UP]->SetPosition(m_Position.x, m_Position.y - m_Size.y / 2 * m_Scale.y);
 	ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2 * m_Scale.y);
 
-	DestroyBody->m_Visible = true;
-	DestroyTail->m_Visible = false;
+	DestroyBody->m_Visible = false;
+	DestroyTail->m_Visible = true;
 	DestroyTop->m_Visible = false;
 }
 
