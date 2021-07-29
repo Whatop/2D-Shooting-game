@@ -23,7 +23,7 @@ public:
 
 public:
 	Texture* GetSpriteTexture() { return m_Texture; }
-	static Sprite* Create(std::wstring fileName, D3DCOLOR ColorKey = COLORKEY_PINK);
+	static Sprite* Create(std::wstring fileName, D3DCOLOR ColorKey = COLORKEY_GREEN);
 	void Render() override;
 
 public:

@@ -18,7 +18,7 @@ Animation::~Animation()
 {
 }
 
-void Animation::AddContinueFrame(std::wstring fileName, int firstFrame, int lastFrame, D3DXCOLOR ColorKey)
+void Animation::AddContinueFrame(std::wstring fileName, int firstFrame, int lastFrame, D3DCOLOR ColorKey)
 {
 	if (firstFrame < lastFrame)
 	{

@@ -2,32 +2,34 @@
 #include "Boss.h"
 #include "BossBullet.h"
 #include "Missile.h"
+#include "Box.h"
+#include "Missile.h"
 
 Boss::Boss()
 {
 	Propeller = new Animation();
 	Propeller->Init(0.1f, true);
 	Propeller->SetParent(this);
-	Propeller->AddContinueFrame(L"Painting/Boss/Propeller/Propeller", 0, 5, COLORKEY_GREEN);
+	Propeller->AddContinueFrame(L"Painting/Boss/Propeller/Propeller", 0, 5);
 
 	PilotAttack = new Animation();
 	PilotAttack->Init(1, false);
 	PilotAttack->SetParent(this);
-	PilotAttack->AddContinueFrame(L"Painting/Boss/Attack/Attack", 0, 3, COLORKEY_GREEN);
+	PilotAttack->AddContinueFrame(L"Painting/Boss/Attack/Attack", 0, 3);
 
-	m_Boss = Sprite::Create(L"Painting/Boss/All.png", COLORKEY_GREEN); // 296 x 186
+	m_Boss = Sprite::Create(L"Painting/Boss/All.png"); // 296 x 186
 	m_Boss->SetParent(this);
 
-	m_ColBox = Sprite::Create(L"Painting/Boss/ColBox/ColBox.png", COLORKEY_GREEN); // 296 x 186
+	m_ColBox = Sprite::Create(L"Painting/Boss/ColBox/ColBox.png"); // 296 x 186
 	m_ColBox->SetParent(this);
 
-	BossBody = Sprite::Create(L"Painting/Boss/Body.png", COLORKEY_GREEN); // 222 x 138
-	BossTail = Sprite::Create(L"Painting/Boss/Tail.png", COLORKEY_GREEN); // 74 x 92
-	BossBehind = Sprite::Create(L"Painting/Boss/Exit.png", COLORKEY_GREEN); // 66 x 83
+	BossBody = Sprite::Create(L"Painting/Boss/Body.png"); // 222 x 138
+	BossTail = Sprite::Create(L"Painting/Boss/Tail.png"); // 74 x 92
+	BossBehind = Sprite::Create(L"Painting/Boss/Exit.png"); // 66 x 83
 
-	DestroyBody = Sprite::Create(L"Painting/Boss/DestroyBody.png", COLORKEY_GREEN);// 213 x 137
-	DestroyTail = Sprite::Create(L"Painting/Boss/DestroyTail.png", COLORKEY_GREEN);
-	DestroyTop = Sprite::Create(L"Painting/Boss/DestroyTop.png", COLORKEY_GREEN);
+	DestroyBody = Sprite::Create(L"Painting/Boss/DestroyBody.png");// 213 x 137
+	DestroyTail = Sprite::Create(L"Painting/Boss/DestroyTail.png");
+	ColBoxTop = Sprite::Create(L"Painting/Boss/ColBox/HitBox.png");
 
 	SetScale(2, 2);
 	SetPosition(1400, 480 / 2);
@@ -37,7 +39,7 @@ Boss::Boss()
 	BossBehind->SetScale(2, 2);
 	DestroyBody->SetScale(2, 2);
 	DestroyTail->SetScale(2, 2);
-	DestroyTop->SetScale(2, 2);
+	ColBoxTop->SetScale(2, 2);
 
 	BossBody->SetPosition(m_Position.x + 74, m_Position.y + 20);
 	BossTail->SetPosition(BossBody->m_Position.x - 222 - 74, BossBody->m_Position.y - 138 / 2 - 92 / 2);
@@ -70,14 +72,19 @@ Boss::Boss()
 	ShootTime = 0.f;
 	isShoot = false;
 	isDire = false;
+	isMove = true;
 	//BossTail->m_Visible = false;
 	//BossBehind->m_Visible = false;
 	DestroyBody->m_Visible = false;
 	DestroyTail->m_Visible = false;
-	DestroyTop->m_Visible = false;
-
+	ColBoxTop->m_Visible = false;
 	m_MaxHp = 5000.f;
 	m_Hp = m_MaxHp;
+	m_Speed = 200.f;
+	m_RandomPosition = Vec2((rand() % 400) + m_Position.x, (rand() % 1080));
+	m_MoveWaitingTime = 7.f;
+	m_LastMoveTime = 4.f;
+
 }
 
 Boss::~Boss()
@@ -86,8 +93,10 @@ Boss::~Boss()
 
 void Boss::Update(float deltaTime, float Time)
 {
-	ObjMgr->CollisionCheak(this, "Bullet");
+	m_LastMoveTime += dt;
 	DelayTime += dt;
+	ObjMgr->CollisionCheak(this, "Wall");
+	ObjMgr->CollisionCheak(this, "Bullet");
 	Propeller->Update(deltaTime, Time);
 
 	if (!GameInfo->m_DebugMode) {
@@ -96,6 +105,7 @@ void Boss::Update(float deltaTime, float Time)
 		ColBox[RIGHT]->m_Visible = false;
 		ColBox[UP]->m_Visible = false;
 		ColBox[DOWN]->m_Visible = false;
+		ColBoxTop->m_Visible = false;
 		//ColBox[HIT]->m_Visible = false;
 	}
 	else {
@@ -104,14 +114,24 @@ void Boss::Update(float deltaTime, float Time)
 		ColBox[RIGHT]->m_Visible = true;
 		ColBox[UP]->m_Visible = true;
 		ColBox[DOWN]->m_Visible = true;
+		ColBoxTop->m_Visible = true;
 		//ColBox[HIT]->m_Visible = true;
 	}
-	if(isMove)
-	Move();
-
+	if (m_LastMoveTime >= m_MoveWaitingTime)
+	{
+		if (isMove)
+			Move();
+		SpawnMissile();
+		
+	}
 	Fire();
 
 	State();
+
+	if (GameInfo->AutoCamera)
+		m_Position.x += 100 * dt;
+	//if ((rand() % 10) == 0) 아이템코드
+	//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
 }
 
 void Boss::Render()
@@ -126,7 +146,7 @@ void Boss::Render()
 
 	DestroyBody->Render();
 	DestroyTail->Render();
-	DestroyTop->Render();
+	ColBoxTop->Render();
 
 	m_ColBox->Render();
 	ColBox[LEFT]->Render();
@@ -151,18 +171,45 @@ void Boss::OnCollision(Object* obj)
 	}
 	if (obj->m_Tag == "Bullet") {
 		RECT rc;
-		if (IntersectRect(&rc, &DestroyTail->m_Collision, &obj->m_Collision)) {
+		if (IntersectRect(&rc, &BossTail->m_Collision, &obj->m_Collision)) {
 			m_Hp -= 10;
-			obj->m_Destroy = true;
+			float randx = (rand() % (int)BossTail->m_Size.x) + BossTail->m_Position.x - BossTail->m_Size.x / 2;
+			float randy = (rand() % (int)BossTail->m_Size.y) + BossTail->m_Position.y - BossTail->m_Size.y / 2;
+			obj->SetDestroy(true);
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f,Vec2(randx,randy)), "Effect");
+		}
+		if (IntersectRect(&rc, &ColBoxTop->m_Collision, &obj->m_Collision)) {
+			m_Hp -= 10;
+			float randx = (rand() % (int)ColBoxTop->m_Size.x) + ColBoxTop->m_Position.x - ColBoxTop->m_Size.x / 2;
+			float randy = (rand() % (int)ColBoxTop->m_Size.y) + ColBoxTop->m_Position.y - ColBoxTop->m_Size.y / 2;
+			obj->SetDestroy(true);
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f,Vec2(randx,randy)), "Effect");
 		}
 	}
 }
 
 void Boss::Move()
 {
-	if (GameInfo->AutoCamera)
-		m_Position.x += 100 * dt;
+	//좌표 몇개를 만들어주자.
+	Vec2 A, B, Dire;
 
+	A = m_Position;
+	B = m_RandomPosition;
+
+	Dire = B - A;
+
+	D3DXVec2Normalize(&Dire, &Dire);
+
+	if (!isRight && Dire.x < 0 || !isLeft && Dire.x > 0)
+		Translate(Dire.x * m_Speed * dt, 0);
+	if (!isUp && Dire.y < 0 || !isDown && Dire.y > 0)
+		Translate(0, Dire.y * m_Speed * dt);
+	MoveTime += dt;
+	if (MoveTime > 2) {
+		m_RandomPosition = Vec2((rand() % 400) + m_Position.x, (rand() % 1080));
+		m_LastMoveTime = 0.f;
+		MoveTime = 0;
+	}
 }
 
 void Boss::Fire()
@@ -237,27 +284,23 @@ void Boss::State()
 
 	DestroyBody->SetPosition(m_Position.x + 74 - 9, m_Position.y + 20 - 1);
 	DestroyTail->SetPosition(BossBody->m_Position.x - 222 - 74, BossBody->m_Position.y - 138 / 2 - 92 / 2);
-	DestroyTop->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
-
-	DestroyTop->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
-	DestroyTop->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
-	DestroyTop->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
-	DestroyTop->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
 
 	ColBox[LEFT]->SetPosition(m_Position.x - m_Size.x / 2 * m_Scale.x, m_Position.y);
 	ColBox[RIGHT]->SetPosition(m_Position.x + m_Size.x / 2 * m_Scale.x, m_Position.y);
 	ColBox[UP]->SetPosition(m_Position.x, m_Position.y - m_Size.y / 2 * m_Scale.y);
 	ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2 * m_Scale.y);
+	ColBoxTop->SetPosition(BossBody->m_Position.x + 120, BossBody->m_Position.y + 138 / 2 - 26);
 
 	DestroyBody->m_Visible = false;
 	DestroyTail->m_Visible = true;
-	DestroyTop->m_Visible = false;
 }
 
 void Boss::SpawnObstacle()
 {
+	ObjMgr->AddObject(new Box, "Box");
 }
 
 void Boss::SpawnMissile()
 {
+	ObjMgr->AddObject(new Missile(m_Position), "Missile");
 }

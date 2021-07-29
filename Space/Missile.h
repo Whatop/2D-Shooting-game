@@ -1,5 +1,21 @@
 #pragma once
-class Missile
+class Missile : public Object
 {
+	Animation* m_Missile;
+	Sprite* m_ColBox;
+
+	Vec2 Enemy, Dire, Rad;
+	float turnRadian, vrad, Delay;
+	float DelayTime;
+	bool Homing;
+public:
+	Missile(Vec2 Pos);
+	~Missile();
+
+	void Update(float deltaTime, float Time);
+	void Render();
+	void OnCollision(Object* other);
+
+	void Move();
 };
 

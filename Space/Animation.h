@@ -21,7 +21,7 @@ public:
 	Animation();
 	~Animation();
 
-	void AddContinueFrame(std::wstring fileName, int firstFrame, int lastFrame, D3DXCOLOR ColorKey = COLORKEY_PINK);
+	void AddContinueFrame(std::wstring fileName, int firstFrame, int lastFrame, D3DCOLOR ColorKey = COLORKEY_GREEN);
 	void NextFrame();
 	void BackFrame();
 

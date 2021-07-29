@@ -10,7 +10,7 @@ class Boss : public Object
 	
 	Sprite* DestroyBody;
 	Sprite* DestroyTail;
-	Sprite* DestroyTop;
+	Sprite* ColBoxTop;
 
 	Animation* PilotAttack;
 	Animation* Propeller;
@@ -21,7 +21,11 @@ class Boss : public Object
 	bool isLeft, isRight, isUp, isDown, isHit;
 
 	Vec2 Dire;
-	
+	Vec2 m_RandomPosition;
+	float m_MoveWaitingTime;
+	float m_LastMoveTime;
+	float MoveTime;
+
 	float DelayTime;
 	float ShootTime;
 	bool isShoot;
