@@ -15,6 +15,7 @@ Object::Object() :
 	, m_ScaleCenter(0.f, 0.f)
 	, m_Parent(nullptr)
 	, m_Radius(0.f)
+	, DestroyTime(0.f)
 {
 	D3DXMatrixIdentity(&m_wMat);
 }
@@ -80,6 +81,17 @@ void Object::SetTag(const std::string tag)
 void Object::SetParent(Object* obj)
 {
 	m_Parent = obj;
+}
+
+void Object::DelayDestroy(Object* obj,float destroyTime)
+{
+	DestroyTime += dt;
+	if (DestroyTime >= destroyTime) {
+		SetDestroy(true);
+	}
+	else if(destroyTime <= 0){
+		SetDestroy(true);
+	}
 }
 
 void Object::Update(float deltaTime, float time)

@@ -66,6 +66,7 @@ void Player::Update(float deltaTime, float Time)
 
 	ObjMgr->CollisionCheak(this, "Wall");
 	ObjMgr->CollisionCheak(this, "EnemyBullet");
+	ObjMgr->CollisionCheak(this, "Missile");
 
 	GameInfo->PlayerHpUpdate(m_MaxHp, m_Hp);
 

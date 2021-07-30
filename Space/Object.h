@@ -1,6 +1,7 @@
 #pragma once
 class Object
 {
+	float DestroyTime;
 public:
 	Object* m_Parent;
 	Matrix m_wMat;
@@ -20,7 +21,6 @@ public:
 
 	int m_Layer;
 	std::string m_Tag;
-
 public:
 	Object();
 	~Object();
@@ -43,6 +43,7 @@ public:
 	void SetDestroy(bool destroy) { m_Destroy = destroy; }
 	void SetTag(const std::string tag);
 	void SetParent(Object* obj);
+	void DelayDestroy(Object* obj,float destroyTime);
 public:
 	bool GetDestroy() { return m_Destroy; }
 };

@@ -25,8 +25,14 @@ class Boss : public Object
 	float m_MoveWaitingTime;
 	float m_LastMoveTime;
 	float MoveTime;
+	int MoveNum;
+	bool isDestroyTop;
+	bool isDestroyTail;
 
 	float DelayTime;
+	float MS_DelayTime;
+	float MS_RpmTime;
+	int MS_Num;
 	float ShootTime;
 	bool isShoot;
 	bool isDire;
@@ -50,6 +56,7 @@ public:
 	void State();
 	void SpawnObstacle();
 	void SpawnMissile();
+	void DestroyEffect();
 
 	float m_Speed;
 	bool isMove;

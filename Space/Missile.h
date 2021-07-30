@@ -6,8 +6,10 @@ class Missile : public Object
 
 	Vec2 Enemy, Dire, Rad;
 	float turnRadian, vrad, Delay;
-	float DelayTime;
-	bool Homing;
+	float impellent;
+	float HomingTime;
+	float m_Speed;
+	bool isHoming;
 public:
 	Missile(Vec2 Pos);
 	~Missile();
