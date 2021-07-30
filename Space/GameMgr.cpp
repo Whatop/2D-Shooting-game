@@ -16,6 +16,7 @@ void GameMgr::Init()
 	m_DebugMode = false;
 	m_isCreatePlayer = false;
 	AutoCamera = true;
+	CameraStop = false;
 }
 
 void GameMgr::Release()

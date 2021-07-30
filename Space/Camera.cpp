@@ -37,17 +37,19 @@ void Camera::Side_Scroll(Object* obj, float fixed_value,bool Auto)
 {
 	if (obj != nullptr)
 	{
-		if (!Auto) {
-			if (m_MinMapSize.x <= obj->m_Position.x && m_MaxMapSize.x >= obj->m_Position.x)
-				m_Position.x = obj->m_Position.x - App::GetInst()->m_Width / 2;
+		if (!GameInfo->CameraStop) {
+			if (!Auto) {
+				if (m_MinMapSize.x <= obj->m_Position.x && m_MaxMapSize.x >= obj->m_Position.x)
+					m_Position.x = obj->m_Position.x - App::GetInst()->m_Width / 2;
 
-		}
-		else {
-			if (m_MaxMapSize.x >= m_Position.x)
-				m_Position.x += 100 * dt;
-		}
+			}
+			else {
+				if (m_MaxMapSize.x >= m_Position.x)
+					m_Position.x += 100 * dt;
+			}
 
-		m_Position.y = fixed_value - App::GetInst()->m_Height / 2;
+			m_Position.y = fixed_value - App::GetInst()->m_Height / 2;
+		}
 	}
 }
 

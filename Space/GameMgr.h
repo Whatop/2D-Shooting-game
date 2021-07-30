@@ -16,7 +16,7 @@ public:
 	bool m_DebugMode;
 	bool AutoCamera;
 	bool m_isCreatePlayer;
-
+	bool CameraStop;
 	void Init();
 	void Release();
 

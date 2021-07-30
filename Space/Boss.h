@@ -28,20 +28,24 @@ class Boss : public Object
 	int MoveNum;
 	bool isDestroyTop;
 	bool isDestroyTail;
+	bool isDestroyBody;
 
 	float DelayTime;
 	float MS_DelayTime;
 	float MS_RpmTime;
 	int MS_Num;
 	float ShootTime;
+	float DestroyTime;
+
 	bool isShoot;
 	bool isDire;
 	int Count;
+	bool isBoom;
 
 	float m_MaxHp;
 	float m_Hp;
 	float TailHp;
-	float BehindHp;
+	float BodyHp;
 	float TopHp;
 public:
 	Boss();

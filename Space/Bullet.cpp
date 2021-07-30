@@ -7,7 +7,7 @@ Bullet::Bullet()
 	m_Bullet->SetParent(this);
 	Spawnpoint = Vec2(GetPlayer->m_Position.x + (GetPlayer->m_Size.x * m_Scale.x) / 2, GetPlayer->m_Position.y-2);
 	SetPosition(Spawnpoint);
-	m_Speed = 500.f;
+	m_Speed = 700.f;
 	DelayTime = 1.f;
 	DestroyTime = 0.f;
 }

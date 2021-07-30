@@ -32,7 +32,7 @@ void Player::Init()
 	m_Speed = 440.f;
 	m_MaxHp = 100;
 	m_Hp = m_MaxHp;
-	m_Rpm = 0.2f;
+	m_Rpm = 0.1f;
 	RpmDelayTime = 0.f;
 	isLeft = false;
 	isRight = false;
@@ -143,7 +143,7 @@ void Player::Move()
 	if (!isRight && INPUT->GetKey(VK_RIGHT) == KeyState::PRESS) {
 		m_Position.x += m_Speed * dt;
 	}
-	if (GameInfo->AutoCamera) {
+	if (GameInfo->AutoCamera&& !GameInfo->CameraStop) {
 		m_Position.x += 100 * dt;
 	}
 }

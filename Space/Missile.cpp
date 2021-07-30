@@ -15,12 +15,12 @@ Missile::Missile(Vec2 Pos)
 
 	m_Rotation = D3DXToRadian(180);;
 	turnRadian = m_Rotation;
-	vrad = 0.019f;
+	vrad = 0.003f;
 	Delay = 0.f;
 	isHoming = false;
 	HomingTime = 1.f;
 	impellent = 1.f;
-	m_Speed = 500.f;
+	m_Speed = 400.f;
 	SetScale(2.f, 2.f);
 	m_ColBox->SetScale(1.f, 1.f);
 }
@@ -75,10 +75,11 @@ void Missile::Move()
 				Enemy = iter->m_Position - m_Position;
 		}
 		D3DXVec2Normalize(&Dire, &Enemy);
-		//Delay += dt;
-		//if (Delay > 1) {
-		//	vrad += dt * 0.01;
-		//}
+		Delay += dt;
+		if (Delay > 1) {
+			vrad += dt * 0.01;
+			Delay = 0;
+		}
 		float pi2 = D3DX_PI * 2;
 		float diff = std::atan2f(Dire.y, Dire.x) - turnRadian;
 		while (diff < -D3DX_PI) diff += pi2;
