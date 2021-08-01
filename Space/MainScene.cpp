@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MainScene.h"
 #include "Boss.h"
+#include "Enemy1.h"
 
 MainScene::MainScene()
 {
@@ -45,7 +46,8 @@ void MainScene::Init()
 	ObjMgr->AddObject(RightWall, "Wall");
 	ObjMgr->AddObject(Left_Limit, "Wall");
 	ObjMgr->AddObject(Right_Limit, "Wall");
-	ObjMgr->AddObject(new Boss(), "Boss");
+	//ObjMgr->AddObject(new Boss(), "Boss");
+	ObjMgr->AddObject(new Enemy1(Vec2(1920/2+500,1080/2)), "Boss");
 
 	UpWall->m_Visible = false;
 	DownWall->m_Visible = false;
@@ -78,7 +80,7 @@ void MainScene::Update(float deltaTime, float time)
 		Left_Limit->m_Visible = true;
 		Right_Limit->m_Visible = true;
 	}
-	if (GameInfo->AutoCamera) {
+	if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
 		Left_Limit->m_Position.x += 100 * dt;
 		Right_Limit->m_Position.x += 100 * dt;
 	}

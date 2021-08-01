@@ -34,13 +34,17 @@ class Boss : public Object
 	float MS_DelayTime;
 	float MS_RpmTime;
 	int MS_Num;
+	
 	float ShootTime;
 	float DestroyTime;
+	float EffectTime;
 
 	bool isShoot;
 	bool isDire;
 	int Count;
 	bool isBoom;
+	bool DieScene;
+
 
 	float m_MaxHp;
 	float m_Hp;

@@ -9,14 +9,18 @@ Camera::~Camera()
 {
 }
 
+
 void Camera::Init()
 {
+	 
 	m_Rotation = 0;
-	m_Position = Vec2(0, 0);
+	m_Position = Vec2(0, -180);
 	m_Scale = Vec2(1.f, 1.f);
 	Follow(nullptr);
 	m_MinMapSize = Vec2(960, 0); //Stage1
 	m_MaxMapSize = Vec2(8400, 0); //Stage1
+	isVibration = false;
+	ShakeTime = 0;
 }
 
 void Camera::Translate()
@@ -43,7 +47,7 @@ void Camera::Side_Scroll(Object* obj, float fixed_value,bool Auto)
 					m_Position.x = obj->m_Position.x - App::GetInst()->m_Width / 2;
 
 			}
-			else {
+			else {	
 				if (m_MaxMapSize.x >= m_Position.x)
 					m_Position.x += 100 * dt;
 			}
@@ -55,10 +59,16 @@ void Camera::Side_Scroll(Object* obj, float fixed_value,bool Auto)
 
 void Camera::Update(float deltaTime, float time)
 {
-	Translate();
 
 	if (m_Rotation >= 360)
 		m_Rotation = 0;
+
+	ShakeTime += dt;
+	if (isVibration && ShakeTime < 4.f) {
+		m_Position.y += (sin(2.0f * 3.14159f * ShakeTime * 4) * 1.3f +
+			sin(2.0f * 3.14159f * ShakeTime * 8 + 0.2f) * 1.2f +
+			sin(2.0f * 3.14159f * ShakeTime * 16 + 0.5f) * 1.1f) * (5 - ShakeTime) / 5;
+	}
 }
 
 void Camera::Render()
@@ -68,4 +78,7 @@ void Camera::Render()
 	D3DXMatrixScaling(&mScale, m_Scale.x, m_Scale.y, 1.f);
 
 	mWorld = mScale * mRot * mTrans;
+
+
 }
+

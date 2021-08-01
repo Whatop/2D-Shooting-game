@@ -92,10 +92,18 @@ void Player::Update(float deltaTime, float Time)
 		ColBox[DOWN]->m_Visible = true;
 		ColBox[HIT]->m_Visible = true;
 	}
+	if (INPUT->GetKey(VK_F4) == KeyState::DOWN) {
+		Camera::GetInst()->isVibration = true;
+		Camera::GetInst()->ShakeTime = 0;
+	}
+	if (INPUT->GetKey(VK_F3) == KeyState::DOWN) {
+		Camera::GetInst()->Side_Scroll(this, 360, true);
+	}
 	if (INPUT->GetKey(VK_F2) == KeyState::DOWN) {
 		m_Hp -= 10;
 	}
 	Camera::GetInst()->Side_Scroll(this, 360, GameInfo->AutoCamera);
+
 }
 
 void Player::Render()

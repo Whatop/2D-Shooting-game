@@ -1,6 +1,7 @@
 #pragma once
 
 typedef struct D3DXVECTOR2 Vec2;
+typedef struct D3DXVECTOR3 Vec3;
 typedef struct D3DXMATRIX Matrix;
 
 #define dt App::GetInst()->DeltaTime

@@ -91,9 +91,12 @@ Boss::Boss()
 	BodyHp = 500.f;
 	TopHp = 200.f;
 	DestroyTime = 1.f;
+	EffectTime = 0.f;
 	isDestroyTop = false;
+	isDestroyBody = false;
 	isDestroyTail = false;
 	isBoom = false;
+	std::cout << "Boss »ý¼º" << std::endl;
 }
 
 Boss::~Boss()
@@ -236,6 +239,7 @@ void Boss::OnCollision(Object* obj)
 				float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 				obj->SetDestroy(true);
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+				
 			}
 		}
 	}
@@ -255,7 +259,6 @@ void Boss::Move()
 			m_RandomPosition = Vec2(m_Position.x + 800, 360);
 			MoveNum = 0;
 		}
-		std::cout << MoveNum << std::endl;
 		MoveNum++;
 		m_LastMoveTime = 0.f;
 		MoveTime = 0;
@@ -366,6 +369,7 @@ void Boss::State()
 			float randy = (rand() % (int)BossTail->m_Size.y * m_Scale.y) + BossTail->m_Position.y - BossTail->m_Size.y / 2 * m_Scale.y;
 			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 		}
+		isMove = false;
 	}
 
 	if (TopHp <= 0) {
@@ -389,20 +393,30 @@ void Boss::State()
 			}
 			DestroyBody->m_Visible = true;
 			isDestroyBody = true;
-			isMove = false;
+			GameInfo->CameraStop = true;
 		}
 	}
 	if (m_Hp < 0) {
+		if (!DieScene) {
+			Camera::GetInst()->isVibration = true;
+			Camera::GetInst()->ShakeTime = 0;
+			DieScene = true;
+		}
 		DestroyTime += dt;
+		EffectTime += dt;
 		if (!isDown)
 			m_Position.y += 100 * DestroyTime * dt;
-
+		if (EffectTime > 0.1f) {
+			float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+			float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+			EffectTime = 0;
+		}
 		if (isDown && !isBoom) {
 			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x-100, m_Position.y - m_Size.y / 2),2,2), "Effect");
 			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x+100, m_Position.y - m_Size.y / 2),2,2), "Effect");
 			isBoom = true;
-			GameInfo->CameraStop = true;
-			//DelayDestroy(this, 2);
+		
 		}
 	}
 }
@@ -414,6 +428,7 @@ void Boss::SpawnObstacle()
 
 void Boss::SpawnMissile()
 {
+	if(!isDestroyBody)
 	ObjMgr->AddObject(new Missile(Vec2(m_Position.x, m_Position.y + 180)), "Missile");
 }
 

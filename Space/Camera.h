@@ -10,6 +10,8 @@ public:
 	Camera();
 	~Camera();
 
+	bool isVibration;
+	float ShakeTime;
 
 	float m_Rotation;
 	Vec2 m_Position;
