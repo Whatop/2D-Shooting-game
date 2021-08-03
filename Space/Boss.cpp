@@ -97,6 +97,7 @@ Boss::Boss()
 	isDestroyTail = false;
 	isBoom = false;
 	std::cout << "Boss »ý¼º" << std::endl;
+	m_Layer = 2;
 }
 
 Boss::~Boss()

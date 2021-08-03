@@ -18,7 +18,7 @@ void Camera::Init()
 	m_Scale = Vec2(1.f, 1.f);
 	Follow(nullptr);
 	m_MinMapSize = Vec2(960, 0); //Stage1
-	m_MaxMapSize = Vec2(8400, 0); //Stage1
+	m_MaxMapSize = Vec2(7400, 0); //Stage1
 	isVibration = false;
 	ShakeTime = 0;
 }
@@ -45,11 +45,14 @@ void Camera::Side_Scroll(Object* obj, float fixed_value,bool Auto)
 			if (!Auto) {
 				if (m_MinMapSize.x <= obj->m_Position.x && m_MaxMapSize.x >= obj->m_Position.x)
 					m_Position.x = obj->m_Position.x - App::GetInst()->m_Width / 2;
-
+				
 			}
 			else {	
 				if (m_MaxMapSize.x >= m_Position.x)
 					m_Position.x += 100 * dt;
+				else {
+					GameInfo->CameraStop = true;
+				}
 			}
 
 			m_Position.y = fixed_value - App::GetInst()->m_Height / 2;

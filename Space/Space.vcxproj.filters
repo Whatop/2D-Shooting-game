@@ -117,6 +117,18 @@
     <ClCompile Include="Enemy1.cpp">
       <Filter>Game\Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="MiniMissile.cpp">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyDirBullet.cpp">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="RotationBullet.cpp">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -201,6 +213,18 @@
       <Filter>Game\Object\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Enemy1.h">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMissile.h">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyDirBullet.h">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="RotationBullet.h">
       <Filter>Game\Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
