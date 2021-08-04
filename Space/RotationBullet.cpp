@@ -6,7 +6,7 @@ RotationBullet::RotationBullet(Vec2 Pos, float r)
 	m_Bullet = Sprite::Create(L"Painting/Bullet/EnemyBullet.png");
 	m_Bullet->SetParent(this);
 	SetPosition(Pos);
-	m_Rotation = r;
+	m_Rotation = D3DXToRadian(r);
 	m_Speed = 500.f;
 }
 
@@ -16,6 +16,8 @@ RotationBullet::~RotationBullet()
 
 void RotationBullet::Update(float deltaTime, float Time)
 {
+	Move();
+	DelayDestroy(this, 4);
 }
 
 void RotationBullet::Render()

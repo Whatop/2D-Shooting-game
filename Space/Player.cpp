@@ -104,6 +104,14 @@ void Player::Update(float deltaTime, float Time)
 	}
 	Camera::GetInst()->Side_Scroll(this, 360, GameInfo->AutoCamera);
 
+	if (isHit) {
+		float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+		float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+
+		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+
+		isHit = false;
+	}
 }
 
 void Player::Render()
@@ -132,8 +140,22 @@ void Player::OnCollision(Object* obj)
 	}
 	if (obj->m_Tag == "EnemyBullet") {
 		RECT rc;
-		if (IntersectRect(&rc, &ColBox[4]->m_Collision, &obj->m_Collision))
+		if (IntersectRect(&rc, &ColBox[4]->m_Collision, &obj->m_Collision)) {
 			isHit = true;
+		
+			obj->SetDestroy(true);
+		}
+	}
+	if (obj->m_Tag == "Missile") {
+		RECT rc;
+		if (IntersectRect(&rc, &ColBox[4]->m_Collision, &obj->m_Collision)) {
+			isHit = true;
+			float randx = (rand() % (int)m_Size.x) + m_Position.x - m_Size.x / 2;
+			float randy = (rand() % (int)m_Size.y) + m_Position.y - m_Size.y / 2;
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+
+			obj->SetDestroy(true);
+		}
 	}
 }
 

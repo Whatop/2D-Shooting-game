@@ -2,6 +2,7 @@
 #include "MainScene.h"
 #include "Boss.h"
 #include "Enemy1.h"
+#include "Item.h"
 
 MainScene::MainScene()
 {
@@ -46,8 +47,9 @@ void MainScene::Init()
 	ObjMgr->AddObject(RightWall, "Wall");
 	ObjMgr->AddObject(Left_Limit, "Wall");
 	ObjMgr->AddObject(Right_Limit, "Wall");
-	//ObjMgr->AddObject(new Boss(), "Boss");
-	ObjMgr->AddObject(new Enemy1(Vec2(1920/2+500,1080/2)), "Boss");
+	ObjMgr->AddObject(new Boss(), "Boss");
+//	ObjMgr->AddObject(new Item(Vec2(1920/2,1080/2)), "Boss");
+	//ObjMgr->AddObject(new Enemy1(Vec2(1920/2+500,1080/2)), "Boss");
 
 	UpWall->m_Visible = false;
 	DownWall->m_Visible = false;

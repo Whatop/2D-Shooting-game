@@ -106,6 +106,8 @@ Boss::~Boss()
 
 void Boss::Update(float deltaTime, float Time)
 {
+	if (GameInfo->AutoCamera && !GameInfo->CameraStop)
+		m_Position.x += 100 * dt;
 	m_LastMoveTime += dt;
 	MS_DelayTime += dt;
 	DelayTime += dt;
@@ -115,6 +117,7 @@ void Boss::Update(float deltaTime, float Time)
 	isDown = false;
 	ObjMgr->CollisionCheak(this, "Wall");
 	ObjMgr->CollisionCheak(this, "Bullet");
+	if(!isDestroyBody)
 	Propeller->Update(deltaTime, Time);
 
 	if (!GameInfo->m_DebugMode) {
@@ -160,8 +163,7 @@ void Boss::Update(float deltaTime, float Time)
 			MS_RpmTime = 0;
 		}
 	}
-	if (GameInfo->AutoCamera && !GameInfo->CameraStop)
-		m_Position.x += 100 * dt;
+	
 	//if ((rand() % 10) == 0) 아이템코드
 	//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
 }
@@ -394,10 +396,10 @@ void Boss::State()
 			}
 			DestroyBody->m_Visible = true;
 			isDestroyBody = true;
-			GameInfo->CameraStop = true;
 		}
 	}
 	if (m_Hp < 0) {
+		GameInfo->CameraStop = true;
 		if (!DieScene) {
 			Camera::GetInst()->isVibration = true;
 			Camera::GetInst()->ShakeTime = 0;
@@ -405,8 +407,10 @@ void Boss::State()
 		}
 		DestroyTime += dt;
 		EffectTime += dt;
-		if (!isDown)
-			m_Position.y += 100 * DestroyTime * dt;
+		if (!isDown) {
+			m_Position.y += 75.f * DestroyTime * dt;
+			m_Position.x += (sin(DestroyTime * 10) * powf(0.5f, DestroyTime) * 5);
+		}
 		if (EffectTime > 0.1f) {
 			float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
 			float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
@@ -414,11 +418,12 @@ void Boss::State()
 			EffectTime = 0;
 		}
 		if (isDown && !isBoom) {
-			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x-100, m_Position.y - m_Size.y / 2),2,2), "Effect");
-			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x+100, m_Position.y - m_Size.y / 2),2,2), "Effect");
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x-100, m_Position.y - 50 ),2,2), "Effect");
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x+100, m_Position.y - 50),2,2), "Effect");
 			isBoom = true;
 		
 		}
+		
 	}
 }
 

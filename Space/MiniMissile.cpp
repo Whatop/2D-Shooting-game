@@ -13,9 +13,9 @@ MiniMissile::MiniMissile(Vec2 Pos)
 	m_ColBox->SetPosition(Pos);
 	m_ColBox->m_Visible = true;
 
-	m_Rotation = D3DXToRadian(180);;
+	m_Rotation = D3DXToRadian(190);;
 	turnRadian = m_Rotation;
-	vrad = 0.003f;
+	vrad = 0.009f;
 	Delay = 0.f;
 	isHoming = false;
 	HomingTime = 1.f;
@@ -24,7 +24,7 @@ MiniMissile::MiniMissile(Vec2 Pos)
 	SetScale(1.f, 1.f);
 	m_ColBox->SetScale(0.5f, 0.5f);
 	m_ColBox->m_Visible = false;
-	
+	DestroyTime = 0.f;
 }
 MiniMissile::~MiniMissile()
 {
@@ -32,10 +32,14 @@ MiniMissile::~MiniMissile()
 
 void MiniMissile::Update(float deltaTime, float Time)
 {
-
+	DestroyTime += dt;
 	m_Missile->Update(deltaTime, Time);
 	Move();
 	m_ColBox->SetPosition(m_Position);
+	if (DestroyTime > 2.f) {
+		ObjMgr->RemoveObject(this);
+		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+	}
 
 }
 
@@ -47,16 +51,6 @@ void MiniMissile::Render()
 
 void MiniMissile::OnCollision(Object* obj)
 {
-	if (obj->m_Tag == "Player") {
-		RECT rc;
-		if (IntersectRect(&rc, &m_ColBox->m_Collision, &obj->m_Collision)) {
-
-			float randx = (rand() % (int)obj->m_Size.x) + obj->m_Position.x - obj->m_Size.x / 2;
-			float randy = (rand() % (int)obj->m_Size.y) + obj->m_Position.y - obj->m_Size.y / 2;
-			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-			ObjMgr->RemoveObject(this);
-		}
-	}
 }
 
 void MiniMissile::Move()

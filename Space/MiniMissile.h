@@ -9,7 +9,9 @@ class MiniMissile : public Object
 	float impellent;
 	float HomingTime;
 	float m_Speed;
+	float DestroyTime;
 	bool isHoming;
+	
 public:
 	MiniMissile(Vec2 Pos);
 	~MiniMissile();

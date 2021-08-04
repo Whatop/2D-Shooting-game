@@ -10,6 +10,7 @@ Bullet::Bullet()
 	m_Speed = 700.f;
 	DelayTime = 1.f;
 	DestroyTime = 0.f;
+	m_Layer = 2;
 }
 
 Bullet::~Bullet()

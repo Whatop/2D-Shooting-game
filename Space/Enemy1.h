@@ -7,6 +7,11 @@ class Enemy1 : public Object
 	float m_Speed;
 	float MoveTime;
 	float m_LastMoveTime;
+	float AttackTime;
+	float AttackDelay;
+	bool isBullet;
+	bool isMissile;
+
 public:
 	Enemy1(Vec2 Pos);
 	~Enemy1();
@@ -16,5 +21,7 @@ public:
 	void OnCollision(Object* obj);
 
 	void Move();
+	void Attack();
+	
 };
 
