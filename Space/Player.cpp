@@ -10,6 +10,7 @@ Player::Player()
 	CollisionBox();
 	std::cout << "플레이어 생성" << std::endl;
 	m_Rotation = D3DXToRadian(90);
+	ones = true;
 }
 
 Player::~Player()
@@ -30,7 +31,7 @@ void Player::Init()
 	DOWN = 3;
 	HIT = 4;
 	m_Speed = 440.f;
-	m_MaxHp = 100;
+	m_MaxHp = 50;
 	m_Hp = m_MaxHp;
 	m_Rpm = 0.1f;
 	RpmDelayTime = 0.f;
@@ -46,13 +47,16 @@ void Player::Init()
 	ColBox[UP] = Sprite::Create(L"Painting/Player/Width.png");
 	ColBox[DOWN] = Sprite::Create(L"Painting/Player/Width.png");
 	ColBox[HIT] = Sprite::Create(L"Painting/Player/HitBox.png");
+	Defense = Sprite::Create(L"Painting/Skill/Shield.png");
 
 	ColBox[LEFT]->m_Visible = false;
 	ColBox[RIGHT]->m_Visible = false;
 	ColBox[UP]->m_Visible = false;
 	ColBox[DOWN]->m_Visible = false;
 	ColBox[HIT]->m_Visible = false;
+	Defense->m_Visible = false;
 	GameInfo->CreateUI();
+	defenseTime = 0.f;
 }
 
 void Player::Update(float deltaTime, float Time)
@@ -101,17 +105,35 @@ void Player::Update(float deltaTime, float Time)
 	}
 	if (INPUT->GetKey(VK_F2) == KeyState::DOWN) {
 		m_Hp -= 10;
+		Defense->m_Visible = false;
+		ones = true;
 	}
 	Camera::GetInst()->Side_Scroll(this, 360, GameInfo->AutoCamera);
 
 	if (isHit) {
-		float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
-		float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+		if (ones) {
+			m_Hp -= 10;
+			float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+			float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 
-		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-
-		isHit = false;
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+			ones = false;
+		}
 	}
+	if (ones) {
+		Defense->m_Visible = false;
+	}
+	if (!ones) {
+		Defense->m_Visible = true;
+		defenseTime += dt;
+		if (defenseTime > 6.f) {
+
+			ones = true;
+			isHit = false;
+			defenseTime = 0.f;
+		}
+	}
+
 }
 
 void Player::Render()
@@ -122,6 +144,7 @@ void Player::Render()
 	ColBox[UP]->Render();
 	ColBox[DOWN]->Render();
 	ColBox[HIT]->Render();
+	Defense->Render();
 }
 
 void Player::OnCollision(Object* obj)
@@ -149,7 +172,7 @@ void Player::OnCollision(Object* obj)
 	if (obj->m_Tag == "Missile") {
 		RECT rc;
 		if (IntersectRect(&rc, &ColBox[4]->m_Collision, &obj->m_Collision)) {
-			isHit = true;
+				isHit = true;
 			float randx = (rand() % (int)m_Size.x) + m_Position.x - m_Size.x / 2;
 			float randy = (rand() % (int)m_Size.y) + m_Position.y - m_Size.y / 2;
 			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
@@ -185,4 +208,5 @@ void Player::CollisionBox()
 	ColBox[UP]->SetPosition(m_Position.x, m_Position.y - m_Size.y / 2);
 	ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2);
 	ColBox[HIT]->SetPosition(m_Position);
+	Defense->SetPosition(m_Position);
 }

@@ -12,7 +12,8 @@ Enemy1::Enemy1(Vec2 Pos)
 
 	SetPosition(Pos);
 	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 1080));
-	m_Hp = 300;
+	m_MaxHp = 1300;
+	m_Hp = m_MaxHp;
 	m_Rotation = D3DXToRadian(270);
 	m_Speed = 450.f;
 	m_LastMoveTime = 2.f;
@@ -20,6 +21,8 @@ Enemy1::Enemy1(Vec2 Pos)
 	isBullet = true;
 	m_Layer = 2;
 	AttackTime = 0.f;
+	GameInfo->isMiniBossSpawn = true;
+	std::cout << "미니보스 생성" << std::endl;
 }
 
 Enemy1::~Enemy1()
@@ -37,6 +40,7 @@ void Enemy1::Update(float deltaTime, float Time)
 	{
 		//if ((rand() % 50) == 0)
 		//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
+		ObjMgr->RemoveObject(this);
 		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
 	}
 	
@@ -44,6 +48,7 @@ void Enemy1::Update(float deltaTime, float Time)
 		m_Position.x += 100 * dt;
 	}
 	Attack();
+	GameInfo->MiniBossHpUpdate(m_MaxHp, m_Hp);
 }
 
 void Enemy1::Render()

@@ -10,6 +10,7 @@ class Missile : public Object
 	float HomingTime;
 	float m_Speed;
 	bool isHoming;
+	float DestroyTime;
 public:
 	Missile(Vec2 Pos);
 	~Missile();

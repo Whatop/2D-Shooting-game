@@ -13,6 +13,7 @@ BossBullet::BossBullet(Vec2 spawnPos, Vec2 dir)
 	SetScale(2, 2);
 	SetPosition(spawnPos);
 	Dire = dir;
+	m_Layer = 2;
 	m_Rotation = (std::atan2(dir.y, dir.x));
 }
 
@@ -27,7 +28,7 @@ void BossBullet::Update(float deltaTime, float Time)
 	DestroyTime += dt;
 	Move();
 
-	if (DestroyTime > 8) {
+	if (DestroyTime > 5) {
 		ObjMgr->RemoveObject(this);
 		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f,m_Position,1*DestroyTime, 1 * DestroyTime), "Effect");
 	}
@@ -36,9 +37,9 @@ void BossBullet::Update(float deltaTime, float Time)
 	if (m_Position.y < 40)
 		m_Rotation = m_Rotation * -1;
 	if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - 100)
-		m_Rotation -= D3DXToRadian(90);
+		m_Rotation = m_Rotation * -1.5f;
 	if (m_Position.x < Camera::GetInst()->m_Position.x + 40)
-		m_Rotation += D3DXToRadian(90);
+		m_Rotation = m_Rotation * -0.5f;
 
 	m_BossBullet->Update(deltaTime, Time);
 }

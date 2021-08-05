@@ -1,8 +1,9 @@
 #pragma once
 class UI : public Singleton<UI>
 {
-	Sprite* m_HpBar;
-	Sprite* m_BossBar;
+	Sprite* PlayerBar;
+	Sprite* BossBar;
+	Sprite* MiniBossBar;
 	TextMgr* m_Test;
 
 public:

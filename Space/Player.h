@@ -3,9 +3,14 @@ class Player : public Object
 {
 	Sprite* m_Player;// = ColBox
 	Sprite* ColBox[5];// LEFT COLBOX, RIGHT COLBOX, UP COLBOX, DOWN COLBOX, HIT BOX
+	Sprite* Defense;
 	int LEFT, RIGHT, UP, DOWN, HIT;
 	bool isLeft, isRight, isUp, isDown, isHit;
 	float m_MaxHp, m_Hp, m_Speed, m_Rpm;
+	float defenseTime;
+	bool ones;
+	float TempTime;
+	
 public:
 	Player();
 	~Player();

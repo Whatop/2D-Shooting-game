@@ -3,7 +3,7 @@ class Enemy1 : public Object
 {
 	Sprite* m_Enemy;
 	Vec2 m_RandomPosition;
-	float m_Hp;
+	float m_Hp, m_MaxHp;
 	float m_Speed;
 	float MoveTime;
 	float m_LastMoveTime;
