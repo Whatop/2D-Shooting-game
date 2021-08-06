@@ -31,6 +31,9 @@
     <Filter Include="Game\Object\Enemy">
       <UniqueIdentifier>{e1e3dc5a-ec12-479e-856b-871e77a994aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Object\Bullet">
+      <UniqueIdentifier>{cd29c906-6fe1-496a-891e-163d8bacf900}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Space.cpp">
@@ -99,34 +102,40 @@
     <ClCompile Include="Player.cpp">
       <Filter>Game\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Game\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Missile.cpp">
-      <Filter>Game\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>Game\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="BossBullet.cpp">
-      <Filter>Game\Object\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Boss.cpp">
       <Filter>Game\Object\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy1.cpp">
-      <Filter>Game\Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="MiniMissile.cpp">
+    <ClCompile Include="MiniBoss.cpp">
       <Filter>Game\Object\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Game\Object</Filter>
     </ClCompile>
+    <ClCompile Include="BossBullet.cpp">
+      <Filter>Game\Object\Bullet</Filter>
+    </ClCompile>
     <ClCompile Include="EnemyDirBullet.cpp">
-      <Filter>Game\Object\Enemy</Filter>
+      <Filter>Game\Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMissile.cpp">
+      <Filter>Game\Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Missile.cpp">
+      <Filter>Game\Object\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="RotationBullet.cpp">
+      <Filter>Game\Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Game\Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy1.cpp">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy2.cpp">
       <Filter>Game\Object\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,37 +203,43 @@
     <ClInclude Include="Player.h">
       <Filter>Game\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>Game\Object\Mgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Missile.h">
-      <Filter>Game\Object\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Box.h">
-      <Filter>Game\Object\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="BossBullet.h">
-      <Filter>Game\Object\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>Game\Object\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy1.h">
-      <Filter>Game\Object\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="MiniMissile.h">
+    <ClInclude Include="MiniBoss.h">
       <Filter>Game\Object\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Game\Object</Filter>
     </ClInclude>
+    <ClInclude Include="BossBullet.h">
+      <Filter>Game\Object\Bullet</Filter>
+    </ClInclude>
     <ClInclude Include="EnemyDirBullet.h">
-      <Filter>Game\Object\Enemy</Filter>
+      <Filter>Game\Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMissile.h">
+      <Filter>Game\Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Missile.h">
+      <Filter>Game\Object\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="RotationBullet.h">
+      <Filter>Game\Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Game\Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy1.h">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy2.h">
       <Filter>Game\Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

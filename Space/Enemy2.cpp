@@ -1,27 +1,27 @@
 #include "stdafx.h"
-#include "Enemy1.h"
-#include "EnemyDirBullet.h"
+#include "Enemy2.h"
+#include "RotationBullet.h"
 
-Enemy1::Enemy1(Vec2 Pos)
+Enemy2::Enemy2(Vec2 Pos)
 {
-	m_Enemy1 = Sprite::Create(L"Painting/Enemy/Enemy1.png");
-	m_Enemy1->SetParent(this);
+	m_Enemy2 = Sprite::Create(L"Painting/Enemy/Enemy2.png");
+	m_Enemy2->SetParent(this);
 
 	SetPosition(Pos);
-	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 1080));
+	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
 	m_Hp = 100;
 	m_Rotation = D3DXToRadian(270);
 	m_Speed = 450.f;
 	m_LastMoveTime = 2.f;
 	m_Layer = 2;
-	std::cout << "Enemy1 持失" << std::endl;
+	std::cout << "Enemy2 持失" << std::endl;
 }
 
-Enemy1::~Enemy1()
+Enemy2::~Enemy2()
 {
 }
 
-void Enemy1::Update(float deltaTime, float Time)
+void Enemy2::Update(float deltaTime, float Time)
 {
 	ObjMgr->CollisionCheak(this, "Bullet");
 	m_LastMoveTime += dt;
@@ -39,12 +39,12 @@ void Enemy1::Update(float deltaTime, float Time)
 	}
 }
 
-void Enemy1::Render()
+void Enemy2::Render()
 {
-	m_Enemy1->Render();
+	m_Enemy2->Render();
 }
 
-void Enemy1::OnCollision(Object* obj)
+void Enemy2::OnCollision(Object* obj)
 {
 	if (obj->m_Tag == "Bullet") {
 		m_Hp -= 10;
@@ -56,7 +56,7 @@ void Enemy1::OnCollision(Object* obj)
 	}
 }
 
-void Enemy1::Move()
+void Enemy2::Move()
 {
 	Vec2 A, B, Dire;
 	const int EPSILON = 10;
@@ -93,14 +93,8 @@ void Enemy1::Move()
 
 		m_LastMoveTime = 2.f;
 
-		Vec2 C, D, Dir;
-		C = m_Position;
-		D = GameInfo->GetPlayerInfo()->m_Position;
-
-		Dir = D - C;
-
-		D3DXVec2Normalize(&Dir, &Dir);
-
-		ObjMgr->AddObject(new EnemyDirBullet(Vec2(m_Position.x - 10, m_Position.y), Dir), "EnemyBullet");
+		ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180), "EnemyBullet");
+		ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 210), "EnemyBullet");
+		ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), -210), "EnemyBullet");
 	}
 }

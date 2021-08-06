@@ -1,0 +1,152 @@
+#include "stdafx.h"
+#include "MiniBoss.h"
+#include "MiniMissile.h"
+#include "RotationBullet.h"
+#include "EnemyDirBullet.h"
+
+//미니보스로! 업그레이드
+MiniBoss::MiniBoss(Vec2 Pos)
+{
+	m_Enemy = Sprite::Create(L"Painting/Enemy/Enemy.png");
+	m_Enemy->SetParent(this);
+
+	SetPosition(Pos);
+	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 1080));
+	m_MaxHp = 1300;
+	m_Hp = m_MaxHp;
+	m_Rotation = D3DXToRadian(270);
+	m_Speed = 450.f;
+	m_LastMoveTime = 2.f;
+	isMissile = false;
+	isBullet = true;
+	m_Layer = 2;
+	AttackTime = 0.f;
+	GameInfo->isMiniBossSpawn = true;
+	std::cout << "미니보스 생성" << std::endl;
+}
+
+MiniBoss::~MiniBoss()
+{
+}
+
+void MiniBoss::Update(float deltaTime, float Time)
+{
+	ObjMgr->CollisionCheak(this, "Bullet");
+	m_LastMoveTime += dt;
+	if (m_LastMoveTime >= 5)                           
+		Move();
+
+	if (m_Hp <= 0)
+	{
+		//if ((rand() % 50) == 0)
+		//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
+		ObjMgr->RemoveObject(this);
+		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+	}
+	
+	if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
+		m_Position.x += 100 * dt;
+	}
+	Attack();
+	GameInfo->MiniBossHpUpdate(m_MaxHp, m_Hp);
+}
+
+void MiniBoss::Render()
+{
+	m_Enemy->Render();
+}
+
+void MiniBoss::OnCollision(Object* obj)
+{
+	if (obj->m_Tag == "Bullet") {
+		m_Hp -= 10;
+		float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+		float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+		obj->SetDestroy(true);
+		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+
+	}
+}
+
+void MiniBoss::Move()
+{
+	Vec2 A, B, Dire;
+	const int EPSILON = 10;
+
+	A = m_Position;
+	B = m_RandomPosition;
+
+	Dire = B - A;
+
+	D3DXVec2Normalize(&Dire, &Dire);
+	
+	if (abs(m_Position.x - m_RandomPosition.x) > EPSILON && abs(m_Position.y - m_RandomPosition.y) > EPSILON)
+	{
+		if(m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width/2 &&
+			m_Position.x < Camera::GetInst()->m_Position.x + App::GetInst()->m_Width-100)
+
+		m_Position.x += Dire.x * m_Speed * dt;
+
+		m_Position.y += Dire.y * m_Speed * dt;
+	}
+	else
+	{
+	
+		if(m_Position.y < 360)
+			m_RandomPosition.y = (rand() % 400 + 180);
+		else
+			m_RandomPosition.y = (rand() % 250 + 63);
+
+
+		if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - 600)
+			m_RandomPosition.x = (rand() %  -500 - 100) + (int)m_Position.x;
+		else
+			m_RandomPosition.x = (rand() % 500 + 300) + (int)m_Position.x;
+
+		m_LastMoveTime = 2.f;
+	}
+}
+
+void MiniBoss::Attack()
+{
+	if (isBullet) {
+		AttackTime += dt;
+		if (AttackTime < 0.1f) {
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x-10, m_Position.y), 180),"EnemyBullet");
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x-10, m_Position.y), 180+50),"EnemyBullet");
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x-10, m_Position.y), 180-50),"EnemyBullet");
+		}
+		else if (AttackTime < 0.3f) {
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180), "EnemyBullet");
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 + 20), "EnemyBullet");
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 - 20), "EnemyBullet");
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 + 40), "EnemyBullet");
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 - 40), "EnemyBullet");
+		}
+		else if (AttackTime < 0.5f) {
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180), "EnemyBullet");
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 + 50), "EnemyBullet");
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 - 50), "EnemyBullet");
+		}
+		else {
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180), "EnemyBullet");
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 + 20), "EnemyBullet");
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 - 20), "EnemyBullet");
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 + 40), "EnemyBullet");
+			ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 - 40), "EnemyBullet");
+			AttackTime = 0.f;
+
+			ObjMgr->AddObject(new MiniMissile(Vec2(m_Position.x + 15, m_Position.y + 22)), "Missile");
+			ObjMgr->AddObject(new MiniMissile(Vec2(m_Position.x + 15, m_Position.y - 22)), "Missile");
+			isBullet = false;
+
+		}
+	}
+	else {
+		AttackDelay += dt;
+		if (AttackDelay > 2) {
+			isBullet = true;
+			AttackDelay = 0;
+		}
+	}
+}

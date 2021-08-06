@@ -1,7 +1,7 @@
 #pragma once
-class Enemy1 : public Object
+class Enemy2 : public Object
 {
-	Sprite* m_Enemy1;
+	Sprite* m_Enemy2;
 	float m_Hp;
 	float m_Speed;
 
@@ -10,8 +10,8 @@ class Enemy1 : public Object
 
 	Vec2 m_RandomPosition;
 public:
-	Enemy1(Vec2 Pos);
-	~Enemy1();
+	Enemy2(Vec2 Pos);
+	~Enemy2();
 
 	void Update(float deltaTime, float Time);
 	void Render();

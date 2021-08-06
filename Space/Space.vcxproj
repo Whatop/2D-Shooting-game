@@ -29,6 +29,8 @@
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="EffectMgr.cpp" />
     <ClCompile Include="Enemy1.cpp" />
+    <ClCompile Include="Enemy2.cpp" />
+    <ClCompile Include="MiniBoss.cpp" />
     <ClCompile Include="EnemyDirBullet.cpp" />
     <ClCompile Include="GameMgr.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -65,6 +67,8 @@
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="EffectMgr.h" />
     <ClInclude Include="Enemy1.h" />
+    <ClInclude Include="Enemy2.h" />
+    <ClInclude Include="MiniBoss.h" />
     <ClInclude Include="EnemyDirBullet.h" />
     <ClInclude Include="GameMgr.h" />
     <ClInclude Include="Input.h" />
