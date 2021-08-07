@@ -4,6 +4,7 @@
 #include "MiniBoss.h"
 #include "Enemy1.h"
 #include "Enemy2.h"
+#include "EliteEnemy1.h"
 #include "Item.h"
 
 MainScene::MainScene()
@@ -53,6 +54,7 @@ void MainScene::Init()
 	//ObjMgr->AddObject(new MiniBoss(Vec2(1920/2+500,1080/2)), "Boss");
 	ObjMgr->AddObject(new Enemy1(Vec2(1920 / 2 + 500, 1080 / 2)), "Enemy1");
 	ObjMgr->AddObject(new Enemy2(Vec2(1920 / 2 + 500, 1080 / 2)), "Enemy2");
+	ObjMgr->AddObject(new EliteEnemy1(Vec2(1920 / 2 + 500, 1080 / 2 - 100)), "EliteEnemy1");
 	//ObjMgr->AddObject(new Item(Vec2(1920/2,1080/2)), "Boss");
 	UpWall->m_Visible = false;
 	DownWall->m_Visible = false;

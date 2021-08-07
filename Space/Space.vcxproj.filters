@@ -138,6 +138,9 @@
     <ClCompile Include="Enemy2.cpp">
       <Filter>Game\Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="EliteEnemy1.cpp">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -240,6 +243,9 @@
       <Filter>Game\Object</Filter>
     </ClInclude>
     <ClInclude Include="Enemy2.h">
+      <Filter>Game\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EliteEnemy1.h">
       <Filter>Game\Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

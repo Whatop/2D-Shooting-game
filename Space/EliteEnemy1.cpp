@@ -1,27 +1,27 @@
 #include "stdafx.h"
-#include "Enemy1.h"
+#include "EliteEnemy1.h"
 #include "EnemyDirBullet.h"
 
-Enemy1::Enemy1(Vec2 Pos)
+EliteEnemy1::EliteEnemy1(Vec2 Pos)
 {
-	m_Enemy1 = Sprite::Create(L"Painting/Enemy/Enemy1.png");
-	m_Enemy1->SetParent(this);
+	m_EliteEnemy1 = Sprite::Create(L"Painting/Enemy/EliteEnemy1.png");
+	m_EliteEnemy1->SetParent(this);
 
 	SetPosition(Pos);
 	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
-	m_Hp = 100;
+	m_Hp = 300;
 	m_Rotation = D3DXToRadian(270);
 	m_Speed = 450.f;
 	m_LastMoveTime = 2.f;
 	m_Layer = 2;
-	std::cout << "Enemy1 持失" << std::endl;
+	std::cout << "EliteEnemy1 持失" << std::endl;
 }
 
-Enemy1::~Enemy1()
+EliteEnemy1::~EliteEnemy1()
 {
 }
 
-void Enemy1::Update(float deltaTime, float Time)
+void EliteEnemy1::Update(float deltaTime, float Time)
 {
 	ObjMgr->CollisionCheak(this, "Bullet");
 	m_LastMoveTime += dt;
@@ -39,12 +39,12 @@ void Enemy1::Update(float deltaTime, float Time)
 	}
 }
 
-void Enemy1::Render()
+void EliteEnemy1::Render()
 {
-	m_Enemy1->Render();
+	m_EliteEnemy1->Render();
 }
 
-void Enemy1::OnCollision(Object* obj)
+void EliteEnemy1::OnCollision(Object* obj)
 {
 	if (obj->m_Tag == "Bullet") {
 		m_Hp -= 10;
@@ -56,7 +56,7 @@ void Enemy1::OnCollision(Object* obj)
 	}
 }
 
-void Enemy1::Move()
+void EliteEnemy1::Move()
 {
 	Vec2 A, B, Dire;
 	const int EPSILON = 10;
@@ -93,14 +93,27 @@ void Enemy1::Move()
 
 		m_LastMoveTime = 2.f;
 
-		Vec2 C, D, Dir;
+		Vec2 C, D,E,F,G,H,Dir1,Dir2,Dir3, Dir4, Dir5;
 		C = m_Position;
 		D = GameInfo->GetPlayerInfo()->m_Position;
+		E = Vec2(GameInfo->GetPlayerInfo()->m_Position.x, GameInfo->GetPlayerInfo()->m_Position.y + 20);
+		F = Vec2(GameInfo->GetPlayerInfo()->m_Position.x, GameInfo->GetPlayerInfo()->m_Position.y - 20);
+		G = Vec2(GameInfo->GetPlayerInfo()->m_Position.x, GameInfo->GetPlayerInfo()->m_Position.y - 40);
+		H = Vec2(GameInfo->GetPlayerInfo()->m_Position.x, GameInfo->GetPlayerInfo()->m_Position.y - 60);
+		Dir1 = D - C;
+		Dir2 = E - C;
+		Dir3 = F - C;
+		Dir4 = G - C;
+		Dir5 = H - C;
 
-		Dir = D - C;
+		D3DXVec2Normalize(&Dir1, &Dir1);
+		D3DXVec2Normalize(&Dir2, &Dir2);
+		D3DXVec2Normalize(&Dir3, &Dir3);
 
-		D3DXVec2Normalize(&Dir, &Dir);
-
-		ObjMgr->AddObject(new EnemyDirBullet(Vec2(m_Position.x - 10, m_Position.y), Dir), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyDirBullet(Vec2(m_Position.x - 10, m_Position.y), Dir1), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyDirBullet(Vec2(m_Position.x - 10, m_Position.y), Dir2), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyDirBullet(Vec2(m_Position.x - 10, m_Position.y), Dir3), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyDirBullet(Vec2(m_Position.x - 10, m_Position.y), Dir4), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyDirBullet(Vec2(m_Position.x - 10, m_Position.y), Dir5), "EnemyBullet");
 	}
 }
