@@ -29,6 +29,7 @@
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="EffectMgr.cpp" />
     <ClCompile Include="EliteEnemy1.cpp" />
+    <ClCompile Include="EliteEnemy2.cpp" />
     <ClCompile Include="Enemy1.cpp" />
     <ClCompile Include="Enemy2.cpp" />
     <ClCompile Include="MiniBoss.cpp" />
@@ -68,6 +69,7 @@
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="EffectMgr.h" />
     <ClInclude Include="EliteEnemy1.h" />
+    <ClInclude Include="EliteEnemy2.h" />
     <ClInclude Include="Enemy1.h" />
     <ClInclude Include="Enemy2.h" />
     <ClInclude Include="MiniBoss.h" />
