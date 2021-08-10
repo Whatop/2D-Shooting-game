@@ -7,7 +7,7 @@
 Player::Player()
 {
 	Init();
-	SetPosition(960, 360);
+	SetPosition(360, 360);
 	GameInfo->PlayerUpdate(this);
 	CollisionBox();
 	std::cout << "플레이어 생성" << std::endl;
@@ -17,8 +17,6 @@ Player::Player()
 
 Player::~Player()
 {
-	std::cout << "플레이어 삭제" << std::endl;
-	GameInfo->ReleaseUI();
 }
 
 void Player::Init()
@@ -42,7 +40,7 @@ void Player::Init()
 	isUp = false;
 	isDown = false;
 	isHit = false;
-	GameInfo->PlayerHpUpdate(m_MaxHp,m_Hp);
+	GameInfo->PlayerHpUpdate(m_MaxHp, m_Hp);
 
 	ColBox[LEFT] = Sprite::Create(L"Painting/Player/Height.png");
 	ColBox[RIGHT] = Sprite::Create(L"Painting/Player/Height.png");
@@ -59,6 +57,10 @@ void Player::Init()
 	Defense->m_Visible = false;
 	GameInfo->CreateUI();
 	defenseTime = 0.f;
+
+	shot = 1, shotgun = 2, charge = 3, induce = 4, boomerang = 5;
+	m_GunType = shot;
+
 }
 
 void Player::Update(float deltaTime, float Time)
@@ -80,11 +82,8 @@ void Player::Update(float deltaTime, float Time)
 	Move();
 	CollisionBox();
 	GameInfo->PlayerUpdate(this);
-	
-	if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN)&& RpmDelayTime > m_Rpm) {
-		ObjMgr->AddObject(new Bullet, "Bullet");
-		RpmDelayTime = 0;
-	}
+
+	GunType();
 	if (!GameInfo->m_DebugMode) {
 		ColBox[LEFT]->m_Visible = false;
 		ColBox[RIGHT]->m_Visible = false;
@@ -104,7 +103,7 @@ void Player::Update(float deltaTime, float Time)
 
 	if (isHit) {
 		if (ones) {
-			m_Hp -= 10;
+			m_Hp -= Damage_Received;
 			float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
 			float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 
@@ -159,18 +158,20 @@ void Player::OnCollision(Object* obj)
 		RECT rc;
 		if (IntersectRect(&rc, &ColBox[4]->m_Collision, &obj->m_Collision)) {
 			isHit = true;
-		
+
+			Damage_Received = obj->m_Atk;
 			obj->SetDestroy(true);
 		}
 	}
 	if (obj->m_Tag == "Missile") {
 		RECT rc;
 		if (IntersectRect(&rc, &ColBox[4]->m_Collision, &obj->m_Collision)) {
-				isHit = true;
+			isHit = true;
 			float randx = (rand() % (int)m_Size.x) + m_Position.x - m_Size.x / 2;
 			float randy = (rand() % (int)m_Size.y) + m_Position.y - m_Size.y / 2;
 			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 
+			Damage_Received = obj->m_Atk;
 			obj->SetDestroy(true);
 		}
 	}
@@ -180,6 +181,7 @@ void Player::OnCollision(Object* obj)
 			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, m_Position, obj->m_Scale.x, obj->m_Scale.y), "Effect");
 			isHit = true;
 
+			Damage_Received = obj->m_Atk;
 			obj->SetDestroy(true);
 		}
 	}
@@ -199,23 +201,32 @@ void Player::Move()
 	}
 	if (!isRight && INPUT->GetKey(VK_RIGHT) == KeyState::PRESS) {
 		m_Position.x += m_Speed * dt;
-	}	
-	if (GameInfo->AutoCamera&& !GameInfo->CameraStop) {
+	}
+	if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
 		m_Position.x += 100 * dt;
 	}
 
 
-	if (INPUT->GetKey(VK_F4) == KeyState::DOWN) {
-		Camera::GetInst()->isVibration = true;
-		Camera::GetInst()->ShakeTime = 0;
-	}
 
 	if (INPUT->GetKey(VK_F2) == KeyState::DOWN) {
 		m_Hp += 10;
 	}
-	if (INPUT->GetKey(VK_F5) == KeyState::DOWN) {
+	if (INPUT->GetKey(VK_F3) == KeyState::DOWN) {
+		Camera::GetInst()->isVibration = true;
+		Camera::GetInst()->ShakeTime = 0;
+	}
+	if (INPUT->GetKey(VK_F4) == KeyState::DOWN) {
 		GameInfo->MaxScore += 3000;
 		std::cout << "점수 올리기 : 3000" << std::endl;
+	}
+	if (INPUT->GetKey(VK_F5) == KeyState::DOWN) {
+		ObjMgr->DeleteObject("Enemy1");
+		ObjMgr->DeleteObject("Enemy2");
+		ObjMgr->DeleteObject("EliteEnemy1");
+		ObjMgr->DeleteObject("EliteEnemy2");
+		ObjMgr->DeleteObject("MiniBoss");
+		ObjMgr->DeleteObject("Boss");
+		GameInfo->EnemyCount = 0;
 	}
 	if (INPUT->GetKey(VK_F6) == KeyState::DOWN) {
 		ObjMgr->DeleteObject("Enemy1");
@@ -248,4 +259,29 @@ void Player::CollisionBox()
 	ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2);
 	ColBox[HIT]->SetPosition(m_Position);
 	Defense->SetPosition(m_Position);
+}
+
+void Player::GunType()
+{
+	//shot = 1, shotgun = 2, charge = 3, induce = 4, boomerang = 5;
+	
+	if (m_GunType == shot) {
+		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
+			ObjMgr->AddObject(new Bullet, "Bullet");
+			RpmDelayTime = 0;
+			m_Rpm = 0.45f;
+		}
+	}
+	else if (m_GunType == shotgun) {
+
+	}
+	else if (m_GunType == charge) {
+
+	}
+	else if (m_GunType == induce) {
+
+	}
+	else if (m_GunType == boomerang) {
+
+	}
 }

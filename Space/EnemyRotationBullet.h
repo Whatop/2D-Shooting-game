@@ -1,12 +1,12 @@
 #pragma once
-class RotationBullet : public Object
+class EnemyRotationBullet : public Object
 {
 	Sprite* m_Bullet;
 	Vec2 m_Dire;
 	float m_Speed;
 public:
-	RotationBullet(Vec2 Pos,float r);
-	~RotationBullet();
+	EnemyRotationBullet(Vec2 Pos,float r);
+	~EnemyRotationBullet();
 
 	void Update(float deltaTime, float Time);
 	void Render();

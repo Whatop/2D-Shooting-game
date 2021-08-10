@@ -32,6 +32,7 @@
     <ClCompile Include="EliteEnemy2.cpp" />
     <ClCompile Include="Enemy1.cpp" />
     <ClCompile Include="Enemy2.cpp" />
+    <ClCompile Include="Enemy3.cpp" />
     <ClCompile Include="InputScoreScene.cpp" />
     <ClCompile Include="MiniBoss.cpp" />
     <ClCompile Include="EnemyDirBullet.cpp" />
@@ -47,7 +48,7 @@
     <ClCompile Include="RankScene.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceMgr.cpp" />
-    <ClCompile Include="RotationBullet.cpp" />
+    <ClCompile Include="EnemyRotationBullet.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneDirector.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
@@ -75,6 +76,7 @@
     <ClInclude Include="EliteEnemy2.h" />
     <ClInclude Include="Enemy1.h" />
     <ClInclude Include="Enemy2.h" />
+    <ClInclude Include="Enemy3.h" />
     <ClInclude Include="InputScoreScene.h" />
     <ClInclude Include="MiniBoss.h" />
     <ClInclude Include="EnemyDirBullet.h" />
@@ -90,7 +92,7 @@
     <ClInclude Include="RankScene.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceMgr.h" />
-    <ClInclude Include="RotationBullet.h" />
+    <ClInclude Include="EnemyRotationBullet.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneDirector.h" />
     <ClInclude Include="Singleton.h" />

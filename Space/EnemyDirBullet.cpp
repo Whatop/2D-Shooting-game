@@ -9,6 +9,7 @@ EnemyDirBullet::EnemyDirBullet(Vec2 Pos,Vec2 Dir)
 	m_Dire = Dir;
 	m_Speed = 500.f;
 	m_Rotation = (std::atan2(m_Dire.y, m_Dire.x));  
+	m_Atk = 10.f;
 }
 
 EnemyDirBullet::~EnemyDirBullet()

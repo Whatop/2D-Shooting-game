@@ -123,7 +123,7 @@
     <ClCompile Include="Missile.cpp">
       <Filter>Game\Object\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="RotationBullet.cpp">
+    <ClCompile Include="EnemyRotationBullet.cpp">
       <Filter>Game\Object\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
@@ -152,6 +152,9 @@
     </ClCompile>
     <ClCompile Include="RankScene.cpp">
       <Filter>Game\Object\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy3.cpp">
+      <Filter>Game\Object\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,7 +245,7 @@
     <ClInclude Include="Missile.h">
       <Filter>Game\Object\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="RotationBullet.h">
+    <ClInclude Include="EnemyRotationBullet.h">
       <Filter>Game\Object\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
@@ -271,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="RankScene.h">
       <Filter>Game\Object\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy3.h">
+      <Filter>Game\Object\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

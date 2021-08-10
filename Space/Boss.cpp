@@ -79,7 +79,7 @@ Boss::Boss(Vec2 Pos)
 	DestroyTail->m_Visible = false;
 	ColBoxTop->m_Visible = false;
 	m_ColBox->m_Visible = false;
-	m_MaxHp = 2500.f;
+	m_MaxHp = 4500.f;
 	m_Hp = m_MaxHp;
 	m_Speed = 200.f;
 	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 1080));
@@ -88,9 +88,9 @@ Boss::Boss(Vec2 Pos)
 	MS_Num = 0;
 	MoveNum = 0;
 
-	TailHp = 450.f;
-	BodyHp = 500.f;
-	TopHp = 200.f;
+	TailHp = 750.f;
+	BodyHp = 700.f;
+	TopHp = 700.f;
 	DestroyTime = 1.f;
 	EffectTime = 0.f;
 	isDestroyTop = false;
@@ -138,8 +138,7 @@ void Boss::Update(float deltaTime, float Time)
 		isDown = false;
 		ObjMgr->CollisionCheak(this, "Wall");
 		ObjMgr->CollisionCheak(this, "Bullet");
-		if (!isDestroyBody)
-			Propeller->Update(deltaTime, Time);
+	
 
 		if (!GameInfo->m_DebugMode) {
 			m_ColBox->m_Visible = false;
@@ -185,6 +184,8 @@ void Boss::Update(float deltaTime, float Time)
 		//if ((rand() % 10) == 0) 아이템코드
 		//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
 	}
+	if (!isDestroyBody)
+		Propeller->Update(deltaTime, Time);
 	State();
 }
 
@@ -227,8 +228,8 @@ void Boss::OnCollision(Object* obj)
 		RECT rc;
 		if (!isDestroyTail) {
 			if (IntersectRect(&rc, &BossTail->m_Collision, &obj->m_Collision)) {
-				m_Hp -= 101;
-				TailHp -= 101;
+				m_Hp -= obj->m_Atk;
+				TailHp -= obj->m_Atk;
 				float randx = (rand() % (int)BossTail->m_Size.x * m_Scale.x) + BossTail->m_Position.x - BossTail->m_Size.x / 2 * m_Scale.x;
 				float randy = (rand() % (int)BossTail->m_Size.y * m_Scale.y) + BossTail->m_Position.y - BossTail->m_Size.y / 2 * m_Scale.y;
 				obj->SetDestroy(true);
@@ -237,8 +238,8 @@ void Boss::OnCollision(Object* obj)
 		}
 		if (!isDestroyTop) {
 			if (IntersectRect(&rc, &ColBoxTop->m_Collision, &obj->m_Collision)) {
-				m_Hp -= 110;
-				TopHp -= 110;
+				m_Hp -= obj->m_Atk;
+				TopHp -= obj->m_Atk;
 				float randx = (rand() % (int)ColBoxTop->m_Size.x * m_Scale.x) + ColBoxTop->m_Position.x - ColBoxTop->m_Size.x / 2 * m_Scale.x;
 				float randy = (rand() % (int)ColBoxTop->m_Size.y * m_Scale.y) + ColBoxTop->m_Position.y - ColBoxTop->m_Size.y / 2 * m_Scale.y;
 				obj->SetDestroy(true);
@@ -247,8 +248,8 @@ void Boss::OnCollision(Object* obj)
 		}
 		if (isDestroyTop && isDestroyTail && !isDestroyBody) {
 			if (IntersectRect(&rc, &BossBody->m_Collision, &obj->m_Collision)) {
-				m_Hp -= 110;
-				BodyHp -= 110;
+				m_Hp -= obj->m_Atk;
+				BodyHp -= obj->m_Atk;
 				float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
 				float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 				obj->SetDestroy(true);
@@ -257,7 +258,7 @@ void Boss::OnCollision(Object* obj)
 		}
 		if (isDestroyBody) {
 			if (IntersectRect(&rc, &BossBody->m_Collision, &obj->m_Collision)) {
-				m_Hp -= 110;
+				m_Hp -= obj->m_Atk;
 				float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
 				float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 				obj->SetDestroy(true);

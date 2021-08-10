@@ -11,9 +11,13 @@ Stage1::~Stage1()
 
 void Stage1::Init()
 {
-	Camera::GetInst()->m_Position = Vec2(0, -180);
-	m_Map = Sprite::Create(L"Painting/Misson1.png");
-	m_Map->SetPosition(m_Map->m_Size.x / 2, m_Map->m_Size.y / 2);
+	m_GameScreen1 = Sprite::Create(L"Painting/GameScreen/Stage1.png");
+	m_GameScreen1->SetPosition(1920 / 2, 650 / 2);
+	m_GameScreen2 = Sprite::Create(L"Painting/GameScreen/Stage1.png");
+	m_GameScreen2->SetPosition(m_GameScreen1->m_Position.x + m_GameScreen1->m_Size.x, m_GameScreen1->m_Position.y);
+	//가로 2188 세로 650 
+	//  268 
+ 	Camera::GetInst()->m_Position = Vec2(0, -180);
 
 	UpWall = Sprite::Create(L"Painting/Wall.png");
 	UpWall->SetPosition(5000, -50);
@@ -38,7 +42,6 @@ void Stage1::Init()
 	Right_Limit = Sprite::Create(L"Painting/Wall.png");
 	Right_Limit->SetPosition(1970, 325);
 	Right_Limit->SetScale(1, 6.5f);
-	ObjMgr->AddObject(m_Map, "Map");
 	ObjMgr->AddObject(UpWall, "Wall");
 	ObjMgr->AddObject(DownWall, "Wall");
 	ObjMgr->AddObject(LeftWall, "Wall");
@@ -79,12 +82,26 @@ void Stage1::Update(float deltaTime, float time)
 		Right_Limit->m_Visible = true;
 	}
 	if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
+		UpWall->m_Position.x += 100 * dt;
+		DownWall->m_Position.x += 100 * dt;
 		Left_Limit->m_Position.x += 100 * dt;
 		Right_Limit->m_Position.x += 100 * dt;
 	}
 	GameInfo->SpawnEnemy();
+
+	
+	if (m_GameScreen1->m_Position.x +1920/2 +268/2  <= Camera::GetInst()->m_Position.x) {
+		m_GameScreen1->m_Position.x += m_GameScreen1->m_Size.x * 2;
+	}
+	if (m_GameScreen2->m_Position.x + 1920/2 + 268 / 2 <= Camera::GetInst()->m_Position.x) {
+		m_GameScreen2->m_Position.x += m_GameScreen2->m_Size.x * 2 ;
+	}
+
+
 }
 
 void Stage1::Render()
 {
+	m_GameScreen1->Render();
+	m_GameScreen2->Render();
 }

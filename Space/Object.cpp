@@ -16,6 +16,7 @@ Object::Object() :
 	, m_Parent(nullptr)
 	, m_Radius(0.f)
 	, DestroyTime(0.f)
+	, m_Atk(0.f)
 {
 	D3DXMatrixIdentity(&m_wMat);
 }

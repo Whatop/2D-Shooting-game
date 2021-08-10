@@ -10,6 +10,11 @@ class Player : public Object
 	float defenseTime;
 	bool ones;
 	float TempTime;
+	float Damage_Received;
+
+	// 단발, 샷건 , 차지, 유도, 부메랑, 
+	int m_GunType;
+	int shot, shotgun, charge, induce, boomerang;
 	
 public:
 	Player();
@@ -22,6 +27,9 @@ public:
 	void OnCollision(Object* obj);
 	void Move();
 	void CollisionBox();
+
+	void GunType();
+
 
 	//m_Weapon = int or string
 	float RpmDelayTime;

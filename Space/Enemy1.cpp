@@ -9,7 +9,7 @@ Enemy1::Enemy1(Vec2 Pos)
 
 	SetPosition(Pos);
 	m_Hp = 100;
-	m_Rotation = D3DXToRadian(270);
+	m_Rotation = D3DXToRadian(180);
 	m_Speed = 450.f;
 	m_LastMoveTime = 2.f;
 	SpawnMove = 0.f;
@@ -61,7 +61,7 @@ void Enemy1::Render()
 void Enemy1::OnCollision(Object* obj)
 {
 	if (obj->m_Tag == "Bullet") {
-		m_Hp -= 10;
+		m_Hp -= obj->m_Atk;
 		float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
 		float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 		obj->SetDestroy(true);

@@ -32,12 +32,13 @@ public:
 	bool isOneBoss;
 	bool isOneMiniBoss;
 
+	int MaxScore;
 	int EnemyCount;
 	float m_Score;
 	float SpawnDelay;
 	float AddDelay;
-	int MaxScore;
-	
+
+
 	bool CK_BossSpawn;
 	bool CK_MiniBossSpawn;
 

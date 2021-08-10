@@ -25,6 +25,7 @@ MiniMissile::MiniMissile(Vec2 Pos)
 	m_ColBox->SetScale(0.5f, 0.5f);
 	m_ColBox->m_Visible = false;
 	DestroyTime = 0.f;
+	m_Atk = 10.f;
 }
 MiniMissile::~MiniMissile()
 {
@@ -36,7 +37,7 @@ void MiniMissile::Update(float deltaTime, float Time)
 	m_Missile->Update(deltaTime, Time);
 	Move();
 	m_ColBox->SetPosition(m_Position);
-	if (DestroyTime > 2.f) {
+	if (DestroyTime > 2.5f) {
 		ObjMgr->RemoveObject(this);
 		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
 	}

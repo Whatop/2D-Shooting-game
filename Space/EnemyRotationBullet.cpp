@@ -1,35 +1,36 @@
 #include "stdafx.h"
-#include "RotationBullet.h"
+#include "EnemyRotationBullet.h"
 
-RotationBullet::RotationBullet(Vec2 Pos, float r)
+EnemyRotationBullet::EnemyRotationBullet(Vec2 Pos, float r)
 {
 	m_Bullet = Sprite::Create(L"Painting/Bullet/EnemyBullet.png");
 	m_Bullet->SetParent(this);
 	SetPosition(Pos);
 	m_Rotation = D3DXToRadian(r);
 	m_Speed = 500.f;
+	m_Atk = 10.f;
 }
 
-RotationBullet::~RotationBullet()
+EnemyRotationBullet::~EnemyRotationBullet()
 {
 }
 
-void RotationBullet::Update(float deltaTime, float Time)
+void EnemyRotationBullet::Update(float deltaTime, float Time)
 {
 	Move();
 	DelayDestroy(this, 4);
 }
 
-void RotationBullet::Render()
+void EnemyRotationBullet::Render()
 {
 	m_Bullet->Render();
 }
 
-void RotationBullet::OnCollision(Object* obj)
+void EnemyRotationBullet::OnCollision(Object* obj)
 {
 }
 
-void RotationBullet::Move()
+void EnemyRotationBullet::Move()
 {
 	m_Dire.y = sin(m_Rotation);
 	m_Dire.x = cos(m_Rotation);

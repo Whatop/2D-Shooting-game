@@ -22,6 +22,7 @@ Missile::Missile(Vec2 Pos)
 	m_Speed = 400.f;
 	SetScale(2.f, 2.f);
 	DestroyTime = 0.f;
+	m_Atk = 10.f; 
 }
 
 Missile::~Missile()

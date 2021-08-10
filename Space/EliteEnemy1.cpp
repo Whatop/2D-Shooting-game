@@ -10,7 +10,7 @@ EliteEnemy1::EliteEnemy1(Vec2 Pos)
 	SetPosition(Pos);
 	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
 	m_Hp = 300;
-	m_Rotation = D3DXToRadian(270);
+	m_Rotation = D3DXToRadian(180);
 	m_Speed = 450.f;
 	m_LastMoveTime = 2.f;
 	m_Layer = 2;
@@ -63,7 +63,7 @@ void EliteEnemy1::Render()
 void EliteEnemy1::OnCollision(Object* obj)
 {
 	if (obj->m_Tag == "Bullet") {
-		m_Hp -= 10;
+		m_Hp -= obj->m_Atk;
 		float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
 		float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 		obj->SetDestroy(true);

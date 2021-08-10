@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "EliteEnemy2.h"
-#include "RotationBullet.h"
+#include "EnemyRotationBullet.h"
 
 EliteEnemy2::EliteEnemy2(Vec2 Pos)
 {
@@ -10,7 +10,7 @@ EliteEnemy2::EliteEnemy2(Vec2 Pos)
 	SetPosition(Pos);
 	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
 	m_Hp = 300;
-	m_Rotation = D3DXToRadian(270);
+	m_Rotation = D3DXToRadian(180);
 	m_Speed = 450.f;
 	m_LastMoveTime = 2.f;
 	MoveTime = 0;
@@ -65,7 +65,7 @@ void EliteEnemy2::Render()
 void EliteEnemy2::OnCollision(Object* obj)
 {
 	if (obj->m_Tag == "Bullet") {
-		m_Hp -= 10;
+		m_Hp -= obj->m_Atk;
 		float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
 		float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 		obj->SetDestroy(true);
@@ -120,19 +120,19 @@ void EliteEnemy2::Move()
 void EliteEnemy2::Attack()
 {
 	if (isAttack) {
-		ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 240), "EnemyBullet");
-		ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 210), "EnemyBullet");
-		ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180), "EnemyBullet");
-		ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 150), "EnemyBullet");
-		ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 120), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 240), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 210), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 150), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 120), "EnemyBullet");
 
 		isAttack = false;
 	}
 	else{
-		ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 220), "EnemyBullet");
-		ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 190), "EnemyBullet");
-		ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 160), "EnemyBullet");
-		ObjMgr->AddObject(new RotationBullet(Vec2(m_Position.x - 10, m_Position.y), 130), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 220), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 190), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 160), "EnemyBullet");
+		ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 130), "EnemyBullet");
 		isAttack = true;
 	}
 }

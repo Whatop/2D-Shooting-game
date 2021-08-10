@@ -1,7 +1,8 @@
 #pragma once
 class Stage1 : public Scene
 {
-	Sprite* m_Map;
+	Sprite* m_GameScreen1;
+	Sprite* m_GameScreen2;
 	Sprite* UpWall;
 	Sprite* DownWall;
 	Sprite* LeftWall;

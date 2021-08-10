@@ -18,7 +18,7 @@ void Camera::Init()
 	m_Scale = Vec2(1.f, 1.f);
 	Follow(nullptr);
 	m_MinMapSize = Vec2(960, 0); //Stage1
-	m_MaxMapSize = Vec2(7400, 0); //Stage1
+	m_MaxMapSize = Vec2(300000, 0); //Stage1
 	isVibration = false;
 	ShakeTime = 0;
 
