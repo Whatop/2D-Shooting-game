@@ -144,6 +144,15 @@
     <ClCompile Include="EliteEnemy2.cpp">
       <Filter>Game\Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="InputScoreScene.cpp">
+      <Filter>Game\Object\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1.cpp">
+      <Filter>Game\Object\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="RankScene.cpp">
+      <Filter>Game\Object\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -253,6 +262,15 @@
     </ClInclude>
     <ClInclude Include="EliteEnemy2.h">
       <Filter>Game\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="InputScoreScene.h">
+      <Filter>Game\Object\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1.h">
+      <Filter>Game\Object\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="RankScene.h">
+      <Filter>Game\Object\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

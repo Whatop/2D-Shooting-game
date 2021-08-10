@@ -21,6 +21,8 @@ void Camera::Init()
 	m_MaxMapSize = Vec2(7400, 0); //Stage1
 	isVibration = false;
 	ShakeTime = 0;
+
+
 }
 
 void Camera::Translate()

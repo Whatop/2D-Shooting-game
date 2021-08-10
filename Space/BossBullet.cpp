@@ -51,10 +51,6 @@ void BossBullet::Render()
 
 void BossBullet::OnCollision(Object* obj)
 {
-	if (obj->m_Tag == "Player") {
-		ObjMgr->RemoveObject(this);
-		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, m_Position, 1 * DestroyTime, 1 * DestroyTime), "Effect");
-	}
 }
 
 void BossBullet::Move()

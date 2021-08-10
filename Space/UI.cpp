@@ -63,7 +63,7 @@ void UI::Render()
 	if (GameInfo->isBossSpawn) {
 		float m_BossHpGage = BossBar->m_Size.x / GameInfo->GetBossMaxHp();
 		int BossHp = GameInfo->GetBossMaxHp() - GameInfo->GetBossHp();
-		if (GameInfo->GetBossHp() >= 0)
+		if (GameInfo->GetBossHp() > 0)
 		{
 			SetRect(&BossBar->m_Collision, BossBar->m_Position.x - BossBar->m_Size.x / 2, BossBar->m_Position.y - BossBar->m_Size.y / 2,
 				BossBar->m_Position.x + BossBar->m_Size.x / 2, BossBar->m_Position.y + BossBar->m_Size.y / 2);
@@ -81,7 +81,7 @@ void UI::Render()
 	if (GameInfo->isMiniBossSpawn) {
 		float m_MiniBossHpGage = MiniBossBar->m_Size.x / GameInfo->GetMiniBossMaxHp();
 		int MiniBossHp = GameInfo->GetMiniBossMaxHp() - GameInfo->GetMiniBossHp();
-		if (GameInfo->GetMiniBossHp() >= 0)
+		if (GameInfo->GetMiniBossHp() > 0)
 		{
 			SetRect(&MiniBossBar->m_Collision, MiniBossBar->m_Position.x - MiniBossBar->m_Size.x / 2, MiniBossBar->m_Position.y - MiniBossBar->m_Size.y / 2,
 				MiniBossBar->m_Position.x + MiniBossBar->m_Size.x / 2, MiniBossBar->m_Position.y + MiniBossBar->m_Size.y / 2);
@@ -97,6 +97,7 @@ void UI::Render()
 		MiniBossBar->m_Visible = false;
 	}
 	Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
-	m_Test->print(std::to_string(gt), 1700, 50);
+	m_Test->print(std::to_string(int(GameInfo->m_Score)), 300, 50);
+	m_Test->print("Enemy : " + std::to_string(GameInfo->EnemyCount), 1650, 50);
 	Renderer::GetInst()->GetSprite()->End();
 }

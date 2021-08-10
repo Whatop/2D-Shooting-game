@@ -14,7 +14,11 @@ Enemy2::Enemy2(Vec2 Pos)
 	m_Speed = 450.f;
 	m_LastMoveTime = 2.f;
 	m_Layer = 2;
+	SpawnMove = 0.f;
+	ones = true;
 	std::cout << "Enemy2 »ý¼º" << std::endl;
+
+	GameInfo->EnemyCount++;
 }
 
 Enemy2::~Enemy2()
@@ -23,19 +27,31 @@ Enemy2::~Enemy2()
 
 void Enemy2::Update(float deltaTime, float Time)
 {
-	ObjMgr->CollisionCheak(this, "Bullet");
-	m_LastMoveTime += dt;
-	if (m_LastMoveTime >= 4)
-		Move();
-	if (m_Hp <= 0)
-	{
-		//if ((rand() % 50) == 0)
-		//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
-		ObjMgr->RemoveObject(this);
-		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+	SpawnMove += dt;
+	if (SpawnMove < 2) {
+		m_Position.x -= (300 + rand() % 100) * dt;
 	}
-	if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
-		m_Position.x += 100 * dt;
+	else {
+		if (ones) {
+			m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
+			ones = false;
+		}
+		ObjMgr->CollisionCheak(this, "Bullet");
+		m_LastMoveTime += dt;
+		if (m_LastMoveTime >= 4)
+			Move();
+		if (m_Hp <= 0)
+		{
+			//if ((rand() % 50) == 0)
+			//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
+			ObjMgr->RemoveObject(this);
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+			GameInfo->EnemyCount--;
+			GameInfo->MaxScore += 100;
+		}
+		if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
+			m_Position.x += 100 * dt;
+		}
 	}
 }
 

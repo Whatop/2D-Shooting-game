@@ -32,6 +32,7 @@
     <ClCompile Include="EliteEnemy2.cpp" />
     <ClCompile Include="Enemy1.cpp" />
     <ClCompile Include="Enemy2.cpp" />
+    <ClCompile Include="InputScoreScene.cpp" />
     <ClCompile Include="MiniBoss.cpp" />
     <ClCompile Include="EnemyDirBullet.cpp" />
     <ClCompile Include="GameMgr.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectMgr.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RankScene.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceMgr.cpp" />
     <ClCompile Include="RotationBullet.cpp" />
@@ -51,6 +53,7 @@
     <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="Space.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Stage1.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -72,6 +75,7 @@
     <ClInclude Include="EliteEnemy2.h" />
     <ClInclude Include="Enemy1.h" />
     <ClInclude Include="Enemy2.h" />
+    <ClInclude Include="InputScoreScene.h" />
     <ClInclude Include="MiniBoss.h" />
     <ClInclude Include="EnemyDirBullet.h" />
     <ClInclude Include="GameMgr.h" />
@@ -83,6 +87,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectMgr.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RankScene.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceMgr.h" />
     <ClInclude Include="RotationBullet.h" />
@@ -91,6 +96,7 @@
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Stage1.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TextMgr.h" />
     <ClInclude Include="Texture.h" />

@@ -7,6 +7,8 @@ class EliteEnemy1 : public Object
 
 	float MoveTime;
 	float m_LastMoveTime;
+	float SpawnMove;
+	bool ones;
 
 	Vec2 m_RandomPosition;
 public:

@@ -21,8 +21,11 @@ MiniBoss::MiniBoss(Vec2 Pos)
 	isBullet = true;
 	m_Layer = 2;
 	AttackTime = 0.f;
+	ones = true;
+	SpawnMove = 0.f;
 	GameInfo->isMiniBossSpawn = true;
 	std::cout << "미니보스 생성" << std::endl;
+	GameInfo->EnemyCount++;
 }
 
 MiniBoss::~MiniBoss()
@@ -31,24 +34,37 @@ MiniBoss::~MiniBoss()
 
 void MiniBoss::Update(float deltaTime, float Time)
 {
-	ObjMgr->CollisionCheak(this, "Bullet");
-	m_LastMoveTime += dt;
-	if (m_LastMoveTime >= 5)                           
-		Move();
+	SpawnMove += dt;
+	if (SpawnMove < 2) {
+		m_Position.x -= (300 + rand() % 100) * dt;
+	}
+	else {
+		if (ones) {
+			m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
+			ones = false;
+		}
+		ObjMgr->CollisionCheak(this, "Bullet");
+		m_LastMoveTime += dt;
+		if (m_LastMoveTime >= 5)
+			Move();
 
-	if (m_Hp <= 0)
-	{
-		//if ((rand() % 50) == 0)
-		//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
-		ObjMgr->RemoveObject(this);
-		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+		if (m_Hp <= 0)
+		{
+			//if ((rand() % 50) == 0)
+			//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+			GameInfo->EnemyCount--;
+			GameInfo->MaxScore += 1000;
+			GameInfo->isMiniBossSpawn = false;
+			ObjMgr->RemoveObject(this);
+		}
+
+		if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
+			m_Position.x += 100 * dt;
+		}
+		Attack();
+		GameInfo->MiniBossHpUpdate(m_MaxHp, m_Hp);
 	}
-	
-	if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
-		m_Position.x += 100 * dt;
-	}
-	Attack();
-	GameInfo->MiniBossHpUpdate(m_MaxHp, m_Hp);
 }
 
 void MiniBoss::Render()

@@ -1,12 +1,8 @@
 #include "stdafx.h"
 #include "MainScene.h"
-#include "Boss.h"
-#include "MiniBoss.h"
-#include "Enemy1.h"
-#include "Enemy2.h"
-#include "EliteEnemy1.h"
-#include "EliteEnemy2.h"
-#include "Item.h"
+#include "Stage1.h"
+#include "RankScene.h"
+#include "InputScoreScene.h"
 
 MainScene::MainScene()
 {
@@ -15,56 +11,27 @@ MainScene::MainScene()
 MainScene::~MainScene()
 {
 }
-
 void MainScene::Init()
 {
-	m_Map = Sprite::Create(L"Painting/Misson1.png");
-	m_Map->SetPosition(m_Map->m_Size.x / 2, m_Map->m_Size.y / 2);
+    ObjMgr->Release();
+    GameInfo->Init();
+    Camera::GetInst()->m_Position = Vec2(0,0);
+    m_MainScene = Sprite::Create(L"Painting/MainScreen/Main.png");
+    m_MainScene->SetPosition(1920 / 2, 1080 / 2);
 
-	UpWall = Sprite::Create(L"Painting/Wall.png");
-	UpWall->SetPosition(5000, -50);
-	UpWall->SetScale(100, 1);
+    m_Button[0] = Sprite::Create(L"Painting/Button/start.png");
+    m_Button[0]->SetPosition(300, 100);
 
-	DownWall = Sprite::Create(L"Painting/Wall.png");
-	DownWall->SetPosition(5000, 700);
-	DownWall->SetScale(100, 1);
+    m_Button[1] = Sprite::Create(L"Painting/Button/way.png");
+    m_Button[1]->SetPosition(300, 300);
 
-	LeftWall = Sprite::Create(L"Painting/Wall.png");
-	LeftWall->SetPosition(-50, 325);
-	LeftWall->SetScale(1, 6.5f);
+    m_Button[2] = Sprite::Create(L"Painting/Button/rank.png");
+    m_Button[2]->SetPosition(300, 500);
 
-	RightWall = Sprite::Create(L"Painting/Wall.png");
-	RightWall->SetPosition(9300, 325);
-	RightWall->SetScale(1, 6.5f);
+    m_Button[3] = Sprite::Create(L"Painting/Button/exit.png");
+    m_Button[3]->SetPosition(300, 700);
 
-	Left_Limit = Sprite::Create(L"Painting/Wall.png");
-	Left_Limit->SetPosition(-50, 325);
-	Left_Limit->SetScale(1, 6.5f);
-
-	Right_Limit = Sprite::Create(L"Painting/Wall.png");
-	Right_Limit->SetPosition(1970, 325);
-	Right_Limit->SetScale(1, 6.5f);
-	ObjMgr->AddObject(m_Map, "Map");
-	ObjMgr->AddObject(UpWall, "Wall");
-	ObjMgr->AddObject(DownWall, "Wall");
-	ObjMgr->AddObject(LeftWall, "Wall");
-	ObjMgr->AddObject(RightWall, "Wall");
-	ObjMgr->AddObject(Left_Limit, "Wall");
-	ObjMgr->AddObject(Right_Limit, "Wall");
-	//ObjMgr->AddObject(new Boss(), "Boss");
-	//ObjMgr->AddObject(new MiniBoss(Vec2(1920/2+500,1080/2)), "Boss");
-	ObjMgr->AddObject(new Enemy1(Vec2(1920 / 2 + 500, 1080 / 2)), "Enemy1");
-	ObjMgr->AddObject(new Enemy2(Vec2(1920 / 2 + 500, 1080 / 2)), "Enemy2");
-	ObjMgr->AddObject(new EliteEnemy1(Vec2(1920 / 2 + 500, 1080 / 2 - 200)), "EliteEnemy1");
-	ObjMgr->AddObject(new EliteEnemy2(Vec2(1920 / 2 + 500, 100)), "EliteEnemy2");
-	//ObjMgr->AddObject(new Item(Vec2(1920/2,1080/2)), "Boss");
-	UpWall->m_Visible = false;
-	DownWall->m_Visible = false;
-	LeftWall->m_Visible = false;
-	RightWall->m_Visible = false;
-
-	GameMgr::GetInst()->CreatePlayer();
-	std::cout << "메인 장소로 이동" << std::endl;
+    std::cout << "MainScene 이동" << std::endl;
 }
 
 void MainScene::Release()
@@ -73,28 +40,33 @@ void MainScene::Release()
 
 void MainScene::Update(float deltaTime, float time)
 {
-	if (!GameInfo->m_DebugMode) {
-		UpWall->m_Visible = false;
-		DownWall->m_Visible = false;
-		LeftWall->m_Visible = false;
-		RightWall->m_Visible = false;
-		Left_Limit->m_Visible = false;
-		Right_Limit->m_Visible = false;
-	}
-	else {
-		UpWall->m_Visible = true;
-		DownWall->m_Visible = true;
-		LeftWall->m_Visible = true;
-		RightWall->m_Visible = true;
-		Left_Limit->m_Visible = true;
-		Right_Limit->m_Visible = true;
-	}
-	if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
-		Left_Limit->m_Position.x += 100 * dt;
-		Right_Limit->m_Position.x += 100 * dt;
-	}
+    //게임시작, 게임소개, 게임방법, 게임랭킹(score), 크래딧(credit)
+    if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[0]) && INPUT->GetButtonDown())
+    {
+        SceneDirector::GetInst()->ChangeScene(new Stage1());
+    }
+    else if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[1]) && INPUT->GetButtonDown())
+    {
+        SceneDirector::GetInst()->ChangeScene(new InputScoreScene());
+    }
+    else if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[2]) && INPUT->GetButtonDown())
+    {
+        SceneDirector::GetInst()->ChangeScene(new RankScene());
+    }
+    else if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[3]) && INPUT->GetButtonDown())
+    {
+        App::GetInst()->Release();
+        exit(0);
+    }
+ 
 }
 
 void MainScene::Render()
 {
+    m_MainScene->Render();
+    m_Button[0]->Render();
+    m_Button[1]->Render();
+    m_Button[2]->Render();
+    m_Button[3]->Render();
 }
+

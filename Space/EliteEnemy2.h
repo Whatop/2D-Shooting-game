@@ -7,6 +7,8 @@ class EliteEnemy2 : public Object
 
 	float MoveTime;
 	float m_LastMoveTime;
+	float SpawnMove;
+	bool ones;
 
 	bool isAttack; 
 

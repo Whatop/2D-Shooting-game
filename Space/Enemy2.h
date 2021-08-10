@@ -8,6 +8,9 @@ class Enemy2 : public Object
 	float MoveTime;
 	float m_LastMoveTime;
 
+	float SpawnMove;
+	bool ones;
+
 	Vec2 m_RandomPosition;
 public:
 	Enemy2(Vec2 Pos);

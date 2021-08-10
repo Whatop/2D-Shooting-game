@@ -5,7 +5,7 @@
 #include "Box.h"
 #include "Missile.h"
 
-Boss::Boss()
+Boss::Boss(Vec2 Pos)
 {
 	Propeller = new Animation();
 	Propeller->Init(0.1f, true);
@@ -32,7 +32,7 @@ Boss::Boss()
 	ColBoxTop = Sprite::Create(L"Painting/Boss/ColBox/HitBox.png");
 
 	SetScale(2, 2);
-	SetPosition(1400, 480 / 2);
+	SetPosition(Pos);
 
 	BossBody->SetScale(2, 2);
 	BossTail->SetScale(2, 2);
@@ -78,6 +78,7 @@ Boss::Boss()
 	DestroyBody->m_Visible = false;
 	DestroyTail->m_Visible = false;
 	ColBoxTop->m_Visible = false;
+	m_ColBox->m_Visible = false;
 	m_MaxHp = 2500.f;
 	m_Hp = m_MaxHp;
 	m_Speed = 200.f;
@@ -99,6 +100,7 @@ Boss::Boss()
 	std::cout << "Boss 생성" << std::endl;
 	GameInfo->isBossSpawn = true;
 	m_Layer = 2;
+	GameInfo->EnemyCount++;
 }
 
 Boss::~Boss()
@@ -107,66 +109,83 @@ Boss::~Boss()
 
 void Boss::Update(float deltaTime, float Time)
 {
-	if (GameInfo->AutoCamera && !GameInfo->CameraStop)
-		m_Position.x += 100 * dt;
-	m_LastMoveTime += dt;
-	MS_DelayTime += dt;
-	DelayTime += dt;
-	isLeft = false;
-	isRight = false;
-	isUp = false;
-	isDown = false;
-	ObjMgr->CollisionCheak(this, "Wall");
-	ObjMgr->CollisionCheak(this, "Bullet");
-	if(!isDestroyBody)
-	Propeller->Update(deltaTime, Time);
-
-	if (!GameInfo->m_DebugMode) {
-		m_ColBox->m_Visible = false;
-		ColBox[LEFT]->m_Visible = false;
-		ColBox[RIGHT]->m_Visible = false;
-		ColBox[UP]->m_Visible = false;
-		ColBox[DOWN]->m_Visible = false;
-		ColBoxTop->m_Visible = false;
-		//ColBox[HIT]->m_Visible = false;
+	int aaa;
+	SpawnMove += dt;
+	if (!(GameInfo->AutoCamera && !GameInfo->CameraStop)) {
+		 aaa = 8;
 	}
 	else {
-		m_ColBox->m_Visible = true;
-		ColBox[LEFT]->m_Visible = true;
-		ColBox[RIGHT]->m_Visible = true;
-		ColBox[UP]->m_Visible = true;
-		ColBox[DOWN]->m_Visible = true;
-		ColBoxTop->m_Visible = true;
-		//ColBox[HIT]->m_Visible = true;
+		 aaa = 5;
 	}
-	if (m_LastMoveTime >= m_MoveWaitingTime)
-	{
-		if (isMove)
-			Move();
+	if (SpawnMove < aaa) {
+		m_Position.x -= 100 * dt;
 
-
-	}
-	if (!isDestroyTop) {
-		Fire();
-	}
-
-	State();
-
-	if (MS_DelayTime > 5) {
-		MS_RpmTime += dt;
-		if (MS_RpmTime > 1) {
-			MS_Num++;
-			SpawnMissile();
-			if (MS_Num >= 5) {
-				MS_DelayTime = 0;
-				MS_Num = 0;
-			}
-			MS_RpmTime = 0;
-		}
 	}
 	
-	//if ((rand() % 10) == 0) 아이템코드
-	//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
+	else {
+		if (ones) {
+			m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
+			ones = false;
+		}
+		if (GameInfo->AutoCamera && !GameInfo->CameraStop)
+			m_Position.x += 100 * dt;
+		m_LastMoveTime += dt;
+		MS_DelayTime += dt;
+		DelayTime += dt;
+		isLeft = false;
+		isRight = false;
+		isUp = false;
+		isDown = false;
+		ObjMgr->CollisionCheak(this, "Wall");
+		ObjMgr->CollisionCheak(this, "Bullet");
+		if (!isDestroyBody)
+			Propeller->Update(deltaTime, Time);
+
+		if (!GameInfo->m_DebugMode) {
+			m_ColBox->m_Visible = false;
+			ColBox[LEFT]->m_Visible = false;
+			ColBox[RIGHT]->m_Visible = false;
+			ColBox[UP]->m_Visible = false;
+			ColBox[DOWN]->m_Visible = false;
+			ColBoxTop->m_Visible = false;
+			//ColBox[HIT]->m_Visible = false;
+		}
+		else {
+			m_ColBox->m_Visible = true;
+			ColBox[LEFT]->m_Visible = true;
+			ColBox[RIGHT]->m_Visible = true;
+			ColBox[UP]->m_Visible = true;
+			ColBox[DOWN]->m_Visible = true;
+			ColBoxTop->m_Visible = true;
+			//ColBox[HIT]->m_Visible = true;
+		}
+		if (m_LastMoveTime >= m_MoveWaitingTime)
+		{
+			if (isMove)
+				Move();
+		}
+		if (!isDestroyTop) {
+			Fire();
+		}
+
+
+		if (MS_DelayTime > 5) {
+			MS_RpmTime += dt;
+			if (MS_RpmTime > 1) {
+				MS_Num++;
+				SpawnMissile();
+				if (MS_Num >= 5) {
+					MS_DelayTime = 0;
+					MS_Num = 0;
+				}
+				MS_RpmTime = 0;
+			}
+		}
+
+		//if ((rand() % 10) == 0) 아이템코드
+		//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
+	}
+	State();
 }
 
 void Boss::Render()
@@ -290,7 +309,6 @@ void Boss::Fire()
 	Vec2 TempPos;
 	float TempRotation;
 	if (PilotAttack->m_CurrentFrame == 0) {
-		//	TempPos = Vec2()
 		TempRotation = D3DXToRadian(0);
 		TempPos = Vec2(m_Position.x + 210, m_Position.y + 115);
 	}
@@ -374,6 +392,7 @@ void Boss::State()
 			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 		}
 		isMove = false;
+		GameInfo->MaxScore += 500;
 	}
 
 	if (TopHp <= 0) {
@@ -386,6 +405,7 @@ void Boss::State()
 			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 		}
 		PilotAttack->m_CurrentFrame = 4;
+		GameInfo->MaxScore += 500;
 	}
 	if (isDestroyTop && isDestroyTail && !isDestroyBody) {
 		if (BodyHp <= 0) {
@@ -405,6 +425,8 @@ void Boss::State()
 			Camera::GetInst()->isVibration = true;
 			Camera::GetInst()->ShakeTime = 0;
 			DieScene = true;
+			GameInfo->MaxScore += 1500;
+			GameInfo->isBossSpawn = true;
 		}
 		DestroyTime += dt;
 		EffectTime += dt;
@@ -422,9 +444,9 @@ void Boss::State()
 			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x-100, m_Position.y - 50 ),2,2), "Effect");
 			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x+100, m_Position.y - 50),2,2), "Effect");
 			isBoom = true;
-		
+			GameInfo->EnemyCount--;
+
 		}
-		
 	}
 }
 

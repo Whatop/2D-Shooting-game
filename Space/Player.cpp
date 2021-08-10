@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "MainScene.h"
+
 
 Player::Player()
 {
@@ -70,6 +72,7 @@ void Player::Update(float deltaTime, float Time)
 
 	ObjMgr->CollisionCheak(this, "Wall");
 	ObjMgr->CollisionCheak(this, "EnemyBullet");
+	ObjMgr->CollisionCheak(this, "BossBullet");
 	ObjMgr->CollisionCheak(this, "Missile");
 
 	GameInfo->PlayerHpUpdate(m_MaxHp, m_Hp);
@@ -96,18 +99,7 @@ void Player::Update(float deltaTime, float Time)
 		ColBox[DOWN]->m_Visible = true;
 		ColBox[HIT]->m_Visible = true;
 	}
-	if (INPUT->GetKey(VK_F4) == KeyState::DOWN) {
-		Camera::GetInst()->isVibration = true;
-		Camera::GetInst()->ShakeTime = 0;
-	}
-	if (INPUT->GetKey(VK_F3) == KeyState::DOWN) {
-		Camera::GetInst()->Side_Scroll(this, 360, true);
-	}
-	if (INPUT->GetKey(VK_F2) == KeyState::DOWN) {
-		m_Hp -= 10;
-		Defense->m_Visible = false;
-		ones = true;
-	}
+
 	Camera::GetInst()->Side_Scroll(this, 360, GameInfo->AutoCamera);
 
 	if (isHit) {
@@ -126,14 +118,16 @@ void Player::Update(float deltaTime, float Time)
 	if (!ones) {
 		Defense->m_Visible = true;
 		defenseTime += dt;
-		if (defenseTime > 6.f) {
+		if (defenseTime > 3.f) {
 
 			ones = true;
 			isHit = false;
 			defenseTime = 0.f;
 		}
 	}
-
+	if (m_Hp <= 0) {
+		SceneDirector::GetInst()->ChangeScene(new MainScene());
+	}
 }
 
 void Player::Render()
@@ -180,6 +174,16 @@ void Player::OnCollision(Object* obj)
 			obj->SetDestroy(true);
 		}
 	}
+	if (obj->m_Tag == "BossBullet") {
+		RECT rc;
+		if (IntersectRect(&rc, &ColBox[4]->m_Collision, &obj->m_Collision)) {
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, m_Position, obj->m_Scale.x, obj->m_Scale.y), "Effect");
+			isHit = true;
+
+			obj->SetDestroy(true);
+		}
+	}
+
 }
 
 void Player::Move()
@@ -195,10 +199,45 @@ void Player::Move()
 	}
 	if (!isRight && INPUT->GetKey(VK_RIGHT) == KeyState::PRESS) {
 		m_Position.x += m_Speed * dt;
-	}
+	}	
 	if (GameInfo->AutoCamera&& !GameInfo->CameraStop) {
 		m_Position.x += 100 * dt;
 	}
+
+
+	if (INPUT->GetKey(VK_F4) == KeyState::DOWN) {
+		Camera::GetInst()->isVibration = true;
+		Camera::GetInst()->ShakeTime = 0;
+	}
+
+	if (INPUT->GetKey(VK_F2) == KeyState::DOWN) {
+		m_Hp += 10;
+	}
+	if (INPUT->GetKey(VK_F5) == KeyState::DOWN) {
+		GameInfo->MaxScore += 3000;
+		std::cout << "점수 올리기 : 3000" << std::endl;
+	}
+	if (INPUT->GetKey(VK_F6) == KeyState::DOWN) {
+		ObjMgr->DeleteObject("Enemy1");
+		ObjMgr->DeleteObject("Enemy2");
+		ObjMgr->DeleteObject("EliteEnemy1");
+		ObjMgr->DeleteObject("EliteEnemy2");
+		ObjMgr->DeleteObject("MiniBoss");
+		ObjMgr->DeleteObject("Boss");
+		GameInfo->EnemyCount = 0;
+		GameInfo->CK_MiniBossSpawn = true;
+	}
+	if (INPUT->GetKey(VK_F7) == KeyState::DOWN) {
+		ObjMgr->DeleteObject("Enemy1");
+		ObjMgr->DeleteObject("Enemy2");
+		ObjMgr->DeleteObject("EliteEnemy1");
+		ObjMgr->DeleteObject("EliteEnemy2");
+		ObjMgr->DeleteObject("MiniBoss");
+		ObjMgr->DeleteObject("Boss");
+		GameInfo->EnemyCount = 0;
+		GameInfo->CK_BossSpawn = true;
+	}
+
 }
 
 void Player::CollisionBox()

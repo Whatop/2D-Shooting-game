@@ -45,6 +45,8 @@ class Boss : public Object
 	bool isBoom;
 	bool DieScene;
 
+	float SpawnMove;
+	bool ones;
 
 	float m_MaxHp;
 	float m_Hp;
@@ -52,7 +54,7 @@ class Boss : public Object
 	float BodyHp;
 	float TopHp;
 public:
-	Boss();
+	Boss(Vec2 Pos);
 	~Boss();
 
 	void Update(float deltaTime, float Time);

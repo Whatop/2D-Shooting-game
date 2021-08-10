@@ -1,13 +1,8 @@
 #pragma once
 class MainScene : public Scene
 {
-	Sprite* m_Map;
-	Sprite* UpWall;
-	Sprite* DownWall;
-	Sprite* LeftWall;
-	Sprite* RightWall;
-	Sprite* Right_Limit;
-	Sprite* Left_Limit;
+	Sprite* m_MainScene;
+	Sprite* m_Button[4];
 public:
 	MainScene();
 	~MainScene();

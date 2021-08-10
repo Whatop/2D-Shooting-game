@@ -9,6 +9,9 @@ class MiniBoss : public Object
 	float m_LastMoveTime;
 	float AttackTime;
 	float AttackDelay;
+	float SpawnMove;
+
+	bool ones;
 	bool isBullet;
 	bool isMissile;
 
