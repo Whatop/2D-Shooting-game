@@ -31,8 +31,14 @@
     <Filter Include="Game\Object\Enemy">
       <UniqueIdentifier>{e1e3dc5a-ec12-479e-856b-871e77a994aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Object\Bullet">
+    <Filter Include="Game\Object\Enemy\EnemyBullet">
       <UniqueIdentifier>{cd29c906-6fe1-496a-891e-163d8bacf900}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Player">
+      <UniqueIdentifier>{3da98416-c15d-4755-a90c-d21a19bf5d1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object\Player\Bullet">
+      <UniqueIdentifier>{c6bbf602-9836-4ee0-8879-1d1c2e7bb2f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,9 +105,6 @@
     <ClCompile Include="UI.cpp">
       <Filter>Game\Object\Mgr</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Game\Object</Filter>
-    </ClCompile>
     <ClCompile Include="Boss.cpp">
       <Filter>Game\Object\Enemy</Filter>
     </ClCompile>
@@ -112,22 +115,19 @@
       <Filter>Game\Object</Filter>
     </ClCompile>
     <ClCompile Include="BossBullet.cpp">
-      <Filter>Game\Object\Bullet</Filter>
+      <Filter>Game\Object\Enemy\EnemyBullet</Filter>
     </ClCompile>
     <ClCompile Include="EnemyDirBullet.cpp">
-      <Filter>Game\Object\Bullet</Filter>
+      <Filter>Game\Object\Enemy\EnemyBullet</Filter>
     </ClCompile>
     <ClCompile Include="MiniMissile.cpp">
-      <Filter>Game\Object\Bullet</Filter>
+      <Filter>Game\Object\Enemy\EnemyBullet</Filter>
     </ClCompile>
     <ClCompile Include="Missile.cpp">
-      <Filter>Game\Object\Bullet</Filter>
+      <Filter>Game\Object\Enemy\EnemyBullet</Filter>
     </ClCompile>
     <ClCompile Include="EnemyRotationBullet.cpp">
-      <Filter>Game\Object\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Game\Object\Bullet</Filter>
+      <Filter>Game\Object\Enemy\EnemyBullet</Filter>
     </ClCompile>
     <ClCompile Include="Enemy1.cpp">
       <Filter>Game\Object\Enemy</Filter>
@@ -156,6 +156,25 @@
     <ClCompile Include="Enemy3.cpp">
       <Filter>Game\Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="ShotGun.cpp">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Boomerang.cpp">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="ChargeBullet.cpp">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="InduceBullet.cpp">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Laser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -218,9 +237,6 @@
     <ClInclude Include="GameMgr.h">
       <Filter>Game\Object\Mgr</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Game\Object</Filter>
-    </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>Game\Object\Mgr</Filter>
     </ClInclude>
@@ -234,22 +250,19 @@
       <Filter>Game\Object</Filter>
     </ClInclude>
     <ClInclude Include="BossBullet.h">
-      <Filter>Game\Object\Bullet</Filter>
+      <Filter>Game\Object\Enemy\EnemyBullet</Filter>
     </ClInclude>
     <ClInclude Include="EnemyDirBullet.h">
-      <Filter>Game\Object\Bullet</Filter>
+      <Filter>Game\Object\Enemy\EnemyBullet</Filter>
     </ClInclude>
     <ClInclude Include="MiniMissile.h">
-      <Filter>Game\Object\Bullet</Filter>
+      <Filter>Game\Object\Enemy\EnemyBullet</Filter>
     </ClInclude>
     <ClInclude Include="Missile.h">
-      <Filter>Game\Object\Bullet</Filter>
+      <Filter>Game\Object\Enemy\EnemyBullet</Filter>
     </ClInclude>
     <ClInclude Include="EnemyRotationBullet.h">
-      <Filter>Game\Object\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Game\Object\Bullet</Filter>
+      <Filter>Game\Object\Enemy\EnemyBullet</Filter>
     </ClInclude>
     <ClInclude Include="Enemy1.h">
       <Filter>Game\Object\Enemy</Filter>
@@ -278,5 +291,24 @@
     <ClInclude Include="Enemy3.h">
       <Filter>Game\Object\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="ShotGun.h">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Boomerang.h">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="ChargeBullet.h">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="InduceBullet.h">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Laser.h" />
   </ItemGroup>
 </Project>

@@ -119,7 +119,6 @@ void Boss::Update(float deltaTime, float Time)
 	}
 	if (SpawnMove < aaa) {
 		m_Position.x -= 100 * dt;
-
 	}
 	
 	else {

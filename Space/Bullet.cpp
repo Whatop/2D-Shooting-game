@@ -7,7 +7,7 @@ Bullet::Bullet()
 	m_Bullet->SetParent(this);
 	Spawnpoint = Vec2(GetPlayer->m_Position.x + (GetPlayer->m_Size.x * m_Scale.x) / 2, GetPlayer->m_Position.y-2);
 	SetPosition(Spawnpoint);
-	m_Speed = 1000.f;
+	m_Speed = 1200.f;
 	DelayTime = 1.f;
 	DestroyTime = 0.f;
 	m_Layer = 2;
@@ -16,17 +16,16 @@ Bullet::Bullet()
 
 Bullet::~Bullet()
 {
-	std::cout << "ÃÑ¾Ë Áö¿öÁü" << std::endl;
 }
 
 void Bullet::Update(float deltaTime, float Time)
 {
 	DestroyTime += dt;
 	if (DelayTime < 5)
-	DelayTime += dt*0.4f;
+	DelayTime += dt*1.1f;
 	Move();
 
-	if (DestroyTime > 4)
+	if (DestroyTime > 6)
 		ObjMgr->RemoveObject(this);
 }
 

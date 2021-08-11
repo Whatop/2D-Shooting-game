@@ -1,15 +1,15 @@
 #pragma once
-class Bullet : public Object
+class InduceBullet : public Object
 {
-	Sprite* m_Bullet;
+	Sprite* m_InduceBullet;
 	Vec2 Dire;
 	Vec2 Spawnpoint;
 	float m_Speed;
 	float DelayTime;
 	float DestroyTime;
 public:
-	Bullet();
-	~Bullet();
+	InduceBullet();
+	~InduceBullet();
 
 	void Update(float deltaTime, float Time);
 	void Render();
@@ -18,4 +18,3 @@ public:
 	void Move();
 };
 
- 

@@ -37,7 +37,8 @@ public:
 	float m_Score;
 	float SpawnDelay;
 	float AddDelay;
-
+	
+	int ChargeCount;
 
 	bool CK_BossSpawn;
 	bool CK_MiniBossSpawn;

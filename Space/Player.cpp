@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "Boomerang.h"
+#include "ShotGun.h"
 #include "MainScene.h"
+#include "ChargeBullet.h"
 
 
 Player::Player()
@@ -273,15 +276,48 @@ void Player::GunType()
 		}
 	}
 	else if (m_GunType == shotgun) {
+		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
+			ObjMgr->AddObject(new ShotGun(0), "Bullet");
+			ObjMgr->AddObject(new ShotGun(5), "Bullet");
+			ObjMgr->AddObject(new ShotGun(-5), "Bullet");
+			RpmDelayTime = 0;
+			m_Rpm = 0.25f;
 
+		}
 	}
 	else if (m_GunType == charge) {
+		if ((INPUT->GetKey('Z') == KeyState::PRESS) && RpmDelayTime > m_Rpm) {
+			ObjMgr->AddObject(new ChargeBullet, "ChargeBullet");
 
+			//RpmDelayTime = 0;
+			m_Rpm = 0.4f;
+		}
 	}
 	else if (m_GunType == induce) {
-
+		ObjMgr->AddObject(new Bullet, "Bullet");
+		RpmDelayTime = 0;
+		m_Rpm = 0.45f;
 	}
 	else if (m_GunType == boomerang) {
-
+		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
+			ObjMgr->AddObject(new Boomerang, "Bullet");
+			RpmDelayTime = 0;
+			m_Rpm = 0.35f;
+		}
+	}
+	if (INPUT->GetKey('1') == KeyState::DOWN) {
+		m_GunType = shot;
+	}
+	if (INPUT->GetKey('2') == KeyState::DOWN) {
+		m_GunType = shotgun;
+	}
+	if (INPUT->GetKey('3') == KeyState::DOWN) {
+		m_GunType = charge;
+	}
+	if (INPUT->GetKey('4') == KeyState::DOWN) {
+		m_GunType = induce;
+	}
+	if (INPUT->GetKey('5') == KeyState::DOWN) {
+		m_GunType = boomerang;
 	}
 }

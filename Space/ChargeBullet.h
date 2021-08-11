@@ -1,15 +1,16 @@
 #pragma once
-class Bullet : public Object
+class ChargeBullet : public Object
 {
-	Sprite* m_Bullet;
+	Sprite* m_ChargeBullet;
 	Vec2 Dire;
 	Vec2 Spawnpoint;
 	float m_Speed;
 	float DelayTime;
 	float DestroyTime;
+	bool OneCharge;
 public:
-	Bullet();
-	~Bullet();
+	ChargeBullet();
+	~ChargeBullet();
 
 	void Update(float deltaTime, float Time);
 	void Render();
@@ -18,4 +19,3 @@ public:
 	void Move();
 };
 
- 

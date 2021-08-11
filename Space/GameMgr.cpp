@@ -40,7 +40,7 @@ void GameMgr::Init()
 	MaxHp = 0, Hp = 0;
 	BossMaxHp = 0, BossHp = 0;
 	MiniBossMaxHp = 0, MiniBossHp = 0;
-
+	ChargeCount = 0;
 }
 
 void GameMgr::Release()

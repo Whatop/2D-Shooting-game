@@ -48,6 +48,7 @@ void Enemy3::Update(float deltaTime, float Time)
 			ones = false;
 		}
 		ObjMgr->CollisionCheak(this, "Bullet");
+		ObjMgr->CollisionCheak(this, "ChargeBullet");
 		m_LastMoveTime += dt;
 		if (m_LastMoveTime >= 4 || isBoomMode)
 			Move();
@@ -83,6 +84,15 @@ void Enemy3::OnCollision(Object* obj)
 		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 
 	}
+	if (obj->m_Tag == "ChargeBullet") {
+		m_Hp -= obj->m_Atk;
+		float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+		float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+		obj->SetDestroy(true);
+		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+		GameInfo->ChargeCount--;
+	}
+}
 }
 
 void Enemy3::Move()

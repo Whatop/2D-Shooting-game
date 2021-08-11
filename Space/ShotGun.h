@@ -1,15 +1,15 @@
 #pragma once
-class Bullet : public Object
+class ShotGun : public Object
 {
-	Sprite* m_Bullet;
+	Sprite* m_ShotGun;
 	Vec2 Dire;
 	Vec2 Spawnpoint;
 	float m_Speed;
 	float DelayTime;
 	float DestroyTime;
 public:
-	Bullet();
-	~Bullet();
+	ShotGun(float r);
+	~ShotGun();
 
 	void Update(float deltaTime, float Time);
 	void Render();
@@ -18,4 +18,3 @@ public:
 	void Move();
 };
 
- 
