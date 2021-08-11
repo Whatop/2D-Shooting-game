@@ -93,7 +93,7 @@ void Enemy3::OnCollision(Object* obj)
 		GameInfo->ChargeCount--;
 	}
 }
-}
+
 
 void Enemy3::Move()
 {
