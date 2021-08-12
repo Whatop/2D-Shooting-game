@@ -14,6 +14,7 @@ void InputScoreScene::Init()
 {
 	ObjMgr->Release();
 	GameMgr::GetInst()->ReleaseUI();
+	Camera::GetInst()->m_Position = Vec2(0, 0);
 	m_BG = Sprite::Create(L"Painting/Scene/Black.png");
 	m_BG->SetPosition(1920 / 2, 1080 / 2);
 

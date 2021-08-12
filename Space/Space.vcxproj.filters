@@ -22,9 +22,6 @@
     <Filter Include="FrameWork\Core">
       <UniqueIdentifier>{94381774-e408-4df3-a1f3-2ae46f6c1ee3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Object\Scene">
-      <UniqueIdentifier>{6a0b488c-024d-464b-b7e5-e43bc432ea1d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Object\Enemy">
       <UniqueIdentifier>{e1e3dc5a-ec12-479e-856b-871e77a994aa}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,9 @@
     </Filter>
     <Filter Include="Game\Mgr">
       <UniqueIdentifier>{19cfe933-c7c6-47a8-8100-a474cff097c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Scene">
+      <UniqueIdentifier>{6a0b488c-024d-464b-b7e5-e43bc432ea1d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,7 +97,7 @@
       <Filter>Game\Mgrs</Filter>
     </ClCompile>
     <ClCompile Include="MainScene.cpp">
-      <Filter>Game\Object\Scene</Filter>
+      <Filter>Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="GameMgr.cpp">
       <Filter>Game\Mgr</Filter>
@@ -145,13 +145,13 @@
       <Filter>Game\Object\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="InputScoreScene.cpp">
-      <Filter>Game\Object\Scene</Filter>
+      <Filter>Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Stage1.cpp">
-      <Filter>Game\Object\Scene</Filter>
+      <Filter>Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="RankScene.cpp">
-      <Filter>Game\Object\Scene</Filter>
+      <Filter>Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Enemy3.cpp">
       <Filter>Game\Object\Enemy</Filter>
@@ -178,6 +178,7 @@
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Store.cpp" />
+    <ClCompile Include="StoreScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -235,7 +236,7 @@
       <Filter>Game\Mgrs</Filter>
     </ClInclude>
     <ClInclude Include="MainScene.h">
-      <Filter>Game\Object\Scene</Filter>
+      <Filter>Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="GameMgr.h">
       <Filter>Game\Mgr</Filter>
@@ -283,13 +284,13 @@
       <Filter>Game\Object\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="InputScoreScene.h">
-      <Filter>Game\Object\Scene</Filter>
+      <Filter>Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Stage1.h">
-      <Filter>Game\Object\Scene</Filter>
+      <Filter>Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="RankScene.h">
-      <Filter>Game\Object\Scene</Filter>
+      <Filter>Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Enemy3.h">
       <Filter>Game\Object\Enemy</Filter>
@@ -316,5 +317,6 @@
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Store.h" />
+    <ClInclude Include="StoreScene.h" />
   </ItemGroup>
 </Project>

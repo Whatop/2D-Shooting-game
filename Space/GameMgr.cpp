@@ -132,7 +132,11 @@ void GameMgr::Render()
 void GameMgr::AddScore(int maxscore)
 {
 	if (int(m_Score) < maxscore) {
-		m_Score += 10 * MaxScore/3000;
+		if (int(m_Score)+4000 < maxscore)
+			m_Score += 90;
+
+		else
+			m_Score += 10;
 	}
 	else if (int(m_Score) > maxscore) {
 		m_Score = maxscore;
