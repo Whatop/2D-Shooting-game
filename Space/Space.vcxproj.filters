@@ -177,6 +177,7 @@
     <ClCompile Include="Laser.cpp">
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="Store.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -314,5 +315,6 @@
     <ClInclude Include="Laser.h">
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="Store.h" />
   </ItemGroup>
 </Project>
