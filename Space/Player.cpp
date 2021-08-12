@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "Item.h"
 #include "Boomerang.h"
 #include "ShotGun.h"
-#include "MainScene.h"
+#include "InputScoreScene.h"
 #include "ChargeBullet.h"
 
 
@@ -34,7 +35,7 @@ void Player::Init()
 	DOWN = 3;
 	HIT = 4;
 	m_Speed = 440.f;
-	m_MaxHp = 50;
+	m_MaxHp = 100;
 	m_Hp = m_MaxHp;
 	m_Rpm = 0.1f;
 	RpmDelayTime = 0.f;
@@ -60,7 +61,7 @@ void Player::Init()
 	Defense->m_Visible = false;
 	GameInfo->CreateUI();
 	defenseTime = 0.f;
-
+	m_Layer = 2;
 	shot = 1, shotgun = 2, charge = 3, induce = 4, boomerang = 5;
 	m_GunType = shot;
 
@@ -68,67 +69,78 @@ void Player::Init()
 
 void Player::Update(float deltaTime, float Time)
 {
-	RpmDelayTime += dt;
-	isLeft = false;
-	isRight = false;
-	isUp = false;
-	isDown = false;
-	isHit = false;
+	if (!GameInfo->isPause) {
+		RpmDelayTime += dt;
+		isLeft = false;
+		isRight = false;
+		isUp = false;
+		isDown = false;
+		isHit = false;
 
-	ObjMgr->CollisionCheak(this, "Wall");
-	ObjMgr->CollisionCheak(this, "EnemyBullet");
-	ObjMgr->CollisionCheak(this, "BossBullet");
-	ObjMgr->CollisionCheak(this, "Missile");
+		ObjMgr->CollisionCheak(this, "Wall");
+		ObjMgr->CollisionCheak(this, "EnemyBullet");
+		ObjMgr->CollisionCheak(this, "BossBullet");
+		ObjMgr->CollisionCheak(this, "Missile");
 
-	GameInfo->PlayerHpUpdate(m_MaxHp, m_Hp);
+		GameInfo->PlayerHpUpdate(m_MaxHp, m_Hp);
 
-	Move();
-	CollisionBox();
-	GameInfo->PlayerUpdate(this);
+		Move();
+		CollisionBox();
+		GameInfo->PlayerUpdate(this);
 
-	GunType();
-	if (!GameInfo->m_DebugMode) {
-		ColBox[LEFT]->m_Visible = false;
-		ColBox[RIGHT]->m_Visible = false;
-		ColBox[UP]->m_Visible = false;
-		ColBox[DOWN]->m_Visible = false;
-		ColBox[HIT]->m_Visible = false;
-	}
-	else {
-		ColBox[LEFT]->m_Visible = true;
-		ColBox[RIGHT]->m_Visible = true;
-		ColBox[UP]->m_Visible = true;
-		ColBox[DOWN]->m_Visible = true;
-		ColBox[HIT]->m_Visible = true;
-	}
+		GunType();
+		if (!GameInfo->m_DebugMode) {
+			ColBox[LEFT]->m_Visible = false;
+			ColBox[RIGHT]->m_Visible = false;
+			ColBox[UP]->m_Visible = false;
+			ColBox[DOWN]->m_Visible = false;
+			ColBox[HIT]->m_Visible = false;
+		}
+		else {
+			ColBox[LEFT]->m_Visible = true;
+			ColBox[RIGHT]->m_Visible = true;
+			ColBox[UP]->m_Visible = true;
+			ColBox[DOWN]->m_Visible = true;
+			ColBox[HIT]->m_Visible = true;
+		}
 
-	Camera::GetInst()->Side_Scroll(this, 360, GameInfo->AutoCamera);
+		Camera::GetInst()->Side_Scroll(this, 360, GameInfo->AutoCamera);
 
-	if (isHit) {
+		if (isHit) {
+			if (ones) {
+				m_Hp -= Damage_Received;
+				float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+				float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+
+				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+				Camera::GetInst()->isVibration = true;
+				Camera::GetInst()->ShakeTimeX = 0;
+
+				ones = false;
+			}
+		}
 		if (ones) {
-			m_Hp -= Damage_Received;
-			float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
-			float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
-
-			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-			ones = false;
+			Defense->m_Visible = false;
+			m_Player->R = 255;
+			m_Player->G = 255;
+			m_Player->B = 255;
 		}
-	}
-	if (ones) {
-		Defense->m_Visible = false;
-	}
-	if (!ones) {
-		Defense->m_Visible = true;
-		defenseTime += dt;
-		if (defenseTime > 3.f) {
+		if (!ones) {
+			Defense->m_Visible = true;
+			defenseTime += dt;
+			if (defenseTime > 3.f) {
 
-			ones = true;
-			isHit = false;
-			defenseTime = 0.f;
+				ones = true;
+				isHit = false;
+				defenseTime = 0.f;
+			}
+			m_Player->R = 255;
+			m_Player->G = 30;
+			m_Player->B = 30;
 		}
-	}
-	if (m_Hp <= 0) {
-		SceneDirector::GetInst()->ChangeScene(new MainScene());
+		if (m_Hp <= 0) {
+			SceneDirector::GetInst()->ChangeScene(new InputScoreScene());
+		}
 	}
 }
 
@@ -188,6 +200,18 @@ void Player::OnCollision(Object* obj)
 			obj->SetDestroy(true);
 		}
 	}
+	if (obj->m_Tag == "Heal") {
+		if (m_Hp < m_MaxHp) {
+			if (m_Hp + 20 > m_MaxHp)
+				m_Hp += 20;
+			else
+				m_Hp = m_MaxHp;
+		}
+		else {
+			GameInfo->MaxScore += 500;
+		}
+		obj->SetDestroy(true);
+	}
 
 }
 
@@ -212,24 +236,19 @@ void Player::Move()
 
 
 	if (INPUT->GetKey(VK_F2) == KeyState::DOWN) {
-		m_Hp += 10;
+		ObjMgr->AddObject(new Item(Vec2(Camera::GetInst()->m_Position.x + 1500, 350)), "Heal");
 	}
 	if (INPUT->GetKey(VK_F3) == KeyState::DOWN) {
 		Camera::GetInst()->isVibration = true;
-		Camera::GetInst()->ShakeTime = 0;
+		Camera::GetInst()->ShakeTimeY = 0;
 	}
 	if (INPUT->GetKey(VK_F4) == KeyState::DOWN) {
-		GameInfo->MaxScore += 3000;
-		std::cout << "점수 올리기 : 3000" << std::endl;
+		Camera::GetInst()->isVibration = true;
+		Camera::GetInst()->ShakeTimeX = 0;
 	}
 	if (INPUT->GetKey(VK_F5) == KeyState::DOWN) {
-		ObjMgr->DeleteObject("Enemy1");
-		ObjMgr->DeleteObject("Enemy2");
-		ObjMgr->DeleteObject("EliteEnemy1");
-		ObjMgr->DeleteObject("EliteEnemy2");
-		ObjMgr->DeleteObject("MiniBoss");
-		ObjMgr->DeleteObject("Boss");
-		GameInfo->EnemyCount = 0;
+		GameInfo->MaxScore += 3000;
+		std::cout << "점수 올리기 : 3000" << std::endl;
 	}
 	if (INPUT->GetKey(VK_F6) == KeyState::DOWN) {
 		ObjMgr->DeleteObject("Enemy1");
@@ -239,9 +258,18 @@ void Player::Move()
 		ObjMgr->DeleteObject("MiniBoss");
 		ObjMgr->DeleteObject("Boss");
 		GameInfo->EnemyCount = 0;
-		GameInfo->CK_MiniBossSpawn = true;
 	}
 	if (INPUT->GetKey(VK_F7) == KeyState::DOWN) {
+		ObjMgr->DeleteObject("Enemy1");
+		ObjMgr->DeleteObject("Enemy2");
+		ObjMgr->DeleteObject("EliteEnemy1");
+		ObjMgr->DeleteObject("EliteEnemy2");
+		ObjMgr->DeleteObject("MiniBoss");
+		ObjMgr->DeleteObject("Boss");
+		GameInfo->EnemyCount = 0;
+		GameInfo->CK_MiniBossSpawn = true;
+	}
+	if (INPUT->GetKey(VK_F8) == KeyState::DOWN) {
 		ObjMgr->DeleteObject("Enemy1");
 		ObjMgr->DeleteObject("Enemy2");
 		ObjMgr->DeleteObject("EliteEnemy1");
@@ -281,12 +309,12 @@ void Player::GunType()
 			ObjMgr->AddObject(new ShotGun(5), "Bullet");
 			ObjMgr->AddObject(new ShotGun(-5), "Bullet");
 			RpmDelayTime = 0;
-			m_Rpm = 0.25f;
+			m_Rpm = 0.2f;
 
 		}
 	}
 	else if (m_GunType == charge) {
-		if ((INPUT->GetKey('Z') == KeyState::PRESS) && RpmDelayTime > m_Rpm) {
+		if ((INPUT->GetKey('Z') == KeyState::PRESS) && RpmDelayTime > m_Rpm && GameInfo->ChargeCount < 20) {
 			ObjMgr->AddObject(new ChargeBullet, "ChargeBullet");
 
 			//RpmDelayTime = 0;

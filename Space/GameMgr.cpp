@@ -26,6 +26,7 @@ void GameMgr::Init()
 	m_isCreatePlayer = false;
 	AutoCamera = true;
 	CameraStop = false;
+	isPause = false;
 
 	EnemyCount = 0;
 
@@ -104,6 +105,16 @@ void GameMgr::Update()
 			std::cout << "AUTO 카메라 ON" << std::endl;
 		}
 	}
+	if (INPUT->GetKey(VK_F9) == KeyState::DOWN) {
+		if (!isPause) {
+			isPause = true;
+			std::cout << "일시정지 ON" << std::endl;
+		}
+		else {
+			isPause = false;
+			std::cout << "일시정지 OFF" << std::endl;
+		}
+	}
 
 
 	if (m_isCreateUI)
@@ -121,7 +132,7 @@ void GameMgr::Render()
 void GameMgr::AddScore(int maxscore)
 {
 	if (int(m_Score) < maxscore) {
-		m_Score += 10;
+		m_Score += 10 * MaxScore/3000;
 	}
 	else if (int(m_Score) > maxscore) {
 		m_Score = maxscore;

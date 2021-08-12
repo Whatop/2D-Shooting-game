@@ -5,8 +5,6 @@ class Stage1 : public Scene
 	Sprite* m_GameScreen2;
 	Sprite* UpWall;
 	Sprite* DownWall;
-	Sprite* LeftWall;
-	Sprite* RightWall;
 	Sprite* Right_Limit;
 	Sprite* Left_Limit;
 public:

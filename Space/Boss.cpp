@@ -4,6 +4,7 @@
 #include "Missile.h"
 #include "Box.h"
 #include "Missile.h"
+#include "Item.h"
 
 Boss::Boss(Vec2 Pos)
 {
@@ -45,6 +46,7 @@ Boss::Boss(Vec2 Pos)
 	BossTail->SetPosition(BossBody->m_Position.x - 222 - 74, BossBody->m_Position.y - 138 / 2 - 92 / 2);
 	BossBehind->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
 
+	bonusTime = 0.f;
 	LEFT = 0;
 	RIGHT = 1;
 	UP = 2;
@@ -109,85 +111,85 @@ Boss::~Boss()
 
 void Boss::Update(float deltaTime, float Time)
 {
-	int aaa;
-	SpawnMove += dt;
-	if (!(GameInfo->AutoCamera && !GameInfo->CameraStop)) {
-		 aaa = 8;
-	}
-	else {
-		 aaa = 5;
-	}
-	if (SpawnMove < aaa) {
-		m_Position.x -= 100 * dt;
-	}
-	
-	else {
-		if (ones) {
-			m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
-			ones = false;
-		}
-		if (GameInfo->AutoCamera && !GameInfo->CameraStop)
-			m_Position.x += 100 * dt;
-		m_LastMoveTime += dt;
-		MS_DelayTime += dt;
-		DelayTime += dt;
-		isLeft = false;
-		isRight = false;
-		isUp = false;
-		isDown = false;
-		ObjMgr->CollisionCheak(this, "Wall");
-		ObjMgr->CollisionCheak(this, "Bullet");
-	
-
-		if (!GameInfo->m_DebugMode) {
-			m_ColBox->m_Visible = false;
-			ColBox[LEFT]->m_Visible = false;
-			ColBox[RIGHT]->m_Visible = false;
-			ColBox[UP]->m_Visible = false;
-			ColBox[DOWN]->m_Visible = false;
-			ColBoxTop->m_Visible = false;
-			//ColBox[HIT]->m_Visible = false;
+	if (!GameInfo->isPause) {
+		int aaa;
+		SpawnMove += dt;
+		if (!(GameInfo->AutoCamera && !GameInfo->CameraStop)) {
+			aaa = 8;
 		}
 		else {
-			m_ColBox->m_Visible = true;
-			ColBox[LEFT]->m_Visible = true;
-			ColBox[RIGHT]->m_Visible = true;
-			ColBox[UP]->m_Visible = true;
-			ColBox[DOWN]->m_Visible = true;
-			ColBoxTop->m_Visible = true;
-			//ColBox[HIT]->m_Visible = true;
+			aaa = 5;
 		}
-		if (m_LastMoveTime >= m_MoveWaitingTime)
-		{
-			if (isMove)
-				Move();
-		}
-		if (!isDestroyTop) {
-			Fire();
+		if (SpawnMove < aaa) {
+			m_Position.x -= 100 * dt;
 		}
 
-
-		if (MS_DelayTime > 5) {
-			MS_RpmTime += dt;
-			if (MS_RpmTime > 1) {
-				MS_Num++;
-				SpawnMissile();
-				if (MS_Num >= 5) {
-					MS_DelayTime = 0;
-					MS_Num = 0;
-				}
-				MS_RpmTime = 0;
+		else {
+			if (ones) {
+				m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
+				ones = false;
 			}
+			if (GameInfo->AutoCamera && !GameInfo->CameraStop)
+				m_Position.x += 100 * dt;
+			m_LastMoveTime += dt;
+			MS_DelayTime += dt;
+			DelayTime += dt;
+			isLeft = false;
+			isRight = false;
+			isUp = false;
+			isDown = false;
+			ObjMgr->CollisionCheak(this, "Wall");
+			ObjMgr->CollisionCheak(this, "Bullet");
+			ObjMgr->CollisionCheak(this, "ChargeBullet");
+
+
+			if (!GameInfo->m_DebugMode) {
+				m_ColBox->m_Visible = false;
+				ColBox[LEFT]->m_Visible = false;
+				ColBox[RIGHT]->m_Visible = false;
+				ColBox[UP]->m_Visible = false;
+				ColBox[DOWN]->m_Visible = false;
+				ColBoxTop->m_Visible = false;
+				//ColBox[HIT]->m_Visible = false;
+			}
+			else {
+				m_ColBox->m_Visible = true;
+				ColBox[LEFT]->m_Visible = true;
+				ColBox[RIGHT]->m_Visible = true;
+				ColBox[UP]->m_Visible = true;
+				ColBox[DOWN]->m_Visible = true;
+				ColBoxTop->m_Visible = true;
+				//ColBox[HIT]->m_Visible = true;
+			}
+			if (m_LastMoveTime >= m_MoveWaitingTime)
+			{
+				if (isMove)
+					Move();
+			}
+			if (!isDestroyTop) {
+				Fire();
+			}
+
+
+			if (MS_DelayTime > 5) {
+				MS_RpmTime += dt;
+				if (MS_RpmTime > 1) {
+					MS_Num++;
+					SpawnMissile();
+					if (MS_Num >= 5) {
+						MS_DelayTime = 0;
+						MS_Num = 0;
+					}
+					MS_RpmTime = 0;
+				}
+			}
+
 		}
-
-		//if ((rand() % 10) == 0) 아이템코드
-		//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
+		if (!isDestroyBody)
+			Propeller->Update(deltaTime, Time);
+		State();
 	}
-	if (!isDestroyBody)
-		Propeller->Update(deltaTime, Time);
-	State();
 }
-
 void Boss::Render()
 {
 	m_Boss->Render();
@@ -263,6 +265,53 @@ void Boss::OnCollision(Object* obj)
 				obj->SetDestroy(true);
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 				
+			}
+		}
+	}
+	if (obj->m_Tag == "ChargeBullet") {
+		RECT rc;
+		if (!isDestroyTail) {
+			if (IntersectRect(&rc, &BossTail->m_Collision, &obj->m_Collision)) {
+				m_Hp -= obj->m_Atk;
+				TailHp -= obj->m_Atk;
+				float randx = (rand() % (int)BossTail->m_Size.x * m_Scale.x) + BossTail->m_Position.x - BossTail->m_Size.x / 2 * m_Scale.x;
+				float randy = (rand() % (int)BossTail->m_Size.y * m_Scale.y) + BossTail->m_Position.y - BossTail->m_Size.y / 2 * m_Scale.y;
+				obj->SetDestroy(true);
+				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+				GameInfo->ChargeCount--;
+			}
+		}
+		if (!isDestroyTop) {
+			if (IntersectRect(&rc, &ColBoxTop->m_Collision, &obj->m_Collision)) {
+				m_Hp -= obj->m_Atk;
+				TopHp -= obj->m_Atk;
+				float randx = (rand() % (int)ColBoxTop->m_Size.x * m_Scale.x) + ColBoxTop->m_Position.x - ColBoxTop->m_Size.x / 2 * m_Scale.x;
+				float randy = (rand() % (int)ColBoxTop->m_Size.y * m_Scale.y) + ColBoxTop->m_Position.y - ColBoxTop->m_Size.y / 2 * m_Scale.y;
+				obj->SetDestroy(true);
+				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+				GameInfo->ChargeCount--;
+			}
+		}
+		if (isDestroyTop && isDestroyTail && !isDestroyBody) {
+			if (IntersectRect(&rc, &BossBody->m_Collision, &obj->m_Collision)) {
+				m_Hp -= obj->m_Atk;
+				BodyHp -= obj->m_Atk;
+				float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+				float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+				obj->SetDestroy(true);
+				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+				GameInfo->ChargeCount--;
+			}
+		}
+		if (isDestroyBody) {
+			if (IntersectRect(&rc, &BossBody->m_Collision, &obj->m_Collision)) {
+				m_Hp -= obj->m_Atk;
+				float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+				float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+				obj->SetDestroy(true);
+				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+				GameInfo->ChargeCount--;
+
 			}
 		}
 	}
@@ -366,89 +415,94 @@ void Boss::Fire()
 
 void Boss::State()
 {
-	GameInfo->BossHpUpdate(m_MaxHp, m_Hp);
-	BossBody->SetPosition(m_Position.x + 75, m_Position.y + 21);
-	BossTail->SetPosition(BossBody->m_Position.x - 222 - 75, BossBody->m_Position.y - 138 / 2 - 92 / 2);
-	BossBehind->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
+		GameInfo->BossHpUpdate(m_MaxHp, m_Hp);
+		BossBody->SetPosition(m_Position.x + 75, m_Position.y + 21);
+		BossTail->SetPosition(BossBody->m_Position.x - 222 - 75, BossBody->m_Position.y - 138 / 2 - 92 / 2);
+		BossBehind->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
 
-	DestroyBody->SetPosition(m_Position.x + 74 - 9, m_Position.y + 20 - 1);
-	DestroyTail->SetPosition(BossBody->m_Position.x - 222 - 74, BossBody->m_Position.y - 138 / 2 - 92 / 2);
+		DestroyBody->SetPosition(m_Position.x + 74 - 9, m_Position.y + 20 - 1);
+		DestroyTail->SetPosition(BossBody->m_Position.x - 222 - 74, BossBody->m_Position.y - 138 / 2 - 92 / 2);
 
-	ColBox[LEFT]->SetPosition(m_Position.x - m_Size.x / 2 * m_Scale.x, m_Position.y);
-	ColBox[RIGHT]->SetPosition(m_Position.x + m_Size.x / 2 * m_Scale.x, m_Position.y);
-	ColBox[UP]->SetPosition(m_Position.x, m_Position.y - m_Size.y / 2 * m_Scale.y);
-	ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2 * m_Scale.y);
-	ColBoxTop->SetPosition(BossBody->m_Position.x + 120, BossBody->m_Position.y + 138 / 2 - 26);
+		ColBox[LEFT]->SetPosition(m_Position.x - m_Size.x / 2 * m_Scale.x, m_Position.y);
+		ColBox[RIGHT]->SetPosition(m_Position.x + m_Size.x / 2 * m_Scale.x, m_Position.y);
+		ColBox[UP]->SetPosition(m_Position.x, m_Position.y - m_Size.y / 2 * m_Scale.y);
+		ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2 * m_Scale.y);
+		ColBoxTop->SetPosition(BossBody->m_Position.x + 120, BossBody->m_Position.y + 138 / 2 - 26);
 
-	if (TailHp <= 0) {
-		m_Speed = m_Speed / 1.5f;
-		m_Hp -= 300.f;
-		isDestroyTail = true;
-		DestroyTail->m_Visible = true;
-		TailHp = 99999.f;
-		for (int i = 0; i < 10; i++) {
-			float randx = (rand() % (int)BossTail->m_Size.x * m_Scale.x) + BossTail->m_Position.x - BossTail->m_Size.x / 2 * m_Scale.x;
-			float randy = (rand() % (int)BossTail->m_Size.y * m_Scale.y) + BossTail->m_Position.y - BossTail->m_Size.y / 2 * m_Scale.y;
-			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-		}
-		isMove = false;
-		GameInfo->MaxScore += 500;
-	}
-
-	if (TopHp <= 0) {
-		m_Hp -= 300.f;
-		isDestroyTop= true;
-		TopHp = 99999.f;
-		for (int i = 0; i < 10; i++) {
-			float randx = (rand() % (int)ColBoxTop->m_Size.x * m_Scale.x) + ColBoxTop->m_Position.x - ColBoxTop->m_Size.x / 2 * m_Scale.x;
-			float randy = (rand() % (int)ColBoxTop->m_Size.y * m_Scale.y) + ColBoxTop->m_Position.y - ColBoxTop->m_Size.y / 2 * m_Scale.y;
-			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-		}
-		PilotAttack->m_CurrentFrame = 4;
-		GameInfo->MaxScore += 500;
-	}
-	if (isDestroyTop && isDestroyTail && !isDestroyBody) {
-		if (BodyHp <= 0) {
-			m_Hp -= 500.f;
+		if (TailHp <= 0) {
+			m_Speed = m_Speed / 1.5f;
+			m_Hp -= 300.f;
+			isDestroyTail = true;
+			DestroyTail->m_Visible = true;
+			TailHp = 99999.f;
 			for (int i = 0; i < 10; i++) {
-				float randx = (rand() % (int)BossBody->m_Size.x*m_Scale.x) + BossBody->m_Position.x - BossBody->m_Size.x / 2 * m_Scale.x;
-				float randy = (rand() % (int)BossBody->m_Size.y*m_Scale.y) + BossBody->m_Position.y - BossBody->m_Size.y / 2 * m_Scale.y;
+				float randx = (rand() % (int)BossTail->m_Size.x * m_Scale.x) + BossTail->m_Position.x - BossTail->m_Size.x / 2 * m_Scale.x;
+				float randy = (rand() % (int)BossTail->m_Size.y * m_Scale.y) + BossTail->m_Position.y - BossTail->m_Size.y / 2 * m_Scale.y;
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 			}
-			DestroyBody->m_Visible = true;
-			isDestroyBody = true;
+			isMove = false;
+			GameInfo->MaxScore += 500;
 		}
-	}
-	if (m_Hp < 0) {
-		GameInfo->CameraStop = true;
-		if (!DieScene) {
-			Camera::GetInst()->isVibration = true;
-			Camera::GetInst()->ShakeTime = 0;
-			DieScene = true;
-			GameInfo->MaxScore += 1500;
-			GameInfo->isBossSpawn = true;
-		}
-		DestroyTime += dt;
-		EffectTime += dt;
-		if (!isDown) {
-			m_Position.y += 75.f * DestroyTime * dt;
-			m_Position.x += (sin(DestroyTime * 10) * powf(0.5f, DestroyTime) * 5);
-		}
-		if (EffectTime > 0.1f) {
-			float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
-			float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
-			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-			EffectTime = 0;
-		}
-		if (isDown && !isBoom) {
-			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x-100, m_Position.y - 50 ),2,2), "Effect");
-			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x+100, m_Position.y - 50),2,2), "Effect");
-			isBoom = true;
-			GameInfo->EnemyCount--;
 
+		if (TopHp <= 0) {
+			m_Hp -= 300.f;
+			isDestroyTop = true;
+			TopHp = 99999.f;
+			for (int i = 0; i < 10; i++) {
+				float randx = (rand() % (int)ColBoxTop->m_Size.x * m_Scale.x) + ColBoxTop->m_Position.x - ColBoxTop->m_Size.x / 2 * m_Scale.x;
+				float randy = (rand() % (int)ColBoxTop->m_Size.y * m_Scale.y) + ColBoxTop->m_Position.y - ColBoxTop->m_Size.y / 2 * m_Scale.y;
+				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+			}
+			PilotAttack->m_CurrentFrame = 4;
+			GameInfo->MaxScore += 500;
+		}
+		if (isDestroyTop && isDestroyTail && !isDestroyBody) {
+			if (BodyHp <= 0) {
+				m_Hp -= 500.f;
+				for (int i = 0; i < 10; i++) {
+					float randx = (rand() % (int)BossBody->m_Size.x * m_Scale.x) + BossBody->m_Position.x - BossBody->m_Size.x / 2 * m_Scale.x;
+					float randy = (rand() % (int)BossBody->m_Size.y * m_Scale.y) + BossBody->m_Position.y - BossBody->m_Size.y / 2 * m_Scale.y;
+					ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+				}
+				DestroyBody->m_Visible = true;
+				isDestroyBody = true;
+			}
+		}
+		if (m_Hp < 0) {
+			GameInfo->CameraStop = true;
+			if (!DieScene) {
+				Camera::GetInst()->isVibration = true;
+				Camera::GetInst()->ShakeTimeY = 0;
+				DieScene = true;
+				GameInfo->MaxScore += 1500;
+				GameInfo->isBossSpawn = true;
+			}
+			DestroyTime += dt;
+			EffectTime += dt;
+			if (!isDown) {
+				m_Position.y += 75.f * DestroyTime * dt;
+				m_Position.x += (sin(DestroyTime * 10) * powf(0.5f, DestroyTime) * 5);
+			}
+			if (EffectTime > 0.1f) {
+				float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+				float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+				EffectTime = 0;
+			}
+			if (isDown && !isBoom) {
+				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x - 100, m_Position.y - 50), 2, 2), "Effect");
+				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x + 100, m_Position.y - 50), 2, 2), "Effect");
+				isBoom = true;
+				GameInfo->EnemyCount--;
+
+			}
+			if (bonusTime < 3) {
+				bonusTime += dt;
+				ObjMgr->AddObject(new Item(m_Position), "Heal");
+			}
 		}
 	}
-}
+
 
 void Boss::SpawnObstacle()
 {

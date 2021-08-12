@@ -2,8 +2,12 @@
 class Item : public Object
 {
 	Sprite* m_Item;
+	Sprite* m_ColBox;
 	Vec2 m_Dire;
 	float m_Speed;
+	float DestroyTime;
+	bool Over;
+	bool Under;
 public:
 	Item(Vec2 Pos);
 	~Item();

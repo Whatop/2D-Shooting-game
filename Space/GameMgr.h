@@ -31,10 +31,19 @@ public:
 	bool isMiniBossSpawn;
 	bool isOneBoss;
 	bool isOneMiniBoss;
+	
+	bool isPause;
 
 	int MaxScore;
+
 	int EnemyCount;
+
 	float m_Score;
+	// float EnemyScore,TtemScore, Nohitbonus 추가해야될것
+
+	float Player_Coefficient; // 플레이어 공격력 계수
+
+
 	float SpawnDelay;
 	float AddDelay;
 	
@@ -42,6 +51,8 @@ public:
 
 	bool CK_BossSpawn;
 	bool CK_MiniBossSpawn;
+
+	bool isNoHit; //노히트 판정체크
 
 	RankingPlayer* m_Rank;
 public:

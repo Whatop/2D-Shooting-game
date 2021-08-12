@@ -20,8 +20,9 @@ void Camera::Init()
 	m_MinMapSize = Vec2(960, 0); //Stage1
 	m_MaxMapSize = Vec2(300000, 0); //Stage1
 	isVibration = false;
-	ShakeTime = 0;
-
+	ShakeTimeX = 4;
+	ShakeTimeY = 4;
+	XShakePosition = 0.f;
 
 }
 
@@ -50,10 +51,8 @@ void Camera::Side_Scroll(Object* obj, float fixed_value,bool Auto)
 				
 			}
 			else {	
-				if (m_MaxMapSize.x >= m_Position.x)
+				if (m_MaxMapSize.x >= m_Position.x) {
 					m_Position.x += 100 * dt;
-				else {
-					GameInfo->CameraStop = true;
 				}
 			}
 
@@ -68,11 +67,17 @@ void Camera::Update(float deltaTime, float time)
 	if (m_Rotation >= 360)
 		m_Rotation = 0;
 
-	ShakeTime += dt;
-	if (isVibration && ShakeTime < 4.f) {
-		m_Position.y += (sin(2.0f * 3.14159f * ShakeTime * 4) * 1.3f +
-			sin(2.0f * 3.14159f * ShakeTime * 8 + 0.2f) * 1.2f +
-			sin(2.0f * 3.14159f * ShakeTime * 16 + 0.5f) * 1.1f) * (5 - ShakeTime) / 5;
+	ShakeTimeX += dt;
+	ShakeTimeY += dt;
+	if (isVibration && ShakeTimeY < 4.f) {
+		m_Position.y += (sin(2.0f * 3.14159f * ShakeTimeY * 4) * 1.3f +
+			sin(2.0f * 3.14159f * ShakeTimeY * 8 + 0.2f) * 1.2f +
+			sin(2.0f * 3.14159f * ShakeTimeY * 16 + 0.5f) * 1.1f) * (5 - ShakeTimeY) / 5;
+	}
+	if (isVibration && ShakeTimeX < 0.5f) {
+		m_Position.x += (sin(2.0f * 3.14159f * ShakeTimeX * 4) * 1.3f +
+			sin(2.0f * 3.14159f * ShakeTimeX * 8 + 0.2f) * 1.2f +
+			sin(2.0f * 3.14159f * ShakeTimeX * 16 + 0.5f) * 1.1f) * (5 - ShakeTimeX) / 5;
 	}
 }
 

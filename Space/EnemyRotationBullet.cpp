@@ -17,8 +17,10 @@ EnemyRotationBullet::~EnemyRotationBullet()
 
 void EnemyRotationBullet::Update(float deltaTime, float Time)
 {
-	Move();
-	DelayDestroy(this, 4);
+	if (!GameInfo->isPause) {
+		Move();
+		DelayDestroy(this, 4);
+	}
 }
 
 void EnemyRotationBullet::Render()

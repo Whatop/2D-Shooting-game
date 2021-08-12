@@ -20,13 +20,15 @@ Boomerang::~Boomerang()
 
 void Boomerang::Update(float deltaTime, float Time)
 {
-	DelayTime += dt;
-	DestroyTime += dt;
-	if (DestroyTime > 10.5f) {
-		ObjMgr->RemoveObject(this);
-	}
+	if (!GameInfo->isPause) {
+		DelayTime += dt;
+		DestroyTime += dt;
+		if (DestroyTime > 10.5f) {
+			ObjMgr->RemoveObject(this);
+		}
 
-	Move();
+		Move();
+	}
 }
 
 void Boomerang::Render()

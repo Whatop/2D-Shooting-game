@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "EliteEnemy2.h"
 #include "EnemyRotationBullet.h"
+#include "Item.h"
 
 EliteEnemy2::EliteEnemy2(Vec2 Pos)
 {
@@ -29,30 +30,33 @@ EliteEnemy2::~EliteEnemy2()
 
 void EliteEnemy2::Update(float deltaTime, float Time)
 {
-	SpawnMove += dt;
-	if (SpawnMove < 2) {
-		m_Position.x -= (300 + rand() % 100) * dt;
-	}
-	else {
-		if (ones) {
-			m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
-			ones = false;
+	if (!GameInfo->isPause) {
+		SpawnMove += dt;
+		if (SpawnMove < 2) {
+			m_Position.x -= (300 + rand() % 100) * dt;
 		}
-		ObjMgr->CollisionCheak(this, "Bullet");
-		m_LastMoveTime += dt;
-		if (m_LastMoveTime >= 4)
-			Move();
-		if (m_Hp <= 0)
-		{
-			//if ((rand() % 50) == 0)
-			//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
-			ObjMgr->RemoveObject(this);
-			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
-			GameInfo->EnemyCount--;
-			GameInfo->MaxScore += 300;
-		}
-		if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
-			m_Position.x += 100 * dt;
+		else {
+			if (ones) {
+				m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
+				ones = false;
+			}
+			ObjMgr->CollisionCheak(this, "Bullet");
+			ObjMgr->CollisionCheak(this, "ChargeBullet");
+			m_LastMoveTime += dt;
+			if (m_LastMoveTime >= 4)
+				Move();
+			if (m_Hp <= 0)
+			{
+				if ((rand() % 10) == 0)
+					ObjMgr->AddObject(new Item(m_Position), "Heal");
+				ObjMgr->RemoveObject(this);
+				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+				GameInfo->EnemyCount--;
+				GameInfo->MaxScore += 300;
+			}
+			if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
+				m_Position.x += 100 * dt;
+			}
 		}
 	}
 }
@@ -71,6 +75,14 @@ void EliteEnemy2::OnCollision(Object* obj)
 		obj->SetDestroy(true);
 		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 
+	}
+	if (obj->m_Tag == "ChargeBullet") {
+		m_Hp -= obj->m_Atk;
+		float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+		float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+		obj->SetDestroy(true);
+		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+		GameInfo->ChargeCount--;
 	}
 }
 

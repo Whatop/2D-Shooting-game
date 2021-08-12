@@ -2,6 +2,7 @@
 #include "Enemy3.h"
 #include "EnemyDirBullet.h"
 #include "EnemyRotationBullet.h"
+#include "Item.h"
 
 Enemy3::Enemy3(Vec2 Pos)
 {
@@ -38,35 +39,37 @@ Enemy3::~Enemy3()
 
 void Enemy3::Update(float deltaTime, float Time)
 {
-	SpawnMove += dt;
-	if (SpawnMove < 2) {
-		m_Position.x -= (300 + rand() % 100) * dt;
+	if (!GameInfo->isPause) {
+		SpawnMove += dt;
+		if (SpawnMove < 2) {
+			m_Position.x -= (300 + rand() % 100) * dt;
+		}
+		else {
+			if (ones) {
+				m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
+				ones = false;
+			}
+			ObjMgr->CollisionCheak(this, "Bullet");
+			ObjMgr->CollisionCheak(this, "ChargeBullet");
+			m_LastMoveTime += dt;
+			if (m_LastMoveTime >= 4 || isBoomMode)
+				Move();
+			if (m_Hp <= 0)
+			{
+				if ((rand() % 20) == 0)
+					ObjMgr->AddObject(new Item(m_Position), "Heal");
+				ObjMgr->RemoveObject(this);
+				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+				GameInfo->EnemyCount--;
+				GameInfo->MaxScore += 100;
+			}
+			if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
+				m_Position.x += 100 * dt;
+			}
+		}
+		if (Changecount > 3)
+			isBoomMode = true;
 	}
-	else {
-		if (ones) {
-			m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
-			ones = false;
-		}
-		ObjMgr->CollisionCheak(this, "Bullet");
-		ObjMgr->CollisionCheak(this, "ChargeBullet");
-		m_LastMoveTime += dt;
-		if (m_LastMoveTime >= 4 || isBoomMode)
-			Move();
-		if (m_Hp <= 0)
-		{
-			//if ((rand() % 50) == 0)
-			//	ObjMgr->AddObject(new Item(m_Position), "ITEM");
-			ObjMgr->RemoveObject(this);
-			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
-			GameInfo->EnemyCount--;
-			GameInfo->MaxScore += 100;
-		}
-		if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
-			m_Position.x += 100 * dt;
-		}
-	}
-	if (Changecount > 3)
-		isBoomMode = true;
 }
 
 void Enemy3::Render()

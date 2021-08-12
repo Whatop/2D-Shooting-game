@@ -20,13 +20,15 @@ Bullet::~Bullet()
 
 void Bullet::Update(float deltaTime, float Time)
 {
-	DestroyTime += dt;
-	if (DelayTime < 5)
-	DelayTime += dt*1.1f;
-	Move();
+	if (!GameInfo->isPause) {
+		DestroyTime += dt;
+		if (DelayTime < 5)
+			DelayTime += dt * 1.1f;
+		Move();
 
-	if (DestroyTime > 6)
-		ObjMgr->RemoveObject(this);
+		if (DestroyTime > 6)
+			ObjMgr->RemoveObject(this);
+	}
 }
 
 void Bullet::Render()

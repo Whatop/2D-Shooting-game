@@ -22,7 +22,7 @@ Missile::Missile(Vec2 Pos)
 	m_Speed = 400.f;
 	SetScale(2.f, 2.f);
 	DestroyTime = 0.f;
-	m_Atk = 10.f; 
+	m_Atk = 20.f; 
 }
 
 Missile::~Missile()
@@ -31,12 +31,14 @@ Missile::~Missile()
 
 void Missile::Update(float deltaTime, float Time)
 {
-	DestroyTime += dt;
-	m_Missile->Update(deltaTime, Time);
-	Move();
-	if (DestroyTime > 22.f) {
-		ObjMgr->RemoveObject(this);
-		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+	if (!GameInfo->isPause) {
+		DestroyTime += dt;
+		m_Missile->Update(deltaTime, Time);
+		Move();
+		if (DestroyTime > 22.f) {
+			ObjMgr->RemoveObject(this);
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+		}
 	}
 }
 

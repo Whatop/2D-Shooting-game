@@ -25,9 +25,6 @@
     <Filter Include="Game\Object\Scene">
       <UniqueIdentifier>{6a0b488c-024d-464b-b7e5-e43bc432ea1d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Object\Mgr">
-      <UniqueIdentifier>{19cfe933-c7c6-47a8-8100-a474cff097c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Object\Enemy">
       <UniqueIdentifier>{e1e3dc5a-ec12-479e-856b-871e77a994aa}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,9 @@
     </Filter>
     <Filter Include="Game\Object\Player\Bullet">
       <UniqueIdentifier>{c6bbf602-9836-4ee0-8879-1d1c2e7bb2f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Mgr">
+      <UniqueIdentifier>{19cfe933-c7c6-47a8-8100-a474cff097c8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,10 +100,10 @@
       <Filter>Game\Object\Scene</Filter>
     </ClCompile>
     <ClCompile Include="GameMgr.cpp">
-      <Filter>Game\Object\Mgr</Filter>
+      <Filter>Game\Mgr</Filter>
     </ClCompile>
     <ClCompile Include="UI.cpp">
-      <Filter>Game\Object\Mgr</Filter>
+      <Filter>Game\Mgr</Filter>
     </ClCompile>
     <ClCompile Include="Boss.cpp">
       <Filter>Game\Object\Enemy</Filter>
@@ -174,7 +174,9 @@
     <ClCompile Include="InduceBullet.cpp">
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Laser.cpp" />
+    <ClCompile Include="Laser.cpp">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -235,10 +237,10 @@
       <Filter>Game\Object\Scene</Filter>
     </ClInclude>
     <ClInclude Include="GameMgr.h">
-      <Filter>Game\Object\Mgr</Filter>
+      <Filter>Game\Mgr</Filter>
     </ClInclude>
     <ClInclude Include="UI.h">
-      <Filter>Game\Object\Mgr</Filter>
+      <Filter>Game\Mgr</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>Game\Object\Enemy</Filter>
@@ -309,6 +311,8 @@
     <ClInclude Include="InduceBullet.h">
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="Laser.h" />
+    <ClInclude Include="Laser.h">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

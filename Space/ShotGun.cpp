@@ -8,7 +8,7 @@ ShotGun::ShotGun(float r)
 	Spawnpoint = Vec2(GetPlayer->m_Position.x + (GetPlayer->m_Size.x * m_Scale.x) / 2, GetPlayer->m_Position.y - 2);
 	SetPosition(Spawnpoint);
 
-	m_Speed = 850.f;
+	m_Speed = 1250.f;
 	DelayTime = 0.f;
 	DestroyTime = 0.f;
 	m_Rotation = D3DXToRadian(r);
@@ -21,10 +21,11 @@ ShotGun::~ShotGun()
 
 void ShotGun::Update(float deltaTime, float Time)
 {
-	DelayDestroy(this, 1.f);
-	Move();
+	if (!GameInfo->isPause) {
+		DelayDestroy(this, 0.6f);
+		Move();
+	}
 }
-
 void ShotGun::Render()
 {
 	m_ShotGun->Render();

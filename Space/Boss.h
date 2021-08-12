@@ -20,6 +20,8 @@ class Boss : public Object
 	int LEFT, RIGHT, UP, DOWN, HIT;
 	bool isLeft, isRight, isUp, isDown, isHit;
 
+	float bonusTime;
+
 	Vec2 Dire;
 	Vec2 m_RandomPosition;
 	float m_MoveWaitingTime;

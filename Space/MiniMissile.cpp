@@ -17,7 +17,7 @@ MiniMissile::MiniMissile(Vec2 Pos)
 	turnRadian = m_Rotation;
 	vrad = 0.009f;
 	Delay = 0.f;
-	isHoming = false;
+	isHoming = true;
 	HomingTime = 1.f;
 	impellent = 1.f;
 	m_Speed = 400.f;
@@ -25,7 +25,7 @@ MiniMissile::MiniMissile(Vec2 Pos)
 	m_ColBox->SetScale(0.5f, 0.5f);
 	m_ColBox->m_Visible = false;
 	DestroyTime = 0.f;
-	m_Atk = 10.f;
+	m_Atk = 15.f;
 }
 MiniMissile::~MiniMissile()
 {
@@ -33,15 +33,16 @@ MiniMissile::~MiniMissile()
 
 void MiniMissile::Update(float deltaTime, float Time)
 {
-	DestroyTime += dt;
-	m_Missile->Update(deltaTime, Time);
-	Move();
-	m_ColBox->SetPosition(m_Position);
-	if (DestroyTime > 2.5f) {
-		ObjMgr->RemoveObject(this);
-		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+	if (!GameInfo->isPause) {
+		DestroyTime += dt;
+		m_Missile->Update(deltaTime, Time);
+		Move();
+		m_ColBox->SetPosition(m_Position);
+		if (DestroyTime > 2.5f) {
+			ObjMgr->RemoveObject(this);
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+		}
 	}
-
 }
 
 void MiniMissile::Render()

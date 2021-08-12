@@ -11,7 +11,8 @@ public:
 	~Camera();
 
 	bool isVibration;
-	float ShakeTime;
+	float ShakeTimeX;
+	float ShakeTimeY;
 
 	float m_Rotation;
 	Vec2 m_Position;
@@ -19,6 +20,7 @@ public:
 	Vec2 m_MinMapSize;
 	Vec2 m_MaxMapSize;
 
+	float XShakePosition;
 	Matrix GetWorld()
 	{
 		return mWorld;
