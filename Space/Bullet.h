@@ -1,6 +1,7 @@
 #pragma once
 class Bullet : public Object
 {
+	Animation* m_Bolt;
 	Sprite* m_Bullet;
 	Vec2 Dire;
 	Vec2 Spawnpoint;

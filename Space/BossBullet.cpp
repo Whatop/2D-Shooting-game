@@ -34,15 +34,14 @@ void BossBullet::Update(float deltaTime, float Time)
 			ObjMgr->RemoveObject(this);
 			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, m_Position, 1 * DestroyTime, 1 * DestroyTime), "Effect");
 		}
-		if (m_Position.y > 600)
+		if (m_Position.y > 600 - m_Size.y / 2)
 			m_Rotation = m_Rotation * -1;
-		if (m_Position.y < 40)
+		if (m_Position.y < 0 + m_Size.y / 2)
 			m_Rotation = m_Rotation * -1;
-		if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - 100)
+		if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - m_Size.x / 2)
 			m_Rotation = m_Rotation * -1.5f;
-		if (m_Position.x < Camera::GetInst()->m_Position.x + 40)
+		if (m_Position.x < Camera::GetInst()->m_Position.x + m_Size.x / 2)
 			m_Rotation = m_Rotation * -0.5f;
-
 		m_Atk = 5.f * m_Scale.x;
 		m_BossBullet->Update(deltaTime, Time);
 	}

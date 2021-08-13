@@ -1,8 +1,7 @@
 #pragma once
 class Stage1 : public Scene
 {
-	Sprite* m_GameScreen1;
-	Sprite* m_GameScreen2;
+	Sprite* m_BackGround[6][4];
 	Sprite* UpWall;
 	Sprite* DownWall;
 	Sprite* Right_Limit;
@@ -16,5 +15,8 @@ public:
 
 	void Update(float deltaTime, float time);
 	void Render();
+
+	void BGInit();
+	void BGMove();
 };
 

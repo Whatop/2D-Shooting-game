@@ -24,15 +24,14 @@ void Item::Update(float deltaTime, float Time)
 	ObjMgr->CollisionCheak(this, "Player");
 	DestroyTime += dt;
 	Move();
-	if (m_Position.y > 600)
+	if (m_Position.y > 600 - m_Size.y/2)
 		m_Rotation = m_Rotation * -1;
-	if (m_Position.y < 40)
+	if (m_Position.y < 0 + m_Size.y/2)
 		m_Rotation = m_Rotation * -1;
-	if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - 100)
+	if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - m_Size.x/2)
 		m_Rotation = m_Rotation * -1.5f;
-	if (m_Position.x < Camera::GetInst()->m_Position.x + 40)
+	if (m_Position.x < Camera::GetInst()->m_Position.x + m_Size.x/2)
 		m_Rotation = m_Rotation * -0.5f;
-
 	if (DestroyTime > 15.f) {
 		ObjMgr->RemoveObject(this);
 	}

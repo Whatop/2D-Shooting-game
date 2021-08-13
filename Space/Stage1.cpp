@@ -11,24 +11,20 @@ Stage1::~Stage1()
 
 void Stage1::Init()
 {
-	// 임시
 	GameInfo->m_Score = 0;
 	GameInfo->MaxScore = 0;
-	m_GameScreen1 = Sprite::Create(L"Painting/GameScreen/Stage1.png");
-	m_GameScreen1->SetPosition(1920 / 2, 650 / 2);
-	m_GameScreen2 = Sprite::Create(L"Painting/GameScreen/Stage1.png");
-	m_GameScreen2->SetPosition(m_GameScreen1->m_Position.x + m_GameScreen1->m_Size.x, m_GameScreen1->m_Position.y);
-	//가로 2188 세로 650 
-	//  268 
+
+	BGInit();
+
 	Camera::GetInst()->m_Position = Vec2(0, -180);
 
 	UpWall = Sprite::Create(L"Painting/Wall.png");
-	UpWall->SetPosition(5000, -50);
-	UpWall->SetScale(100, 1);
+	UpWall->SetPosition(1920 / 2, -50);
+	UpWall->SetScale(19.2f, 1);
 
 	DownWall = Sprite::Create(L"Painting/Wall.png");
-	DownWall->SetPosition(5000, 700);
-	DownWall->SetScale(100, 1);
+	DownWall->SetPosition(1920/2, 650);
+	DownWall->SetScale(19.2f, 1);
 
 
 	Left_Limit = Sprite::Create(L"Painting/Wall.png");
@@ -47,8 +43,8 @@ void Stage1::Init()
 	UpWall->m_Visible = false;
 	DownWall->m_Visible = false;
 
-	GameMgr::GetInst()->CreatePlayer();
 	std::cout << "STAGE 1 이동" << std::endl;
+	GameMgr::GetInst()->CreatePlayer();
 }
 
 void Stage1::Release()
@@ -76,22 +72,61 @@ void Stage1::Update(float deltaTime, float time)
 			DownWall->m_Position.x += 100 * dt;
 			Left_Limit->m_Position.x += 100 * dt;
 			Right_Limit->m_Position.x += 100 * dt;
+			for (int i = 0; i < 4; i++) {
+				m_BackGround[1][i]->m_Position.x -= 10 * dt;
+				m_BackGround[2][i]->m_Position.x -= 25 * dt;
+				m_BackGround[3][i]->m_Position.x -= 50 * dt;
+				m_BackGround[4][i]->m_Position.x -= 75 * dt;
+				m_BackGround[5][i]->m_Position.x -= 100 * dt;
+			}
 		}
 		GameInfo->SpawnEnemy();
 
 
-		if (m_GameScreen1->m_Position.x + 1920 / 2 + 268 / 2 <= Camera::GetInst()->m_Position.x) {
-			m_GameScreen1->m_Position.x += m_GameScreen1->m_Size.x * 2;
-		}
-		if (m_GameScreen2->m_Position.x + 1920 / 2 + 268 / 2 <= Camera::GetInst()->m_Position.x) {
-			m_GameScreen2->m_Position.x += m_GameScreen2->m_Size.x * 2;
-		}
-
+		
+		BGMove();
 	}
 }
 
 void Stage1::Render()
 {
-	m_GameScreen1->Render();
-	m_GameScreen2->Render();
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 4; j++) {
+			m_BackGround[i][j]->Render();
+		}
+	}
+}
+
+void Stage1::BGInit()
+{
+	// j = 파일 123456 
+	// i = 그거
+	int a = 1;
+	for (int i = 0; i < 6; i++) {
+			m_BackGround[i][0] = Sprite::Create(L"Painting/GameScreen/" + std::to_wstring(a) + L".png");
+			m_BackGround[i][0]->SetPosition(1200 / 2, 600/ 2);
+			m_BackGround[i][1] = Sprite::Create(L"Painting/GameScreen/" + std::to_wstring(a) + L".png");
+			m_BackGround[i][1]->SetPosition(m_BackGround[i][0]->m_Position.x + m_BackGround[i][0]->m_Size.x, m_BackGround[i][0]->m_Position.y);
+			m_BackGround[i][2] = Sprite::Create(L"Painting/GameScreen/" + std::to_wstring(a) + L".png");
+			m_BackGround[i][2]->SetPosition(m_BackGround[i][1]->m_Position.x + m_BackGround[i][1]->m_Size.x, m_BackGround[i][1]->m_Position.y);
+			m_BackGround[i][3] = Sprite::Create(L"Painting/GameScreen/" + std::to_wstring(a) + L".png");
+			m_BackGround[i][3]->SetPosition(m_BackGround[i][2]->m_Position.x + m_BackGround[i][2]->m_Size.x, m_BackGround[i][2]->m_Position.y);
+			a++;
+	}
+}
+
+void Stage1::BGMove()
+{
+
+	for (int i = 0; i < 6; i++) {
+		if (m_BackGround[i][0]->m_Position.x + 2400 - 280 <= Camera::GetInst()->m_Position.x) {
+			m_BackGround[i][0]->m_Position.x += m_BackGround[0][0]->m_Size.x * 4;
+			m_BackGround[i][1]->m_Position.x += m_BackGround[0][1]->m_Size.x * 4;
+		}
+		if (m_BackGround[i][2]->m_Position.x + 2400 - 280 <= Camera::GetInst()->m_Position.x) {
+			m_BackGround[i][2]->m_Position.x += m_BackGround[0][2]->m_Size.x * 4;
+			m_BackGround[i][3]->m_Position.x += m_BackGround[0][3]->m_Size.x * 4;
+		}
+	}
+
 }
