@@ -8,6 +8,7 @@ class Item : public Object
 	float DestroyTime;
 	bool Over;
 	bool Under;
+	int ItemCode;
 public:
 	Item(Vec2 Pos);
 	~Item();

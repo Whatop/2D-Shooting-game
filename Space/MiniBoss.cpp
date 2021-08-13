@@ -27,6 +27,7 @@ MiniBoss::MiniBoss(Vec2 Pos)
 	GameInfo->isMiniBossSpawn = true;
 	std::cout << "미니보스 생성" << std::endl;
 	GameInfo->EnemyCount++;
+	std::cout << m_Hp << std::endl;
 }
 
 MiniBoss::~MiniBoss()
@@ -92,6 +93,9 @@ void MiniBoss::OnCollision(Object* obj)
 		obj->SetDestroy(true);
 		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 		GameInfo->ChargeCount--;
+		std::cout << m_Hp << std::endl;
+		// 차지샷 풀 1300-1139.98 161.02
+		// 차지샷 풀 899.325
 	}
 }
 

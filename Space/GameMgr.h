@@ -55,6 +55,7 @@ public:
 	bool isNoHit; //노히트 판정체크
 
 	RankingPlayer* m_Rank;
+
 public:
 	void Init();
 	void Release();
@@ -86,5 +87,6 @@ public:
 	void RankInit();
 	void SortRanking();
 	
+	void SpawnItem(Vec2 Pos);
 };
 

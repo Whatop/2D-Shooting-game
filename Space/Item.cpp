@@ -3,8 +3,11 @@
 
 Item::Item(Vec2 Pos)
 {
-	m_Item = Sprite::Create(L"Painting/Item/Heal.png");
-	m_ColBox = Sprite::Create(L"Painting/Item/Heal.png");
+	ItemCode = rand() % 3 + 0;
+	m_Item = Sprite::Create(L"Painting/Item/"+std::to_wstring(ItemCode)+L".png");
+	
+	
+	m_ColBox = Sprite::Create(L"Painting/Item/Item.png");
 	m_ColBox->SetParent(this);
 	m_ColBox->m_Visible = false;
 	SetPosition(Pos);
@@ -13,6 +16,7 @@ Item::Item(Vec2 Pos)
 	Under = false;
 	Over = true;
 	m_Layer = 2;
+	
 }
 
 Item::~Item()
@@ -21,6 +25,15 @@ Item::~Item()
 
 void Item::Update(float deltaTime, float Time)
 {
+	if (ItemCode == 0) {
+		m_Tag = "Heal";
+	}
+	else if (ItemCode == 1) {
+		m_Tag = "AtkUp";
+	}
+	else if (ItemCode == 2) {
+		m_Tag = "None";
+	}
 	ObjMgr->CollisionCheak(this, "Player");
 	DestroyTime += dt;
 	Move();

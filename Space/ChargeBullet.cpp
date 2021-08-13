@@ -35,7 +35,7 @@ void ChargeBullet::Update(float deltaTime, float Time)
 
 		}
 		SetScale(1.f * DelayTime, 1.f * DelayTime);
-		m_Atk = 2.f * DelayTime;
+		m_Atk = 2.f * DelayTime * GameInfo->Player_Coefficient;
 
 	}
 }

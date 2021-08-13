@@ -23,6 +23,7 @@ public:
 
 	int m_Layer;
 	std::string m_Tag;
+
 public:
 	Object();
 	~Object();

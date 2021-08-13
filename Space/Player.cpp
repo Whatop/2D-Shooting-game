@@ -64,7 +64,9 @@ void Player::Init()
 	m_Layer = 2;
 	shot = 1, shotgun = 2, charge = 3, induce = 4, boomerang = 5;
 	m_GunType = shot;
-
+	BuffTime = 0.f;
+	isBuff = false;
+	isBuffOnes = true;
 }
 
 void Player::Update(float deltaTime, float Time)
@@ -87,7 +89,9 @@ void Player::Update(float deltaTime, float Time)
 		Move();
 		CollisionBox();
 		GameInfo->PlayerUpdate(this);
+			Buff();
 
+			
 		GunType();
 		if (!GameInfo->m_DebugMode) {
 			ColBox[LEFT]->m_Visible = false;
@@ -202,7 +206,7 @@ void Player::OnCollision(Object* obj)
 	}
 	if (obj->m_Tag == "Heal") {
 		if (m_Hp < m_MaxHp) {
-			if (m_Hp + 20 > m_MaxHp)
+			if (m_Hp + 20 < m_MaxHp)
 				m_Hp += 20;
 			else
 				m_Hp = m_MaxHp;
@@ -210,6 +214,15 @@ void Player::OnCollision(Object* obj)
 		else {
 			GameInfo->MaxScore += 500;
 		}
+		obj->SetDestroy(true);
+	}
+	if (obj->m_Tag == "AtkUp") {
+		isBuff = true;
+		BuffTime = 0.f;
+		obj->SetDestroy(true);
+	}
+	if (obj->m_Tag == "None") {
+		m_Hp -= 20;
 		obj->SetDestroy(true);
 	}
 
@@ -347,5 +360,22 @@ void Player::GunType()
 	}
 	if (INPUT->GetKey('5') == KeyState::DOWN) {
 		m_GunType = boomerang;
+	}
+}
+
+void Player::Buff()
+{
+	if (isBuff) {
+		BuffTime += dt;
+		if (BuffTime > 10.f) {
+			isBuff = false;
+			isBuffOnes = true;
+			GameInfo->Player_Coefficient -= 1.5f;
+			BuffTime = 0.f;
+		}
+		if (isBuffOnes) {
+			GameInfo->Player_Coefficient += 1.5f;
+			isBuffOnes = false;
+		}
 	}
 }

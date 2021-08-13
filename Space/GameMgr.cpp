@@ -42,6 +42,7 @@ void GameMgr::Init()
 	BossMaxHp = 0, BossHp = 0;
 	MiniBossMaxHp = 0, MiniBossHp = 0;
 	ChargeCount = 0;
+	Player_Coefficient = 1.f;
 }
 
 void GameMgr::Release()
@@ -178,13 +179,18 @@ void GameMgr::SortRanking()
 	std::sort(Ranks.begin(), Ranks.end(), Sort);
 }
 
+void GameMgr::SpawnItem(Vec2 Pos)
+{
+
+}
+
 void GameMgr::SpawnEnemy()
 {
 	SpawnDelay += dt;
 	//ObjMgr->AddObject(new Boss(), "Boss");
 	//ObjMgr->AddObject(new MiniBoss(Vec2(1920/2+500,1080/2)), "Boss");
 	if (EnemyCount <= 0 && GameInfo->m_Score >= 3000 && !isMiniBossSpawn && isOneBoss && isOneMiniBoss || CK_MiniBossSpawn) {
-		ObjMgr->AddObject(new MiniBoss(Vec2(Camera::GetInst()->m_Position.x + 1920 + 500, rand() % 480 + 100)), "MiniBoss");
+		ObjMgr->AddObject(new MiniBoss(Vec2(Camera::GetInst()->m_Position.x + 1920 + 500, rand() % 450 + 100)), "MiniBoss");
 		isOneMiniBoss = false;
 		CK_MiniBossSpawn = false;
 	}
@@ -195,23 +201,23 @@ void GameMgr::SpawnEnemy()
 	}
 	if ((EnemyCount <= 0 && EnemyCount <= 7 || SpawnDelay > 30.f) && !isMiniBossSpawn && !isBossSpawn && isOneBoss) {
 		if (isOneMiniBoss) {
-			ObjMgr->AddObject(new Enemy1(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 480 + 100)), "Enemy1");
-			ObjMgr->AddObject(new Enemy2(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 480 + 100)), "Enemy2");
+			ObjMgr->AddObject(new Enemy1(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "Enemy1");
+			ObjMgr->AddObject(new Enemy2(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "Enemy2");
 			if (rand() % 2 == 0)
-				ObjMgr->AddObject(new Enemy3(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 480 + 100)), "Enemy2");
+				ObjMgr->AddObject(new Enemy3(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "Enemy2");
 			if (rand() % 2 == 0)
-				ObjMgr->AddObject(new EliteEnemy1(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 480 + 100)), "EliteEnemy1");
+				ObjMgr->AddObject(new EliteEnemy1(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "EliteEnemy1");
 			else
-				ObjMgr->AddObject(new EliteEnemy2(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 480 + 100)), "EliteEnemy2");
+				ObjMgr->AddObject(new EliteEnemy2(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "EliteEnemy2");
 
 			SpawnDelay = 5.f;
 		}
 		else {
-			ObjMgr->AddObject(new Enemy1(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 480 + 100)), "Enemy1");
-			ObjMgr->AddObject(new Enemy2(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 480 + 100)), "Enemy2");
-			ObjMgr->AddObject(new Enemy3(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 480 + 100)), "Enemy2");
-			ObjMgr->AddObject(new EliteEnemy1(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 480 + 100)), "EliteEnemy1");
-			ObjMgr->AddObject(new EliteEnemy2(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 480 + 100)), "EliteEnemy2");
+			ObjMgr->AddObject(new Enemy1(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "Enemy1");
+			ObjMgr->AddObject(new Enemy2(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "Enemy2");
+			ObjMgr->AddObject(new Enemy3(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "Enemy2");
+			ObjMgr->AddObject(new EliteEnemy1(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "EliteEnemy1");
+			ObjMgr->AddObject(new EliteEnemy2(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "EliteEnemy2");
 
 			SpawnDelay = 0.f;
 		}
