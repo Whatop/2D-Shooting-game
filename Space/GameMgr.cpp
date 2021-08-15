@@ -8,7 +8,12 @@
 #include "Enemy3.h"
 #include "EliteEnemy1.h"
 #include "EliteEnemy2.h"
-#include <algorithm>
+#include "Item.h"
+
+#include "MainScene.h"
+#include "Stage1.h"
+#include "Stage2.h"
+#include "StoreScene.h"
 
 
 GameMgr::GameMgr()
@@ -81,43 +86,7 @@ void GameMgr::PlayerDeath()
 
 void GameMgr::Update()
 {
-	if (INPUT->GetKey('V') == KeyState::DOWN)
-	{
-		if (m_DebugMode)
-		{
-			m_DebugMode = false;
-
-			std::cout << "디버깅 모드 비 활성화" << std::endl;
-		}
-		else if (!m_DebugMode)
-		{
-			m_DebugMode = true;
-			std::cout << "디버깅 모드 활성화" << std::endl;
-		}
-	}
-	if (INPUT->GetKey(VK_F1) == KeyState::DOWN) {
-		if (!CameraStop) {
-			CameraStop = true;
-
-			std::cout << "AUTO 카메라 OFF" << std::endl;
-		}
-		else {
-			CameraStop = false;
-			std::cout << "AUTO 카메라 ON" << std::endl;
-		}
-	}
-	if (INPUT->GetKey(VK_F9) == KeyState::DOWN) {
-		if (!isPause) {
-			isPause = true;
-			std::cout << "일시정지 ON" << std::endl;
-		}
-		else {
-			isPause = false;
-			std::cout << "일시정지 OFF" << std::endl;
-		}
-	}
-
-
+	
 	if (m_isCreateUI)
 		UI::GetInst()->Update();
 	AddScore(MaxScore);
@@ -179,8 +148,96 @@ void GameMgr::SortRanking()
 	std::sort(Ranks.begin(), Ranks.end(), Sort);
 }
 
-void GameMgr::SpawnItem(Vec2 Pos)
+void GameMgr::CheatKey()
 {
+	//Camera::GetInst()->isVibration = true;
+	//Camera::GetInst()->ShakeTimeY = 0;
+	
+	//Camera::GetInst()->isVibration = true;
+	//Camera::GetInst()->ShakeTimeX = 0; 
+	
+	//ObjMgr->AddObject(new Item(Vec2(Camera::GetInst()->m_Position.x + 1500, 350)), "Heal");
+	
+	//	GameInfo->MaxScore += 3000;
+	if (INPUT->GetKey('V') == KeyState::DOWN)
+	{
+		if (m_DebugMode)
+		{
+			m_DebugMode = false;
+
+			std::cout << "디버깅 모드 비 활성화" << std::endl;
+		}
+		else if (!m_DebugMode)
+		{
+			m_DebugMode = true;
+			std::cout << "디버깅 모드 활성화" << std::endl;
+		}
+	}
+
+	if (INPUT->GetKey(VK_F1) == KeyState::DOWN) {
+		if (!CameraStop) {
+			CameraStop = true;
+
+			std::cout << "AUTO 카메라 OFF" << std::endl;
+		}
+		else {
+			CameraStop = false;
+			std::cout << "AUTO 카메라 ON" << std::endl;
+		}
+	}
+
+	if (INPUT->GetKey(VK_F2) == KeyState::DOWN ) {
+		SceneDirector::GetInst()->ChangeScene(new MainScene());
+	}
+	if (INPUT->GetKey(VK_F3) == KeyState::DOWN && GameInfo->m_Scene != StageScene::STAGE1) {
+		SceneDirector::GetInst()->ChangeScene(new Stage1());
+	}
+	if (INPUT->GetKey(VK_F4) == KeyState::DOWN && GameInfo->m_Scene != StageScene::STAGE2) {
+		SceneDirector::GetInst()->ChangeScene(new Stage2());
+	}
+	if (INPUT->GetKey(VK_F5) == KeyState::DOWN) {
+		SceneDirector::GetInst()->ChangeScene(new StoreScene());
+	}
+	if (INPUT->GetKey('I') == KeyState::DOWN) {
+		ObjMgr->DeleteObject("Enemy1");
+		ObjMgr->DeleteObject("Enemy2");
+		ObjMgr->DeleteObject("EliteEnemy1");
+		ObjMgr->DeleteObject("EliteEnemy2");
+		ObjMgr->DeleteObject("MiniBoss");
+		ObjMgr->DeleteObject("Boss");
+		GameInfo->EnemyCount = 0;
+	}
+	if (INPUT->GetKey('O') == KeyState::DOWN) {
+		ObjMgr->DeleteObject("Enemy1");
+		ObjMgr->DeleteObject("Enemy2");
+		ObjMgr->DeleteObject("EliteEnemy1");
+		ObjMgr->DeleteObject("EliteEnemy2");
+		ObjMgr->DeleteObject("MiniBoss");
+		ObjMgr->DeleteObject("Boss");
+		GameInfo->EnemyCount = 0;
+		GameInfo->CK_MiniBossSpawn = true;
+	}
+	if (INPUT->GetKey('P') == KeyState::DOWN) {
+		ObjMgr->DeleteObject("Enemy1");
+		ObjMgr->DeleteObject("Enemy2");
+		ObjMgr->DeleteObject("EliteEnemy1");
+		ObjMgr->DeleteObject("EliteEnemy2");
+		ObjMgr->DeleteObject("MiniBoss");
+		ObjMgr->DeleteObject("Boss");
+		GameInfo->EnemyCount = 0;
+		GameInfo->CK_BossSpawn = true;
+	}
+	if (INPUT->GetKey('S') == KeyState::DOWN) {
+		if (!isPause) {
+			isPause = true;
+			std::cout << "일시정지 ON" << std::endl;
+		}
+		else {
+			isPause = false;
+			std::cout << "일시정지 OFF" << std::endl;
+		}
+	}
+
 
 }
 

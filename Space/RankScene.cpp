@@ -29,6 +29,7 @@ void RankScene::Init()
 	m_First->Init(72, true, false, "Arial");
 	m_Secend->Init(72, true, false, "Arial");
 	m_Third->Init(72, true, false, "Arial");
+	GameInfo->m_Scene = StageScene::NONE;
 }
 
 void RankScene::Release()

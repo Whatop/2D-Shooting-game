@@ -222,7 +222,7 @@ void Player::OnCollision(Object* obj)
 		obj->SetDestroy(true);
 	}
 	if (obj->m_Tag == "None") {
-		m_Hp -= 20;
+		m_Hp -= 1;
 		obj->SetDestroy(true);
 	}
 
@@ -245,54 +245,7 @@ void Player::Move()
 	if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
 		m_Position.x += 100 * dt;
 	}
-
-
-
-	if (INPUT->GetKey(VK_F2) == KeyState::DOWN) {
-		ObjMgr->AddObject(new Item(Vec2(Camera::GetInst()->m_Position.x + 1500, 350)), "Heal");
-	}
-	if (INPUT->GetKey(VK_F3) == KeyState::DOWN) {
-		Camera::GetInst()->isVibration = true;
-		Camera::GetInst()->ShakeTimeY = 0;
-	}
-	if (INPUT->GetKey(VK_F4) == KeyState::DOWN) {
-		Camera::GetInst()->isVibration = true;
-		Camera::GetInst()->ShakeTimeX = 0;
-	}
-	if (INPUT->GetKey(VK_F5) == KeyState::DOWN) {
-		GameInfo->MaxScore += 3000;
-		std::cout << "점수 올리기 : 3000" << std::endl;
-	}
-	if (INPUT->GetKey(VK_F6) == KeyState::DOWN) {
-		ObjMgr->DeleteObject("Enemy1");
-		ObjMgr->DeleteObject("Enemy2");
-		ObjMgr->DeleteObject("EliteEnemy1");
-		ObjMgr->DeleteObject("EliteEnemy2");
-		ObjMgr->DeleteObject("MiniBoss");
-		ObjMgr->DeleteObject("Boss");
-		GameInfo->EnemyCount = 0;
-	}
-	if (INPUT->GetKey(VK_F7) == KeyState::DOWN) {
-		ObjMgr->DeleteObject("Enemy1");
-		ObjMgr->DeleteObject("Enemy2");
-		ObjMgr->DeleteObject("EliteEnemy1");
-		ObjMgr->DeleteObject("EliteEnemy2");
-		ObjMgr->DeleteObject("MiniBoss");
-		ObjMgr->DeleteObject("Boss");
-		GameInfo->EnemyCount = 0;
-		GameInfo->CK_MiniBossSpawn = true;
-	}
-	if (INPUT->GetKey(VK_F8) == KeyState::DOWN) {
-		ObjMgr->DeleteObject("Enemy1");
-		ObjMgr->DeleteObject("Enemy2");
-		ObjMgr->DeleteObject("EliteEnemy1");
-		ObjMgr->DeleteObject("EliteEnemy2");
-		ObjMgr->DeleteObject("MiniBoss");
-		ObjMgr->DeleteObject("Boss");
-		GameInfo->EnemyCount = 0;
-		GameInfo->CK_BossSpawn = true;
-	}
-
+	
 }
 
 void Player::CollisionBox()

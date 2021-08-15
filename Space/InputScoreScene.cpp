@@ -34,6 +34,7 @@ void InputScoreScene::Init()
 	m_Score->Init(72, false, false, "Arial");
 
 	m_isTextEntered = true;
+	GameInfo->m_Scene = StageScene::NONE;
 }
 
 void InputScoreScene::Release()

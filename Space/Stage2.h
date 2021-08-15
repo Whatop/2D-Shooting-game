@@ -1,14 +1,14 @@
 #pragma once
-class Stage1 : public Scene
+class Stage2 : public Scene
 {
-	Sprite* m_BackGround[6][4];
+	Sprite* m_BackGround[10][4];
 	Sprite* UpWall;
 	Sprite* DownWall;
 	Sprite* Right_Limit;
 	Sprite* Left_Limit;
 public:
-	Stage1();
-	~Stage1();
+	Stage2();
+	~Stage2();
 
 	void Init();
 	void Release();

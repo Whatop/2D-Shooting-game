@@ -40,6 +40,9 @@
     <Filter Include="Game\Scene">
       <UniqueIdentifier>{6a0b488c-024d-464b-b7e5-e43bc432ea1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Stage">
+      <UniqueIdentifier>{9784a0ca-198f-4ecb-a8ef-65874fc5c4ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Space.cpp">
@@ -147,9 +150,6 @@
     <ClCompile Include="InputScoreScene.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Stage1.cpp">
-      <Filter>Game\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="RankScene.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
@@ -178,7 +178,15 @@
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Store.cpp" />
-    <ClCompile Include="StoreScene.cpp" />
+    <ClCompile Include="Stage1.cpp">
+      <Filter>Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage2.cpp">
+      <Filter>Game\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="StoreScene.cpp">
+      <Filter>Game\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -286,9 +294,6 @@
     <ClInclude Include="InputScoreScene.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Stage1.h">
-      <Filter>Game\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="RankScene.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
@@ -317,6 +322,14 @@
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Store.h" />
-    <ClInclude Include="StoreScene.h" />
+    <ClInclude Include="Stage1.h">
+      <Filter>Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage2.h">
+      <Filter>Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="StoreScene.h">
+      <Filter>Game\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

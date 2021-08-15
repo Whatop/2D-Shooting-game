@@ -2,6 +2,12 @@
 #define GameInfo GameMgr::GetInst()
 #define GetPlayer GameMgr::GetInst()->GetPlayerInfo()
 
+enum class StageScene {
+	STAGE1,
+	STAGE2,
+	NONE
+};
+
 struct RankingPlayer
 {
 public:
@@ -55,7 +61,7 @@ public:
 	bool isNoHit; //노히트 판정체크
 
 	RankingPlayer* m_Rank;
-
+	StageScene m_Scene;
 public:
 	void Init();
 	void Release();
@@ -87,6 +93,6 @@ public:
 	void RankInit();
 	void SortRanking();
 	
-	void SpawnItem(Vec2 Pos);
+	void CheatKey();
 };
 

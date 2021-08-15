@@ -60,6 +60,7 @@
     <ClCompile Include="Space.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Stage1.cpp" />
+    <ClCompile Include="Stage2.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -111,6 +112,7 @@
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Stage1.h" />
+    <ClInclude Include="Stage2.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Store.h" />
     <ClInclude Include="StoreScene.h" />

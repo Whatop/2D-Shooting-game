@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MainScene.h"
 #include "Stage1.h"
+#include "Stage2.h"
 #include "RankScene.h"
 #include "InputScoreScene.h"
 
@@ -32,6 +33,7 @@ void MainScene::Init()
     m_Button[3]->SetPosition(300, 700);
 
     std::cout << "MainScene ÀÌµ¿" << std::endl;
+    GameInfo->m_Scene = StageScene::NONE;
 }
 
 void MainScene::Release()
@@ -59,6 +61,7 @@ void MainScene::Update(float deltaTime, float time)
         exit(0);
     }
  
+    GameInfo->CheatKey();
 }
 
 void MainScene::Render()
