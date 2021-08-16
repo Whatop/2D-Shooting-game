@@ -1,12 +1,20 @@
 #pragma once
 class InduceBullet : public Object
 {
+	Animation* m_Induce;
 	Sprite* m_InduceBullet;
 	Vec2 Dire;
 	Vec2 Spawnpoint;
 	float m_Speed;
 	float DelayTime;
 	float DestroyTime;
+
+	Vec2 Enemy, Rad;
+	float turnRadian, vrad, Delay;
+	float impellent;
+	float HomingTime;
+	bool isHoming;
+
 public:
 	InduceBullet();
 	~InduceBullet();
@@ -15,6 +23,7 @@ public:
 	void Render();
 	void OnCollision(Object* obj);
 
+	void Iduce();
 	void Move();
 };
 

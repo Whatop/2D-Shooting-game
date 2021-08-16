@@ -7,6 +7,7 @@
 #include "DoubleBullet.h"
 #include "ChargeBullet.h"
 #include "InputScoreScene.h"
+#include "InduceBullet.h"
 
 
 Player::Player()
@@ -289,9 +290,11 @@ void Player::GunType()
 		}
 	}
 	else if (m_GunType == induce) {
-		ObjMgr->AddObject(new Bullet, "Bullet");
-		RpmDelayTime = 0;
-		m_Rpm = 0.45f;
+		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
+			ObjMgr->AddObject(new InduceBullet, "Bullet");
+			RpmDelayTime = 0;
+			m_Rpm = 0.15f;
+		}
 	}
 	else if (m_GunType == boomerang) {
 		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
