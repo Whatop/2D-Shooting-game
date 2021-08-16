@@ -1,6 +1,7 @@
 #pragma once
 class Boomerang : public Object
 {
+	Animation* m_Crossed;
 	Sprite* m_Boomerang;
 	Vec2 Dire;
 	Vec2 Spawnpoint;

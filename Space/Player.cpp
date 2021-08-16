@@ -4,8 +4,9 @@
 #include "Item.h"
 #include "Boomerang.h"
 #include "ShotGun.h"
-#include "InputScoreScene.h"
+#include "DoubleBullet.h"
 #include "ChargeBullet.h"
+#include "InputScoreScene.h"
 
 
 Player::Player()
@@ -299,6 +300,14 @@ void Player::GunType()
 			m_Rpm = 0.35f;
 		}
 	}
+	else if (m_GunType == doubleshot) {
+		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
+			ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x+10,m_Position.y+20)), "Bullet");
+			ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 10,m_Position.y-20)), "Bullet");
+			RpmDelayTime = 0;
+			m_Rpm = 0.1f;
+		}
+	}
 	if (INPUT->GetKey('1') == KeyState::DOWN) {
 		m_GunType = shot;
 	}
@@ -313,6 +322,9 @@ void Player::GunType()
 	}
 	if (INPUT->GetKey('5') == KeyState::DOWN) {
 		m_GunType = boomerang;
+	}
+	if (INPUT->GetKey('6') == KeyState::DOWN) {
+		m_GunType = doubleshot;
 	}
 }
 

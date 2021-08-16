@@ -18,7 +18,7 @@ class Player : public Object
 
 	// 단발, 샷건 , 차지, 유도, 부메랑, 
 	int m_GunType;
-	int shot, shotgun, charge, induce, boomerang;
+	int shot, shotgun, charge, induce, boomerang, doubleshot;
 	
 public:
 	Player();

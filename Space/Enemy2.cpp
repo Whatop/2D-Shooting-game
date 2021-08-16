@@ -20,6 +20,7 @@ Enemy2::Enemy2(Vec2 Pos)
 	std::cout << "Enemy2 »ý¼º" << std::endl;
 
 	GameInfo->EnemyCount++;
+	SetScale(0.85f, 0.85f);
 }
 
 Enemy2::~Enemy2()

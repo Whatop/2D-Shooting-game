@@ -187,6 +187,9 @@
     <ClCompile Include="StoreScene.cpp">
       <Filter>Game\Stage</Filter>
     </ClCompile>
+    <ClCompile Include="DoubleBullet.cpp">
+      <Filter>Game\Object\Player\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -330,6 +333,9 @@
     </ClInclude>
     <ClInclude Include="StoreScene.h">
       <Filter>Game\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleBullet.h">
+      <Filter>Game\Object\Player\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

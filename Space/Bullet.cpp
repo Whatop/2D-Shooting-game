@@ -18,6 +18,7 @@ Bullet::Bullet()
 	DestroyTime = 0.f;
 	m_Layer = 2;
 	m_Atk = 25.f * GameInfo->Player_Coefficient;
+	SetScale(1.5f, 1.5f);
 }
 
 Bullet::~Bullet()
@@ -34,8 +35,9 @@ void Bullet::Update(float deltaTime, float Time)
 
 		if (DestroyTime > 6)
 			ObjMgr->RemoveObject(this);
+
+		m_Bolt->Update(deltaTime, Time);
 	}
-	m_Bolt->Update(deltaTime, Time);
 }
 
 void Bullet::Render()

@@ -28,6 +28,7 @@ MiniBoss::MiniBoss(Vec2 Pos)
 	std::cout << "미니보스 생성" << std::endl;
 	GameInfo->EnemyCount++;
 	std::cout << m_Hp << std::endl;
+	pattern = 0;
 }
 
 MiniBoss::~MiniBoss()
@@ -142,35 +143,38 @@ void MiniBoss::Attack()
 {
 	if (isBullet) {
 		AttackTime += dt;
-		if (AttackTime < 0.1f) {
+		if (AttackTime > 0.1f && pattern == 0) {
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x-10, m_Position.y), 180),"EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x-10, m_Position.y), 180+50),"EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x-10, m_Position.y), 180-50),"EnemyBullet");
+			pattern++;
 		}
-		else if (AttackTime < 0.3f) {
+		if (AttackTime > 0.5f && pattern == 1) {
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180), "EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 + 20), "EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 - 20), "EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 + 40), "EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 - 40), "EnemyBullet");
+			pattern++;
 		}
-		else if (AttackTime < 0.5f) {
+		if (AttackTime > 0.9f && pattern == 2) {
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180), "EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 + 50), "EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 - 50), "EnemyBullet");
+			pattern++;
 		}
-		else {
+		if (AttackTime > 1.3f && pattern == 3) {
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180), "EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 + 20), "EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 - 20), "EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 + 40), "EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 - 40), "EnemyBullet");
-			AttackTime = 0.f;
 
 			ObjMgr->AddObject(new MiniMissile(Vec2(m_Position.x + 15, m_Position.y + 22)), "Missile");
 			ObjMgr->AddObject(new MiniMissile(Vec2(m_Position.x + 15, m_Position.y - 22)), "Missile");
 			isBullet = false;
-
+			AttackTime = 0.f;
+			pattern = 0;
 		}
 	}
 	else {

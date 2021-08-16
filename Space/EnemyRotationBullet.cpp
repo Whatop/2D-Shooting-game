@@ -3,12 +3,22 @@
 
 EnemyRotationBullet::EnemyRotationBullet(Vec2 Pos, float r)
 {
+
+	m_Bolt = new Animation();
+	m_Bolt->Init(0.1f, true);
+	m_Bolt->AddContinueFrame(L"Painting/Bullet/Bolt/enemybolt", 1, 4);
+	m_Bolt->SetParent(this);
+
 	m_Bullet = Sprite::Create(L"Painting/Bullet/EnemyBullet.png");
 	m_Bullet->SetParent(this);
 	SetPosition(Pos);
+
 	m_Rotation = D3DXToRadian(r);
 	m_Speed = 500.f;
-	m_Atk = 10.f;
+	m_Atk = 15.f;
+	m_Bolt->R = 51;
+	m_Bolt->G = 51;
+	m_Bolt->B = 51;
 }
 
 EnemyRotationBullet::~EnemyRotationBullet()
@@ -20,12 +30,15 @@ void EnemyRotationBullet::Update(float deltaTime, float Time)
 	if (!GameInfo->isPause) {
 		Move();
 		DelayDestroy(this, 4);
+		m_Bolt->Update(deltaTime, Time);
 	}
+
 }
 
 void EnemyRotationBullet::Render()
 {
 	m_Bullet->Render();
+	m_Bolt->Render();
 }
 
 void EnemyRotationBullet::OnCollision(Object* obj)
