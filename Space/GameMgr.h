@@ -62,6 +62,7 @@ public:
 
 	RankingPlayer* m_Rank;
 	StageScene m_Scene;
+	Vec2 BossPosition;
 public:
 	void Init();
 	void Release();

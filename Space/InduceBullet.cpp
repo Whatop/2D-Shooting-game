@@ -19,7 +19,7 @@ InduceBullet::InduceBullet()
 	DelayTime = 1.f;
 	DestroyTime = 0.f;
 	m_Layer = 2;
-	m_Atk = 5.f * GameInfo->Player_Coefficient;
+	m_Atk = 7.5f * GameInfo->Player_Coefficient;
 	SetScale(1.f, 1.f);
 
 	m_Induce->R = 50;
@@ -41,6 +41,7 @@ InduceBullet::~InduceBullet()
 void InduceBullet::Update(float deltaTime, float Time)
 {
 	if (!GameInfo->isPause) {
+		Iduce();
 		DestroyTime += dt;
 		if (DelayTime < 5)
 			DelayTime += dt * 1.1f;
@@ -49,7 +50,6 @@ void InduceBullet::Update(float deltaTime, float Time)
 			ObjMgr->RemoveObject(this);
 
 		m_Induce->Update(deltaTime, Time);
-		Iduce();
 	}
 }
 
@@ -76,11 +76,15 @@ void InduceBullet::Iduce()
 		if (impellent < 2) {
 			impellent += dt;
 		}
-		for (auto iter : ObjMgr->m_Objects) {
-			if (iter->m_Tag == "Enemy")
-				Enemy = iter->m_Position - m_Position;
+		if (!GameInfo->isBossSpawn) {
+			for (auto iter : ObjMgr->m_Objects) {
+				if (iter->m_Tag == "Enemy")
+					Enemy = iter->m_Position - m_Position;
+			}
 		}
-		
+		else {
+			Enemy = GameInfo->BossPosition - m_Position;
+		}
 		D3DXVec2Normalize(&Dire, &Enemy);
 		Delay += dt;
 		if (Delay > 1) {

@@ -443,7 +443,6 @@ void Boss::State()
 			isMove = false;
 			GameInfo->MaxScore += 500;
 		}
-
 		if (TopHp <= 0) {
 			m_Hp -= 300.f;
 			isDestroyTop = true;
@@ -455,6 +454,12 @@ void Boss::State()
 			}
 			PilotAttack->m_CurrentFrame = 4;
 			GameInfo->MaxScore += 500;
+		}
+		if(isDestroyTail){
+			GameInfo->BossPosition = ColBoxTop->m_Position;
+		}
+		else {
+			GameInfo->BossPosition = BossTail->m_Position;
 		}
 		if (isDestroyTop && isDestroyTail && !isDestroyBody) {
 			if (BodyHp <= 0) {
@@ -475,7 +480,7 @@ void Boss::State()
 				Camera::GetInst()->ShakeTimeY = 0;
 				DieScene = true;
 				GameInfo->MaxScore += 1500;
-				GameInfo->isBossSpawn = true;
+				GameInfo->isBossSpawn = false;
 			}
 			DestroyTime += dt;
 			EffectTime += dt;
