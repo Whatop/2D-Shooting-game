@@ -55,6 +55,8 @@ class Boss : public Object
 	float TailHp;
 	float BodyHp;
 	float TopHp;
+
+	float ChangeTime;
 public:
 	Boss(Vec2 Pos);
 	~Boss();

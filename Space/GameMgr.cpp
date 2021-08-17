@@ -206,8 +206,7 @@ void GameMgr::CheatKey()
 		GameInfo->isMiniBossSpawn = false;
 	}
 	if (INPUT->GetKey('O') == KeyState::DOWN) {
-	//	ObjMgr->DeleteObject("Enemy");
-
+		//ObjMgr->DeleteObject("Enemy");
 		//GameInfo->EnemyCount = 0;
 		GameInfo->isBossSpawn = false;
 		GameInfo->isMiniBossSpawn = true;

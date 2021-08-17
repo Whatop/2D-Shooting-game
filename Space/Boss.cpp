@@ -5,6 +5,7 @@
 #include "Box.h"
 #include "Missile.h"
 #include "Item.h"
+#include "Stage2.h"
 
 Boss::Boss(Vec2 Pos)
 {
@@ -103,6 +104,7 @@ Boss::Boss(Vec2 Pos)
 	GameInfo->isBossSpawn = true;
 	m_Layer = 2;
 	GameInfo->EnemyCount++;
+	ChangeTime = 0.f;
 }
 
 Boss::~Boss()
@@ -484,6 +486,7 @@ void Boss::State()
 			}
 			DestroyTime += dt;
 			EffectTime += dt;
+			ChangeTime += dt;
 			if (!isDown) {
 				m_Position.y += 75.f * DestroyTime * dt;
 				m_Position.x += (sin(DestroyTime * 10) * powf(0.5f, DestroyTime) * 5);
@@ -504,6 +507,11 @@ void Boss::State()
 			if (bonusTime < 3) {
 				bonusTime += dt;
 				ObjMgr->AddObject(new Item(m_Position), "Heal");
+			}
+			if (ChangeTime > 10) {
+				if(GameInfo->m_Scene == StageScene::STAGE1)
+				SceneDirector::GetInst()->ChangeScene(new Stage2);
+				ChangeTime = 0.f;
 			}
 		}
 	}
