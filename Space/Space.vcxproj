@@ -38,7 +38,6 @@
     <ClCompile Include="Enemy3.cpp" />
     <ClCompile Include="InduceBullet.cpp" />
     <ClCompile Include="InputScoreScene.cpp" />
-    <ClCompile Include="Laser.cpp" />
     <ClCompile Include="MiniBoss.cpp" />
     <ClCompile Include="EnemyDirBullet.cpp" />
     <ClCompile Include="GameMgr.cpp" />
@@ -49,6 +48,7 @@
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectMgr.cpp" />
+    <ClCompile Include="Pet.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RankScene.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -91,7 +91,6 @@
     <ClInclude Include="Enemy3.h" />
     <ClInclude Include="InduceBullet.h" />
     <ClInclude Include="InputScoreScene.h" />
-    <ClInclude Include="Laser.h" />
     <ClInclude Include="MiniBoss.h" />
     <ClInclude Include="EnemyDirBullet.h" />
     <ClInclude Include="GameMgr.h" />
@@ -102,6 +101,7 @@
     <ClInclude Include="Missile.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectMgr.h" />
+    <ClInclude Include="Pet.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RankScene.h" />
     <ClInclude Include="Renderer.h" />

@@ -262,13 +262,19 @@ void Player::CollisionBox()
 
 void Player::GunType()
 {
-	//shot = 1, shotgun = 2, charge = 3, induce = 4, boomerang = 5;
-	
+	// shot = 1, shotgun = 2, charge = 3, induce = 4, boomerang = 5;
+	// IT_Shot;
+	// IT_Shotgun;
+	// IT_Charge;
+	// IT_Induce;
+	// IT_Boomerang;
+	// IT_Doubleshot;
+
 	if (m_GunType == shot) {
 		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
-			ObjMgr->AddObject(new Bullet, "Bullet");
-			RpmDelayTime = 0;
-			m_Rpm = 0.45f;
+				ObjMgr->AddObject(new Bullet, "Bullet");
+				RpmDelayTime = 0;
+				m_Rpm = 0.45f;
 		}
 	}
 	else if (m_GunType == shotgun) {

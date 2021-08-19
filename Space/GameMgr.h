@@ -49,7 +49,6 @@ public:
 
 	float Player_Coefficient; // 플레이어 공격력 계수
 
-
 	float SpawnDelay;
 	float AddDelay;
 	
@@ -59,6 +58,13 @@ public:
 	bool CK_MiniBossSpawn;
 
 	bool isNoHit; //노히트 판정체크
+
+	bool IT_Shot;
+	bool IT_Shotgun;
+	bool IT_Charge;
+	bool IT_Induce;
+	bool IT_Boomerang;
+	bool IT_Doubleshot;
 
 	RankingPlayer* m_Rank;
 	StageScene m_Scene;

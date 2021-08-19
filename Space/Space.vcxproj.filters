@@ -174,9 +174,6 @@
     <ClCompile Include="InduceBullet.cpp">
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Laser.cpp">
-      <Filter>Game\Object\Player\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="Store.cpp" />
     <ClCompile Include="Stage1.cpp">
       <Filter>Game\Stage</Filter>
@@ -190,6 +187,7 @@
     <ClCompile Include="DoubleBullet.cpp">
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="Pet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -321,9 +319,6 @@
     <ClInclude Include="InduceBullet.h">
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="Laser.h">
-      <Filter>Game\Object\Player\Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="Store.h" />
     <ClInclude Include="Stage1.h">
       <Filter>Game\Stage</Filter>
@@ -337,5 +332,6 @@
     <ClInclude Include="DoubleBullet.h">
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="Pet.h" />
   </ItemGroup>
 </Project>

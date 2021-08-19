@@ -16,6 +16,7 @@ void StoreScene::Init()
 	Camera::GetInst()->m_Position = Vec2(0, 0);
 	m_BackGround = Sprite::Create(L"Painting/Store/BG.png");
 	m_BackGround->SetPosition(1920/2,1080/2);
+	m_BackGround->SetScale(1.5f, 1.5f);
 
 	ObjMgr->AddObject(m_BackGround, "UI");
 	GameInfo->m_Scene = StageScene::NONE;
