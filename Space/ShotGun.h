@@ -1,7 +1,8 @@
 #pragma once
 class ShotGun : public Object
 {
-	Sprite* m_ShotGun;
+	Animation* m_ShotGun;
+	Sprite* m_ColBox;
 	Vec2 Dire;
 	Vec2 Spawnpoint;
 	float m_Speed;

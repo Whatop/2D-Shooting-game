@@ -3,11 +3,15 @@ class StoreScene : public Scene
 {
 	Sprite* m_BackGround;
 	
-	//파츠 3개 랜덤
-	Sprite* RandomPart[3];
+	// 카드 툴
+	Sprite* CardFrame[5];
+	// 탄환 구매
+	Sprite* CardPack[6];
+
 
 	// 공격력 UP, 체력 UP, 탄환 구매,
-	
+
+
 	// 펫
 
 	// 탄환 특수능력 (업그레이드)

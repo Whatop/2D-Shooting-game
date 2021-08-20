@@ -18,6 +18,11 @@ DoubleBullet::DoubleBullet(Vec2 Pos)
 	m_Layer = 2;
 	m_Atk = 5.f * GameInfo->Player_Coefficient;
 	SetScale(0.75f, 0.75f);
+
+	m_Spark->R = 255;
+	m_Spark->G = 100;
+	m_Spark->B = 255;
+
 }
 
 DoubleBullet::~DoubleBullet()

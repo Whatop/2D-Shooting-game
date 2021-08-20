@@ -3,8 +3,14 @@
 
 ShotGun::ShotGun(float r)
 {
-	m_ShotGun = Sprite::Create(L"Painting/Bullet/Spread.png");
+	m_ShotGun = new Animation();
+	m_ShotGun->Init(0.1f, true);
+	m_ShotGun->AddContinueFrame(L"Painting/Bullet/Bolt/enemybolt", 1, 4);
 	m_ShotGun->SetParent(this);
+
+	m_ColBox = Sprite::Create(L"Painting/Bullet/Spread.png");
+	m_ColBox->SetParent(this);
+	m_ColBox->m_Visible = false;
 	Spawnpoint = Vec2(GetPlayer->m_Position.x + (GetPlayer->m_Size.x * m_Scale.x) / 2, GetPlayer->m_Position.y - 2);
 	SetPosition(Spawnpoint);
 
@@ -13,6 +19,9 @@ ShotGun::ShotGun(float r)
 	DestroyTime = 0.f;
 	m_Rotation = D3DXToRadian(r);
 	m_Atk = 7.5f * GameInfo->Player_Coefficient;
+	m_ShotGun->R = 255;
+	m_ShotGun->G = 10;
+	m_ShotGun->B = 10;
 }
 
 ShotGun::~ShotGun()
@@ -24,11 +33,13 @@ void ShotGun::Update(float deltaTime, float Time)
 	if (!GameInfo->isPause) {
 		DelayDestroy(this, 0.6f);
 		Move();
+		m_ShotGun->Update(deltaTime, Time);
 	}
 }
 void ShotGun::Render()
 {
 	m_ShotGun->Render();
+	m_ColBox->Render();
 }
 
 void ShotGun::OnCollision(Object* obj)

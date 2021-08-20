@@ -16,7 +16,7 @@ EnemyDirBullet::EnemyDirBullet(Vec2 Pos,Vec2 Dir)
 	m_Speed = 500.f;
 	m_Rotation = (std::atan2(m_Dire.y, m_Dire.x));  
 	m_Atk = 15.f;
-	m_Bolt->R = 255;
+	m_Bolt->R = 51;
 	m_Bolt->G = 51;
 	m_Bolt->B = 51;
 }
