@@ -16,7 +16,8 @@ class StoreScene : public Scene
 
 	// 탄환 특수능력 (업그레이드)
 
-
+	int RCrad[5];
+	bool isShake;
 
 public:
 	StoreScene();
