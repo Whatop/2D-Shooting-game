@@ -235,6 +235,13 @@ void GameMgr::CheatKey()
 
 }
 
+void GameMgr::AddCard(int card)
+{
+	// shot = 1, shotgun = 2, charge = 3, induce = 4, boomerang = 5;
+	HV_ShotType[card]++;
+
+}
+
 void GameMgr::SpawnEnemy()
 {
 	SpawnDelay += dt;

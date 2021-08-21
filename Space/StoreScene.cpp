@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "StoreScene.h"
+#include "Stage2.h"
 
 StoreScene::StoreScene()
 {
@@ -14,8 +15,12 @@ void StoreScene::Init()
 	ObjMgr->Release();
 	GameInfo->ReleaseUI();
 	Camera::GetInst()->m_Position = Vec2(0, 0);
-	m_BackGround = Sprite::Create(L"Painting/Store/Store.png");
+	m_BackGround = Sprite::Create(L"Painting/Store/BG.png");
 	m_BackGround->SetPosition(1920/2,1080/2);
+
+	m_Button = Sprite::Create(L"Painting/Button/exit.png");
+	m_Button->SetPosition(100, 900);
+	m_Button->SetScale(0.75f, 0.75f);
 
 	CardFrame[0] = Sprite::Create(L"Painting/Store/Frame.png");
 	CardFrame[1] = Sprite::Create(L"Painting/Store/Frame.png");
@@ -49,14 +54,7 @@ void StoreScene::Init()
 	CardPack[3]->SetPosition(360 + 900, 306);
 	CardPack[4]->SetPosition(350 + 1200, 306);
 
-	//닿았을때 색깔 변함
-	CardFrame[0]->R = 255;
-	CardFrame[0]->G = 255;
-	CardFrame[0]->B = 51;
 
-	//닿았을때 + 크기변함
-	CardFrame[0]->SetScale(0.6f, 0.6f);
-	CardPack[0]->SetScale(0.6f, 0.6f);
 
 	CardFrame[0]->SetPosition(412.5f, 325);
 	CardFrame[1]->SetPosition(390 + 300, 325);
@@ -65,6 +63,7 @@ void StoreScene::Init()
 	CardFrame[4]->SetPosition(350 + 1200, 325);
 
 	ObjMgr->AddObject(m_BackGround, "UI");
+	ObjMgr->AddObject(m_Button, "UI");
 
 	for (int i = 0; i < 5; i++) {
 		ObjMgr->AddObject(CardPack[i], "UI");
@@ -76,6 +75,9 @@ void StoreScene::Init()
 void StoreScene::Update(float deltaTime, float Time)
 {
 	GameInfo->CheatKey();
+
+
+	OnCollisionCard();
 }
 
 void StoreScene::Render()
@@ -84,4 +86,84 @@ void StoreScene::Render()
 
 void StoreScene::Release()
 {
+}
+
+void StoreScene::OnCollisionCard()
+{
+	if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[0]))
+	{
+		//닿았을때 색깔 변함
+		CardFrame[0]->R = 255;
+		CardFrame[0]->G = 255;
+		CardFrame[0]->B = 51;
+
+		//닿았을때 + 크기변함
+		CardFrame[0]->SetScale(0.6f, 0.6f);
+		CardPack[0]->SetScale(0.6f, 0.6f);
+		if (INPUT->GetButtonDown()) { // 눌렀을때
+			
+			//if(돈이 이카드보다 더 많을때라는 조건)
+			GameInfo->AddCard(RCrad[0]);
+		}
+	}
+	else if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[1]))
+	{
+		//닿았을때 색깔 변함
+		CardFrame[1]->R = 255;
+		CardFrame[1]->G = 255;
+		CardFrame[1]->B = 51;
+
+		//닿았을때 + 크기변함
+		CardFrame[1]->SetScale(0.6f, 0.6f);
+		CardPack[1]->SetScale(0.6f, 0.6f);
+	}
+	else if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[2]))
+	{
+		//닿았을때 색깔 변함
+		CardFrame[2]->R = 255;
+		CardFrame[2]->G = 255;
+		CardFrame[2]->B = 51;
+
+		//닿았을때 + 크기변함
+		CardFrame[2]->SetScale(0.6f, 0.6f);
+		CardPack[2]->SetScale(0.6f, 0.6f);
+	}
+	else if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[3]))
+	{
+		//닿았을때 색깔 변함
+		CardFrame[3]->R = 255;
+		CardFrame[3]->G = 255;
+		CardFrame[3]->B = 51;
+
+		//닿았을때 + 크기변함
+		CardFrame[3]->SetScale(0.6f, 0.6f);
+		CardPack[3]->SetScale(0.6f, 0.6f);
+	}
+	else if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[4]))
+	{
+		//닿았을때 색깔 변함
+		CardFrame[4]->R = 255;
+		CardFrame[4]->B = 51;
+		CardFrame[4]->G = 255;
+
+		//닿았을때 + 크기변함
+		CardFrame[4]->SetScale(0.6f, 0.6f);
+		CardPack[4]->SetScale(0.6f, 0.6f);
+	}
+	else {
+		for (int i = 0; i < 5; i++) {
+
+			CardFrame[i]->SetScale(0.55f, 0.55f);
+			CardPack[i]->SetScale(0.55f, 0.55f);
+			CardFrame[i]->R = 255;
+			CardFrame[i]->B = 255;
+			CardFrame[i]->G = 255;
+		}
+	}
+	
+	if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button)&& INPUT->GetButtonDown())
+	{
+		SceneDirector::GetInst()->ChangeScene(new Stage2());
+	}
+
 }

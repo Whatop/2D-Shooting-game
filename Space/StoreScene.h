@@ -3,6 +3,9 @@ class StoreScene : public Scene
 {
 	Sprite* m_BackGround;
 	
+	// 나가기
+	Sprite* m_Button;
+
 	// 카드 툴
 	Sprite* CardFrame[5];
 	// 탄환 구매
@@ -27,5 +30,7 @@ public:
 	void Update(float deltaTime, float Time);
 	void Render();
 	void Release();
+
+	void OnCollisionCard();
 };
 

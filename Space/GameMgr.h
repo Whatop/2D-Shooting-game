@@ -59,12 +59,16 @@ public:
 
 	bool isNoHit; //노히트 판정체크
 
+	int HV_ShotType[6];
+
 	bool IT_Shot;
 	bool IT_Shotgun;
 	bool IT_Charge;
 	bool IT_Induce;
 	bool IT_Boomerang;
 	bool IT_Doubleshot;
+
+
 
 	RankingPlayer* m_Rank;
 	StageScene m_Scene;
@@ -101,5 +105,7 @@ public:
 	void SortRanking();
 	
 	void CheatKey();
+
+	void AddCard(int card);
 };
 
