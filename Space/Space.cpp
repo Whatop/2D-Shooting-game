@@ -13,7 +13,7 @@ INT WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, INT)
 	GameInfo->Init();
 	GameInfo->RankInit();
 	App::GetInst()->Init(1920, 1080, 1);	
-	SceneDirector::GetInst()->ChangeScene(new StoreScene());
+	SceneDirector::GetInst()->ChangeScene(new MainScene());
 	App::GetInst()->Run();
 	return 0;
 }

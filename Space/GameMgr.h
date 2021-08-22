@@ -59,7 +59,7 @@ public:
 
 	bool isNoHit; //노히트 판정체크
 
-	int HV_ShotType[6];
+	int HV_ShotType[7];
 
 	bool IT_Shot;
 	bool IT_Shotgun;
@@ -68,7 +68,7 @@ public:
 	bool IT_Boomerang;
 	bool IT_Doubleshot;
 
-
+	bool isSpawnEnemy;
 
 	RankingPlayer* m_Rank;
 	StageScene m_Scene;
@@ -107,5 +107,7 @@ public:
 	void CheatKey();
 
 	void AddCard(int card);
+
+	void SpawnChoice();
 };
 

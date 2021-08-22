@@ -33,9 +33,7 @@ void StoreScene::Init()
 	for (int i = 0; i < 5; i++) {
 		RCrad[i] = rand() % 6 + 1;
 		std::cout << RCrad[i] << std::endl;
-	
 	}
-	//음 고민중 같은것을 먹어서 업그레이드? or 그냥 사고 업그레이드 된 카드가 따로있는것.
 
 	CardPack[0] = Sprite::Create(L"Painting/Store/Pack/"+std::to_wstring(RCrad[0])+L".png");
 	CardPack[1] = Sprite::Create(L"Painting/Store/Pack/" + std::to_wstring(RCrad[1]) + L".png");
@@ -104,6 +102,8 @@ void StoreScene::OnCollisionCard()
 			
 			//if(돈이 이카드보다 더 많을때라는 조건)
 			GameInfo->AddCard(RCrad[0]);
+			CardFrame[0]->SetDestroy(true);
+			CardPack[0]->SetDestroy(true);
 		}
 	}
 	else if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[1]))
@@ -116,6 +116,14 @@ void StoreScene::OnCollisionCard()
 		//닿았을때 + 크기변함
 		CardFrame[1]->SetScale(0.6f, 0.6f);
 		CardPack[1]->SetScale(0.6f, 0.6f);
+
+		if (INPUT->GetButtonDown()) { // 눌렀을때
+
+			//if(돈이 이카드보다 더 많을때라는 조건)
+			GameInfo->AddCard(RCrad[1]);
+			CardFrame[1]->SetDestroy(true);
+			CardPack[1]->SetDestroy(true);
+		}
 	}
 	else if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[2]))
 	{
@@ -127,6 +135,13 @@ void StoreScene::OnCollisionCard()
 		//닿았을때 + 크기변함
 		CardFrame[2]->SetScale(0.6f, 0.6f);
 		CardPack[2]->SetScale(0.6f, 0.6f);
+
+		//if(돈이 이카드보다 더 많을때라는 조건)
+		if (INPUT->GetButtonDown()) { // 눌렀을때
+			GameInfo->AddCard(RCrad[2]);
+			CardFrame[2]->SetDestroy(true);
+			CardPack[2]->SetDestroy(true);
+		}
 	}
 	else if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[3]))
 	{
@@ -138,6 +153,13 @@ void StoreScene::OnCollisionCard()
 		//닿았을때 + 크기변함
 		CardFrame[3]->SetScale(0.6f, 0.6f);
 		CardPack[3]->SetScale(0.6f, 0.6f);
+
+		//if(돈이 이카드보다 더 많을때라는 조건)
+		if (INPUT->GetButtonDown()) { // 눌렀을때
+			GameInfo->AddCard(RCrad[3]);
+			CardFrame[3]->SetDestroy(true);
+			CardPack[3]->SetDestroy(true);
+		}
 	}
 	else if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[4]))
 	{
@@ -149,6 +171,13 @@ void StoreScene::OnCollisionCard()
 		//닿았을때 + 크기변함
 		CardFrame[4]->SetScale(0.6f, 0.6f);
 		CardPack[4]->SetScale(0.6f, 0.6f);
+
+		if (INPUT->GetButtonDown()) { // 눌렀을때
+		//if(돈이 이카드보다 더 많을때라는 조건)
+			GameInfo->AddCard(RCrad[4]);
+			CardFrame[4]->SetDestroy(true);
+			CardPack[4]->SetDestroy(true);
+		}
 	}
 	else {
 		for (int i = 0; i < 5; i++) {

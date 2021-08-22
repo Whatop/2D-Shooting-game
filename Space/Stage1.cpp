@@ -27,7 +27,6 @@ void Stage1::Init()
 	DownWall->SetPosition(1920 / 2, 650);
 	DownWall->SetScale(19.2f, 1);
 
-
 	Left_Limit = Sprite::Create(L"Painting/Wall.png");
 	Left_Limit->SetPosition(-50, 325);
 	Left_Limit->SetScale(1, 6.5f);
@@ -35,6 +34,7 @@ void Stage1::Init()
 	Right_Limit = Sprite::Create(L"Painting/Wall.png");
 	Right_Limit->SetPosition(1970, 325);
 	Right_Limit->SetScale(1, 6.5f);
+
 	ObjMgr->AddObject(UpWall, "Wall");
 	ObjMgr->AddObject(DownWall, "Wall");
 	ObjMgr->AddObject(Left_Limit, "Wall");
@@ -49,6 +49,9 @@ void Stage1::Init()
 
 	if (!GameInfo->m_isCreatePlayer)
 		GameMgr::GetInst()->CreatePlayer();
+
+	GameInfo->SpawnChoice();
+
 }
 
 void Stage1::Release()
