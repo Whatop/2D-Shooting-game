@@ -44,6 +44,7 @@ void Stage2::Init()
 	DownWall->m_Visible = false;
 
 	std::cout << "STAGE 2 ÀÌµ¿" << std::endl;
+	GameInfo->isSpawnEnemy = true;
 	GameInfo->m_Scene = StageScene::STAGE2;
 	if(!GameInfo->m_isCreatePlayer)
 	GameMgr::GetInst()->CreatePlayer();

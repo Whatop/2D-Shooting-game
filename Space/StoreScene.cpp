@@ -31,7 +31,7 @@ void StoreScene::Init()
 	
 	srand(time(NULL));
 	for (int i = 0; i < 5; i++) {
-		RCrad[i] = rand() % 6 + 1;
+		RCrad[i] = rand() % 6;
 		std::cout << RCrad[i] << std::endl;
 	}
 

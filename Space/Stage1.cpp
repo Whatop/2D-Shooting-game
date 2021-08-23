@@ -52,7 +52,7 @@ void Stage1::Init()
 
 	srand(time(NULL));
 	for (int i = 0; i < 5; i++) {
-		RCrad[i] = rand() % 6 + 1;
+		RCrad[i] = rand() % 6;
 	}
 
 	m_Choice = Sprite::Create(L"Painting/GameScreen/Choice.png");
@@ -193,6 +193,7 @@ void Stage1::OnCollisionCard()
 			GameInfo->AddCard(RCrad[0]);
 			INPUT->ButtonDown(false);
 			GameInfo->isSpawnEnemy = true;
+			GameInfo->HV_TYPE = RCrad[0];
 		}
 	}
 	else if (CollisionMgr::GetInst()->MouseWithBoxSize(ChoicePack[1]))
@@ -207,6 +208,7 @@ void Stage1::OnCollisionCard()
 			GameInfo->AddCard(RCrad[1]);
 			INPUT->ButtonDown(false);
 			GameInfo->isSpawnEnemy = true;
+			GameInfo->HV_TYPE = RCrad[1];
 		}
 	}
 	else if (CollisionMgr::GetInst()->MouseWithBoxSize(ChoicePack[2]))
@@ -220,6 +222,7 @@ void Stage1::OnCollisionCard()
 			GameInfo->AddCard(RCrad[2]);
 			INPUT->ButtonDown(false);
 			GameInfo->isSpawnEnemy = true;
+			GameInfo->HV_TYPE = RCrad[2];
 		}
 	}
 	else {

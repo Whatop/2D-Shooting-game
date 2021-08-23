@@ -56,10 +56,12 @@ public:
 
 	bool CK_BossSpawn;
 	bool CK_MiniBossSpawn;
-
+		
 	bool isNoHit; //노히트 판정체크
 
-	int HV_ShotType[7];
+	int HV_ShotType[6];
+
+	int HV_TYPE;
 
 	bool IT_Shot;
 	bool IT_Shotgun;

@@ -16,9 +16,17 @@ EnemyRotationBullet::EnemyRotationBullet(Vec2 Pos, float r)
 	m_Rotation = D3DXToRadian(r);
 	m_Speed = 500.f;
 	m_Atk = 15.f;
-	m_Bolt->R = 51;
-	m_Bolt->G = 51;
-	m_Bolt->B = 51;
+	if (GameInfo->m_Scene == StageScene::STAGE1)
+	{
+		m_Bolt->R = 51;
+		m_Bolt->G = 51;
+		m_Bolt->B = 51;
+	}
+	else {
+		m_Bolt->R = 255;
+		m_Bolt->G = 255;
+		m_Bolt->B = 255;
+	}
 }
 
 EnemyRotationBullet::~EnemyRotationBullet()

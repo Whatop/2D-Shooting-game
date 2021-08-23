@@ -509,7 +509,7 @@ void Boss::State()
 				ObjMgr->AddObject(new Item(m_Position), "Heal");
 			}
 			if (ChangeTime > 10) {
-				if(GameInfo->m_Scene == StageScene::STAGE1)
+				//if(GameInfo->m_Scene == StageScene::STAGE1)
 				SceneDirector::GetInst()->ChangeScene(new StoreScene);
 				ChangeTime = 0.f;
 			}

@@ -50,6 +50,7 @@ void GameMgr::Init()
 	ChargeCount = 0;
 	Player_Coefficient = 1.f;
 	isSpawnEnemy = false;
+	HV_TYPE = 6;
 }
 
 void GameMgr::Release()

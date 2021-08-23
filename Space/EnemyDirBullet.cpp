@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "EnemyDirBullet.h"
 
-EnemyDirBullet::EnemyDirBullet(Vec2 Pos,Vec2 Dir)
+EnemyDirBullet::EnemyDirBullet(Vec2 Pos, Vec2 Dir)
 {
 	m_Bolt = new Animation();
 	m_Bolt->Init(0.1f, true);
@@ -14,11 +14,19 @@ EnemyDirBullet::EnemyDirBullet(Vec2 Pos,Vec2 Dir)
 	SetPosition(Pos);
 	m_Dire = Dir;
 	m_Speed = 500.f;
-	m_Rotation = (std::atan2(m_Dire.y, m_Dire.x));  
+	m_Rotation = (std::atan2(m_Dire.y, m_Dire.x));
 	m_Atk = 15.f;
-	m_Bolt->R = 51;
-	m_Bolt->G = 51;
-	m_Bolt->B = 51;
+	if (GameInfo->m_Scene == StageScene::STAGE1)
+	{
+		m_Bolt->R = 51;
+		m_Bolt->G = 51;
+		m_Bolt->B = 51;
+	}
+	else {
+		m_Bolt->R = 255;
+		m_Bolt->G = 255;
+		m_Bolt->B = 255;
+	}
 }
 
 EnemyDirBullet::~EnemyDirBullet()
