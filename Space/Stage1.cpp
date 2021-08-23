@@ -50,8 +50,25 @@ void Stage1::Init()
 	if (!GameInfo->m_isCreatePlayer)
 		GameMgr::GetInst()->CreatePlayer();
 
-	GameInfo->SpawnChoice();
+	srand(time(NULL));
+	for (int i = 0; i < 5; i++) {
+		RCrad[i] = rand() % 6 + 1;
+	}
 
+	m_Choice = Sprite::Create(L"Painting/GameScreen/Choice.png");
+
+	ChoicePack[0] = Sprite::Create(L"Painting/Store/Pack/" + std::to_wstring(RCrad[0]) + L".png");
+	ChoicePack[1] = Sprite::Create(L"Painting/Store/Pack/" + std::to_wstring(RCrad[1]) + L".png");
+	ChoicePack[2] = Sprite::Create(L"Painting/Store/Pack/" + std::to_wstring(RCrad[2]) + L".png");
+
+	m_Choice->SetPosition(1920 / 2, 1080 / 2);
+	ChoicePack[0]->SetPosition(1920 / 2 + 300, 1080 / 3);
+	ChoicePack[1]->SetPosition(1920 / 2, 1080 / 3);
+	ChoicePack[2]->SetPosition(1920 / 2 - 300, 1080 / 3);
+
+	ChoicePack[0]->SetScale(0.55f, 0.55f);
+	ChoicePack[1]->SetScale(0.55f, 0.55f);
+	ChoicePack[2]->SetScale(0.55f, 0.55f);
 }
 
 void Stage1::Release()
@@ -74,33 +91,23 @@ void Stage1::Update(float deltaTime, float time)
 		Right_Limit->m_Visible = true;
 	}
 	if (!GameInfo->isPause) {
-		if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
-			UpWall->m_Position.x += 100 * dt;
-			DownWall->m_Position.x += 100 * dt;
-			Left_Limit->m_Position.x += 100 * dt;
-			Right_Limit->m_Position.x += 100 * dt;
-			for (int i = 0; i < 4; i++) {
-				m_BackGround[1][i]->m_Position.x -= 10 * dt;
-				m_BackGround[2][i]->m_Position.x -= 25 * dt;
-				m_BackGround[3][i]->m_Position.x -= 50 * dt;
-				m_BackGround[4][i]->m_Position.x -= 75 * dt;
-				m_BackGround[5][i]->m_Position.x -= 100 * dt;
-			}
-		}
+		
 		GameInfo->SpawnEnemy();
 		GameInfo->CheatKey();
-
-		if (GameInfo->m_Scene == StageScene::STAGE1) {
-			for (int i = 0; i < 6; i++) {
-				if (m_BackGround[i][0]->m_Position.x + 2400 - 280 <= Camera::GetInst()->m_Position.x) {
-					m_BackGround[i][0]->m_Position.x += m_BackGround[0][0]->m_Size.x * 4;
-					m_BackGround[i][1]->m_Position.x += m_BackGround[0][1]->m_Size.x * 4;
-				}
-				if (m_BackGround[i][2]->m_Position.x + 2400 - 280 <= Camera::GetInst()->m_Position.x) {
-					m_BackGround[i][2]->m_Position.x += m_BackGround[0][2]->m_Size.x * 4;
-					m_BackGround[i][3]->m_Position.x += m_BackGround[0][3]->m_Size.x * 4;
-				}
+		MoveBG();
+		ResetBG();
+		if (GameInfo->isSpawnEnemy) {
+			m_Choice->m_Visible = false;
+			for (int i = 0; i < 3; i++) {
+				ChoicePack[i]->m_Visible = false;
 			}
+		}
+		else {
+			m_Choice->m_Visible = true;
+			for (int i = 0; i < 3; i++) {
+				ChoicePack[i]->m_Visible = true;
+			}
+			OnCollisionCard();
 		}
 	}
 }
@@ -111,6 +118,10 @@ void Stage1::Render()
 		for (int j = 0; j < 4; j++) {
 			m_BackGround[i][j]->Render();
 		}
+	}
+	m_Choice->Render();
+	for (int i = 0; i < 3; i++) {
+		ChoicePack[i]->Render();
 	}
 }
 
@@ -129,5 +140,92 @@ void Stage1::BGInit()
 		m_BackGround[i][3] = Sprite::Create(L"Painting/GameScreen/Stage1/" + std::to_wstring(a) + L".png");
 		m_BackGround[i][3]->SetPosition(m_BackGround[i][2]->m_Position.x + m_BackGround[i][2]->m_Size.x, m_BackGround[i][2]->m_Position.y);
 		a++;
+	}
+}
+
+void Stage1::MoveBG()
+{
+	if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
+		UpWall->m_Position.x += 100 * dt;
+		DownWall->m_Position.x += 100 * dt;
+		Left_Limit->m_Position.x += 100 * dt;
+		Right_Limit->m_Position.x += 100 * dt;
+		for (int i = 0; i < 4; i++) {
+			m_BackGround[1][i]->m_Position.x -= 10 * dt;
+			m_BackGround[2][i]->m_Position.x -= 25 * dt;
+			m_BackGround[3][i]->m_Position.x -= 50 * dt;
+			m_BackGround[4][i]->m_Position.x -= 75 * dt;
+			m_BackGround[5][i]->m_Position.x -= 100 * dt;
+		}
+		m_Choice->m_Position.x += 100 * dt;
+		for (int i = 0; i < 3; i++) {
+			ChoicePack[i]->m_Position.x += 100 * dt;
+		}
+	}
+}
+
+void Stage1::ResetBG()
+{
+	if (GameInfo->m_Scene == StageScene::STAGE1) {
+		for (int i = 0; i < 6; i++) {
+			if (m_BackGround[i][0]->m_Position.x + 2400 - 280 <= Camera::GetInst()->m_Position.x) {
+				m_BackGround[i][0]->m_Position.x += m_BackGround[0][0]->m_Size.x * 4;
+				m_BackGround[i][1]->m_Position.x += m_BackGround[0][1]->m_Size.x * 4;
+			}
+			if (m_BackGround[i][2]->m_Position.x + 2400 - 280 <= Camera::GetInst()->m_Position.x) {
+				m_BackGround[i][2]->m_Position.x += m_BackGround[0][2]->m_Size.x * 4;
+				m_BackGround[i][3]->m_Position.x += m_BackGround[0][3]->m_Size.x * 4;
+			}
+		}
+	}
+}
+
+void Stage1::OnCollisionCard()
+{
+	if (CollisionMgr::GetInst()->MouseWithBoxSize(ChoicePack[0]))
+	{
+
+		//닿았을때 + 크기변함
+		ChoicePack[0]->SetScale(0.6f, 0.6f);
+		if (INPUT->GetButtonDown()) { // 눌렀을때
+
+			//if(돈이 이카드보다 더 많을때라는 조건)
+			GameInfo->AddCard(RCrad[0]);
+			INPUT->ButtonDown(false);
+			GameInfo->isSpawnEnemy = true;
+		}
+	}
+	else if (CollisionMgr::GetInst()->MouseWithBoxSize(ChoicePack[1]))
+	{
+
+		//닿았을때 + 크기변함
+		ChoicePack[1]->SetScale(0.6f, 0.6f);
+
+		if (INPUT->GetButtonDown()) { // 눌렀을때
+
+			//if(돈이 이카드보다 더 많을때라는 조건)
+			GameInfo->AddCard(RCrad[1]);
+			INPUT->ButtonDown(false);
+			GameInfo->isSpawnEnemy = true;
+		}
+	}
+	else if (CollisionMgr::GetInst()->MouseWithBoxSize(ChoicePack[2]))
+	{
+
+		//닿았을때 + 크기변함
+		ChoicePack[2]->SetScale(0.6f, 0.6f);
+
+		//if(돈이 이카드보다 더 많을때라는 조건)
+		if (INPUT->GetButtonDown()) { // 눌렀을때
+			GameInfo->AddCard(RCrad[2]);
+			INPUT->ButtonDown(false);
+			GameInfo->isSpawnEnemy = true;
+		}
+	}
+	else {
+		for (int i = 0; i < 3; i++) {
+
+			ChoicePack[i]->SetScale(0.55f, 0.55f);
+		}
 	}
 }

@@ -5,7 +5,7 @@
 #include "Box.h"
 #include "Missile.h"
 #include "Item.h"
-#include "Stage2.h"
+#include "StoreScene.h"
 
 Boss::Boss(Vec2 Pos)
 {
@@ -510,7 +510,7 @@ void Boss::State()
 			}
 			if (ChangeTime > 10) {
 				if(GameInfo->m_Scene == StageScene::STAGE1)
-				SceneDirector::GetInst()->ChangeScene(new Stage2);
+				SceneDirector::GetInst()->ChangeScene(new StoreScene);
 				ChangeTime = 0.f;
 			}
 		}

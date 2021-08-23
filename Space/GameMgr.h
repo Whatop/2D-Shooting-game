@@ -108,6 +108,6 @@ public:
 
 	void AddCard(int card);
 
-	void SpawnChoice();
+
 };
 

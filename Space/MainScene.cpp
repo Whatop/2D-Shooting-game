@@ -46,14 +46,17 @@ void MainScene::Update(float deltaTime, float time)
     if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[0]) && INPUT->GetButtonDown())
     {
         SceneDirector::GetInst()->ChangeScene(new Stage1());
+        INPUT->ButtonDown(false);
     }
     else if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[1]) && INPUT->GetButtonDown())
     {
         SceneDirector::GetInst()->ChangeScene(new InputScoreScene());
+        INPUT->ButtonDown(false);
     }
     else if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[2]) && INPUT->GetButtonDown())
     {
         SceneDirector::GetInst()->ChangeScene(new RankScene());
+        INPUT->ButtonDown(false);
     }
     else if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[3]) && INPUT->GetButtonDown())
     {

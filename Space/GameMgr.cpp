@@ -15,7 +15,6 @@
 #include "Stage2.h"
 #include "StoreScene.h"
 
-#include "ChoiceWindow.h"
 #include <algorithm>
 
 GameMgr::GameMgr()
@@ -243,12 +242,6 @@ void GameMgr::AddCard(int card)
 	// 단발 = 1, 샷건 = 2, 차지 = 3, 유도 = 4, 부메랑 = 5, 더블 = 6;
 	HV_ShotType[card]+= 1;
 	std::cout << HV_ShotType[card] << std::endl;
-}
-
-void GameMgr::SpawnChoice()
-{
-	ObjMgr->AddObject(new ChoiceWindow(), "UI");
-	isSpawnEnemy = false;
 }
 
 void GameMgr::SpawnEnemy()

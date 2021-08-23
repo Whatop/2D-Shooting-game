@@ -24,7 +24,7 @@ public:
 	Player();
 	~Player();
 	
-
+	//플레이어 등장 움직임 후 선택화면 생성하도록 함수만들기 $
 	void Init();
 	void Update(float deltaTime, float Time);
 	void Render();
