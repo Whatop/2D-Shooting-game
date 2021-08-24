@@ -187,6 +187,7 @@
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Pet.cpp" />
+    <ClCompile Include="RevolutionBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -331,5 +332,6 @@
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Pet.h" />
+    <ClInclude Include="RevolutionBullet.h" />
   </ItemGroup>
 </Project>

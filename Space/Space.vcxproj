@@ -54,6 +54,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceMgr.cpp" />
     <ClCompile Include="EnemyRotationBullet.cpp" />
+    <ClCompile Include="RevolutionBullet.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneDirector.cpp" />
     <ClCompile Include="ShotGun.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceMgr.h" />
     <ClInclude Include="EnemyRotationBullet.h" />
+    <ClInclude Include="RevolutionBullet.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneDirector.h" />
     <ClInclude Include="ShotGun.h" />

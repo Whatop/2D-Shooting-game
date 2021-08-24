@@ -59,5 +59,4 @@ void EnemyRotationBullet::Move()
 	m_Dire.x = cos(m_Rotation);
 	D3DXVec2Normalize(&m_Dire, &m_Dire);
 	Translate(m_Dire.x * m_Speed * dt, m_Dire.y * m_Speed * dt);
-
 }

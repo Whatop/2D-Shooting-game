@@ -8,6 +8,7 @@
 #include "ChargeBullet.h"
 #include "InputScoreScene.h"
 #include "InduceBullet.h"
+#include "RevolutionBullet.h"
 
 
 Player::Player()
@@ -302,6 +303,8 @@ void Player::GunType()
 		if ((INPUT->GetKey('Z') == KeyState::PRESS) && RpmDelayTime > m_Rpm && GameInfo->ChargeCount < 20) {
 			for (int i = 0; i < GameInfo->HV_ShotType[charge]; i++) {
 				ObjMgr->AddObject(new ChargeBullet, "ChargeBullet");
+				ObjMgr->AddObject(new RevolutionBullet(10), "Bullet");
+			
 			}
 					//RpmDelayTime = 0;
 				m_Rpm = 0.4f;
