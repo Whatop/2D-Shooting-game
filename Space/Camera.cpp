@@ -69,15 +69,15 @@ void Camera::Update(float deltaTime, float time)
 
 	ShakeTimeX += dt;
 	ShakeTimeY += dt;
-	if (isVibration && ShakeTimeY < 4.f) {
-		m_Position.y += (sin(2.0f * 3.14159f * ShakeTimeY * 4) * 1.3f +
-			sin(2.0f * 3.14159f * ShakeTimeY * 8 + 0.2f) * 1.2f +
-			sin(2.0f * 3.14159f * ShakeTimeY * 16 + 0.5f) * 1.1f) * (5 - ShakeTimeY) / 5;
+	if (isVibration && ShakeTimeY < 6.f) {
+		m_Position.y += (sin(2.0f * 3.14159f * ShakeTimeY * 4) * 3.5f +
+			sin(2.0f * 3.14159f * ShakeTimeY * 8 + 0.2f) * 3.4f +
+			sin(2.0f * 3.14159f * ShakeTimeY * 16 + 0.5f) * 3.3f) * (5 - ShakeTimeY) / 5;
 	}
-	if (isVibration && ShakeTimeX < 0.5f) {
-		m_Position.x += (sin(2.0f * 3.14159f * ShakeTimeX * 4) * 1.3f +
-			sin(2.0f * 3.14159f * ShakeTimeX * 8 + 0.2f) * 1.2f +
-			sin(2.0f * 3.14159f * ShakeTimeX * 16 + 0.5f) * 1.1f) * (5 - ShakeTimeX) / 5;
+	if (isVibration && ShakeTimeX < 1.f) {
+		m_Position.x += (sin(2.0f * 3.14159f * ShakeTimeX * 4) * 2.3f +
+			sin(2.0f * 3.14159f * ShakeTimeX * 8 + 0.2f) * 2.2f +
+			sin(2.0f * 3.14159f * ShakeTimeX * 16 + 0.5f) * 2.1f) * (5 - ShakeTimeX) / 5;
 	}
 }
 

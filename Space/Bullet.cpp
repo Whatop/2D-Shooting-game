@@ -17,7 +17,7 @@ Bullet::Bullet()
 	DelayTime = 1.f;
 	DestroyTime = 0.f;
 	m_Layer = 2;
-	m_Atk = 25.f * GameInfo->Player_Coefficient;
+	m_Atk = 125.f * GameInfo->Player_Coefficient;
 	SetScale(1.5f, 1.5f);
 }
 

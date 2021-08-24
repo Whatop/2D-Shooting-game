@@ -51,6 +51,7 @@ void GameMgr::Init()
 	Player_Coefficient = 1.f;
 	isSpawnEnemy = false;
 	HV_TYPE = 6;
+	TempScore = m_Score;
 }
 
 void GameMgr::Release()
@@ -154,6 +155,12 @@ void GameMgr::SortRanking()
 
 void GameMgr::CheatKey()
 {
+	if (INPUT->GetKey('D') == KeyState::DOWN) {
+		Camera::GetInst()->isVibration = true;
+		Camera::GetInst()->ShakeTimeY = 0;
+
+	}
+
 	//Camera::GetInst()->isVibration = true;
 	//Camera::GetInst()->ShakeTimeY = 0;
 	
@@ -162,7 +169,7 @@ void GameMgr::CheatKey()
 	
 	//ObjMgr->AddObject(new Item(Vec2(Camera::GetInst()->m_Position.x + 1500, 350)), "Heal");
 	
-	//	GameInfo->MaxScore += 3000;
+	//	MaxScore += 3000;
 	if (INPUT->GetKey('V') == KeyState::DOWN)
 	{
 		if (m_DebugMode)
@@ -178,6 +185,41 @@ void GameMgr::CheatKey()
 		}
 	}
 
+	if (INPUT->GetKey(VK_F2) == KeyState::DOWN ) {
+		SceneDirector::GetInst()->ChangeScene(new MainScene());
+	}
+	if (INPUT->GetKey(VK_F3) == KeyState::DOWN &&m_Scene != StageScene::STAGE1) {
+		SceneDirector::GetInst()->ChangeScene(new Stage1());
+	}
+	if (INPUT->GetKey(VK_F4) == KeyState::DOWN && m_Scene != StageScene::STAGE2) {
+		SceneDirector::GetInst()->ChangeScene(new Stage2());
+	}
+	if (INPUT->GetKey(VK_F5) == KeyState::DOWN) {
+		SceneDirector::GetInst()->ChangeScene(new StoreScene());
+	}
+	if (INPUT->GetKey('I') == KeyState::DOWN) {
+		ObjMgr->DeleteObject("Enemy");
+		EnemyCount = 0;
+		isBossSpawn = false;
+		isMiniBossSpawn = false;
+	}
+	if (INPUT->GetKey('O') == KeyState::DOWN) {
+		//ObjMgr->DeleteObject("Enemy");
+		//vradEnemyCount = 0;
+		isBossSpawn = false;
+		isMiniBossSpawn = true;
+		CK_MiniBossSpawn = true;
+		CK_BossSpawn = false;
+	}
+	if (INPUT->GetKey('P') == KeyState::DOWN) {
+	//	ObjMgr->DeleteObject("Enemy");
+	//	EnemyCount = 0;
+		isBossSpawn = true;
+		isMiniBossSpawn = false;
+		CK_BossSpawn = true;
+		CK_MiniBossSpawn = false;
+	}
+
 	if (INPUT->GetKey(VK_F1) == KeyState::DOWN) {
 		if (!CameraStop) {
 			CameraStop = true;
@@ -190,41 +232,7 @@ void GameMgr::CheatKey()
 		}
 	}
 
-	if (INPUT->GetKey(VK_F2) == KeyState::DOWN ) {
-		SceneDirector::GetInst()->ChangeScene(new MainScene());
-	}
-	if (INPUT->GetKey(VK_F3) == KeyState::DOWN && GameInfo->m_Scene != StageScene::STAGE1) {
-		SceneDirector::GetInst()->ChangeScene(new Stage1());
-	}
-	if (INPUT->GetKey(VK_F4) == KeyState::DOWN && GameInfo->m_Scene != StageScene::STAGE2) {
-		SceneDirector::GetInst()->ChangeScene(new Stage2());
-	}
-	if (INPUT->GetKey(VK_F5) == KeyState::DOWN) {
-		SceneDirector::GetInst()->ChangeScene(new StoreScene());
-	}
-	if (INPUT->GetKey('I') == KeyState::DOWN) {
-		ObjMgr->DeleteObject("Enemy");
-		GameInfo->EnemyCount = 0;
-		GameInfo->isBossSpawn = false;
-		GameInfo->isMiniBossSpawn = false;
-	}
-	if (INPUT->GetKey('O') == KeyState::DOWN) {
-		//ObjMgr->DeleteObject("Enemy");
-		//GameInfo->EnemyCount = 0;
-		GameInfo->isBossSpawn = false;
-		GameInfo->isMiniBossSpawn = true;
-		GameInfo->CK_MiniBossSpawn = true;
-		GameInfo->CK_BossSpawn = false;
-	}
-	if (INPUT->GetKey('P') == KeyState::DOWN) {
-	//	ObjMgr->DeleteObject("Enemy");
-	//	GameInfo->EnemyCount = 0;
-		GameInfo->isBossSpawn = true;
-		GameInfo->isMiniBossSpawn = false;
-		GameInfo->CK_BossSpawn = true;
-		GameInfo->CK_MiniBossSpawn = false;
-	}
-	if (INPUT->GetKey('S') == KeyState::DOWN) {
+	if (INPUT->GetKey(VK_ESCAPE) == KeyState::DOWN) {
 		if (!isPause) {
 			isPause = true;
 			std::cout << "일시정지 ON" << std::endl;
@@ -245,18 +253,25 @@ void GameMgr::AddCard(int card)
 	std::cout << HV_ShotType[card] << std::endl;
 }
 
+void GameMgr::Reset()
+{
+	memset(HV_ShotType, 0, sizeof(HV_ShotType));
+	isBossSpawn = false;
+	CK_BossSpawn = false;
+}
+
 void GameMgr::SpawnEnemy()
 {
 	if (isSpawnEnemy) {
 		SpawnDelay += dt;
 		//ObjMgr->AddObject(new Boss(), "Boss");
 		//ObjMgr->AddObject(new MiniBoss(Vec2(1920/2+500,1080/2)), "Boss");
-		if (EnemyCount <= 0 && GameInfo->m_Score >= 3000 && !isMiniBossSpawn && isOneBoss && isOneMiniBoss || CK_MiniBossSpawn) {
+		if (EnemyCount <= 0 && m_Score >= 3000 + TempScore && !isMiniBossSpawn && isOneBoss && isOneMiniBoss || CK_MiniBossSpawn) {
 			ObjMgr->AddObject(new MiniBoss(Vec2(Camera::GetInst()->m_Position.x + 1920 + 500, rand() % 450 + 100)), "Enemy");
 			isOneMiniBoss = false;
 			CK_MiniBossSpawn = false;
 		}
-		if (EnemyCount <= 0 && GameInfo->m_Score >= 7000 && !isBossSpawn && isOneBoss && !isOneMiniBoss || CK_BossSpawn) {
+		if (EnemyCount <= 0 && m_Score >= 7000 + TempScore && !isBossSpawn && isOneBoss && !isOneMiniBoss || CK_BossSpawn) {
 			ObjMgr->AddObject(new Boss(Vec2(Camera::GetInst()->m_Position.x + 1920 + 500, 310)), "Enemy");
 			isOneBoss = false;
 			CK_BossSpawn = false;

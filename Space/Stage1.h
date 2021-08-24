@@ -10,7 +10,7 @@ class Stage1 : public Scene
 	Sprite* m_Choice;
 	Sprite* ChoicePack[3];
 
-	int RCrad[5];
+	int RCrad[3];
 public:
 	Stage1();
 	~Stage1();

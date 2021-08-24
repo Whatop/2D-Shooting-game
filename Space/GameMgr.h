@@ -45,6 +45,7 @@ public:
 	int EnemyCount;
 
 	float m_Score;
+	float TempScore;
 	// float EnemyScore,TtemScore, Nohitbonus 추가해야될것
 
 	float Player_Coefficient; // 플레이어 공격력 계수
@@ -110,6 +111,6 @@ public:
 
 	void AddCard(int card);
 
-
+	void Reset();
 };
 

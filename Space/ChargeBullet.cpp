@@ -13,8 +13,15 @@ ChargeBullet::ChargeBullet()
 	m_Layer = 2;
 	OneCharge = false;
 	GameInfo->ChargeCount++;
+	std::cout << GameInfo->ChargeCount << std::endl;
 	m_Rotation = GetPlayer->m_Rotation;
-	ObjMgr->AddObject(new RevolutionBullet(10), "Bullet");
+	if (GameInfo->ChargeCount < 0)
+		GameInfo->ChargeCount = 0;
+
+	//추가 능력
+	ObjMgr->AddObject(new RevolutionBullet(40), "Bullet");
+	ObjMgr->AddObject(new RevolutionBullet(20), "Bullet");
+
 }
 
 ChargeBullet::~ChargeBullet()
@@ -32,6 +39,7 @@ void ChargeBullet::Update(float deltaTime, float Time)
 				if (DelayTime < 4)
 					DelayTime += dt * 1.5f;
 				else {
+					DelayTime = 4;
 				}
 				Spawnpoint = Vec2(GetPlayer->m_Position.x + (GetPlayer->m_Size.x) / 2, GetPlayer->m_Position.y - 2);
 				SetPosition(Spawnpoint);

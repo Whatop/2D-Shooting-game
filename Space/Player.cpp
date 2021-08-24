@@ -8,6 +8,7 @@
 #include "ChargeBullet.h"
 #include "InputScoreScene.h"
 #include "InduceBullet.h"
+#include "RevolutionBullet.h" 
 
 
 Player::Player()
@@ -75,7 +76,6 @@ void Player::Init()
 void Player::Update(float deltaTime, float Time)
 {
 	if (GameInfo->isSpawnEnemy) {
-		
 			m_Player->m_Visible = true;
 	}
 	else {
@@ -101,7 +101,7 @@ void Player::Update(float deltaTime, float Time)
 		GameInfo->PlayerUpdate(this);
 			Buff();
 
-			
+			if(m_Player->m_Visible == true)
 		GunType();
 		if (!GameInfo->m_DebugMode) {
 			ColBox[LEFT]->m_Visible = false;
@@ -299,12 +299,12 @@ void Player::GunType()
 			}
 	}
 	else if (m_GunType == charge) {
-		if ((INPUT->GetKey('Z') == KeyState::PRESS) && RpmDelayTime > m_Rpm && GameInfo->ChargeCount < 20) {
-			for (int i = 0; i < GameInfo->HV_ShotType[charge]; i++) {
+		if (GameInfo->HV_ShotType[charge] > 0) {
+			if ((INPUT->GetKey('Z') == KeyState::PRESS) && RpmDelayTime > m_Rpm && GameInfo->ChargeCount < 20) {
 				ObjMgr->AddObject(new ChargeBullet, "ChargeBullet");
-			}
-					//RpmDelayTime = 0;
+				//RpmDelayTime = 0;
 				m_Rpm = 0.4f;
+			}
 		}
 	}
 	else if (m_GunType == induce) {

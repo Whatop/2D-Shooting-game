@@ -69,6 +69,7 @@ void Stage1::Init()
 	ChoicePack[0]->SetScale(0.55f, 0.55f);
 	ChoicePack[1]->SetScale(0.55f, 0.55f);
 	ChoicePack[2]->SetScale(0.55f, 0.55f);
+	GameInfo->Reset();
 }
 
 void Stage1::Release()
@@ -93,7 +94,6 @@ void Stage1::Update(float deltaTime, float time)
 	if (!GameInfo->isPause) {
 		
 		GameInfo->SpawnEnemy();
-		GameInfo->CheatKey();
 		MoveBG();
 		ResetBG();
 		if (GameInfo->isSpawnEnemy) {
@@ -110,6 +110,7 @@ void Stage1::Update(float deltaTime, float time)
 			OnCollisionCard();
 		}
 	}
+	GameInfo->CheatKey();
 }
 
 void Stage1::Render()
@@ -127,6 +128,7 @@ void Stage1::Render()
 
 void Stage1::BGInit()
 {
+	// 대충 무적자리 or 무적 아이템 보스패턴 씹기
 	// j = 파일 123456 
 	// i = 그거
 	int a = 1;
