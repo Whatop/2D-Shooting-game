@@ -9,6 +9,7 @@ class ChargeBullet : public Object
 	float DelayTime;
 	float DestroyTime;
 	bool OneCharge;
+	int count;
 public:
 	ChargeBullet();
 	~ChargeBullet();

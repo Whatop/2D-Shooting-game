@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ChargeBullet.h"
+#include "RevolutionBullet.h"
 ChargeBullet::ChargeBullet()
 {
 	m_ChargeBullet = Sprite::Create(L"Painting/Bullet/Spread.png");
@@ -13,6 +14,7 @@ ChargeBullet::ChargeBullet()
 	OneCharge = false;
 	GameInfo->ChargeCount++;
 	m_Rotation = GetPlayer->m_Rotation;
+	ObjMgr->AddObject(new RevolutionBullet(10), "Bullet");
 }
 
 ChargeBullet::~ChargeBullet()
@@ -29,11 +31,12 @@ void ChargeBullet::Update(float deltaTime, float Time)
 			if (!OneCharge) {
 				if (DelayTime < 4)
 					DelayTime += dt * 1.5f;
-
+				else {
+				}
 				Spawnpoint = Vec2(GetPlayer->m_Position.x + (GetPlayer->m_Size.x) / 2, GetPlayer->m_Position.y - 2);
 				SetPosition(Spawnpoint);
 			}
-
+			
 		}
 		SetScale(1.f * DelayTime, 1.f * DelayTime);
 		m_Atk = 2.f * DelayTime * GameInfo->Player_Coefficient;	

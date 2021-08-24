@@ -1,19 +1,19 @@
 #include "stdafx.h"
+#include "ChargeBullet.h"
 #include "RevolutionBullet.h"
-
 RevolutionBullet::RevolutionBullet(float r)
 {
 	m_RBullet = Sprite::Create(L"Painting/Bullet/EnemyBullet.png");
 	m_RBullet->SetParent(this);
-	for (auto iter : ObjMgr->m_Objects) {
-		if (iter->m_Tag == "ChargeBullet")
-			m_Position = iter->m_Position;
-	}
-
+	Spawnpoint = Vec2(GetPlayer->m_Position.x + (GetPlayer->m_Size.x * m_Scale.x) / 2, GetPlayer->m_Position.y - 2);
+	SetPosition(Spawnpoint);
+	m_Speed = 1400.f;
+	DelayTime = 1.f;
+	DestroyTime = 0.f;
+	m_Layer = 2;
+	OneCharge = false;
 	KeepRotation = r;
-	m_Speed = 500.f;
-	m_Layer = 3;
-	m_Atk = 3.f;
+	m_Rotation = GetPlayer->m_Rotation;
 }
 
 RevolutionBullet::~RevolutionBullet()
@@ -22,12 +22,24 @@ RevolutionBullet::~RevolutionBullet()
 
 void RevolutionBullet::Update(float deltaTime, float Time)
 {
-	//for (auto iter : ObjMgr->m_Objects) {
-	//if(iter->m_Tag == "ChargeBullet")
-		//m_Position = iter->m_Position;
-	//}
-	m_Rotation += D3DXToRadian(KeepRotation);
-	Move();
+	if (!GameInfo->isPause) {
+
+		RMove();
+		if (!(INPUT->GetKey('Z') == KeyState::PRESS) || OneCharge)
+			Move();
+		else {
+			if (!OneCharge) {
+				if (DelayTime < 4)
+					DelayTime += dt * 1.5f;
+
+				Spawnpoint = Vec2(GetPlayer->m_Position.x + (GetPlayer->m_Size.x) / 2, GetPlayer->m_Position.y - 2);
+				SetPosition(Spawnpoint);
+			}
+
+		}
+		m_Atk = 2.f * GameInfo->Player_Coefficient;
+
+	}
 }
 
 void RevolutionBullet::Render()
@@ -37,12 +49,24 @@ void RevolutionBullet::Render()
 
 void RevolutionBullet::OnCollision(Object* obj)
 {
+
 }
 
 void RevolutionBullet::Move()
 {
-	m_Dire.y = sin(m_Rotation);
-	m_Dire.x = cos(m_Rotation);
-	D3DXVec2Normalize(&m_Dire, &m_Dire);
-	Translate(m_Dire.x * m_Speed * dt, m_Dire.y * m_Speed * dt);
+	DestroyTime += dt;
+	m_Position.x += m_Speed * dt;
+	OneCharge = true;
+	if (DestroyTime > 10 || m_Position.x > Spawnpoint.x + 1500) {
+		ObjMgr->RemoveObject(this);
+		GameInfo->ChargeCount--;
+	}
+}
+
+void RevolutionBullet::RMove()
+{
+	m_Rotation += D3DXToRadian(KeepRotation);
+	Dire.y = cos(m_Rotation);
+	Dire.x = sin(m_Rotation);
+	Translate(Dire.x * 800.f * dt, Dire.y * 800.f * dt);
 }

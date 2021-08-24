@@ -2,9 +2,13 @@
 class RevolutionBullet : public Object
 {
 	Sprite* m_RBullet;
-	float m_Speed;
 	float KeepRotation;
-	Vec2 m_Dire;
+	Vec2 Dire;
+	Vec2 Spawnpoint;
+	float m_Speed;
+	float DelayTime;
+	float DestroyTime;
+	bool OneCharge;
 public:
 	RevolutionBullet(float r);
 	~RevolutionBullet();
@@ -14,5 +18,6 @@ public:
 	void OnCollision(Object* obj);
 
 	void Move();
+	void RMove();
 };
 

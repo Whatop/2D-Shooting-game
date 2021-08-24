@@ -51,7 +51,7 @@ void Stage1::Init()
 		GameMgr::GetInst()->CreatePlayer();
 
 	srand(time(NULL));
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 3; i++) {
 		RCrad[i] = rand() % 6;
 	}
 
