@@ -59,7 +59,8 @@ void MiniBoss::Update(float deltaTime, float Time)
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
 				GameInfo->EnemyCount--;
 				GameInfo->MaxScore += 1000;
-				GameInfo->isMiniBossSpawn = false;
+				GameInfo->ChocieScene();
+
 				ObjMgr->RemoveObject(this);
 			}
 
@@ -93,7 +94,7 @@ void MiniBoss::OnCollision(Object* obj)
 		float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 		obj->SetDestroy(true);
 		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-		GameInfo->ChargeCount--;
+		GameInfo->RemoveCharge();
 		std::cout << m_Hp << std::endl;
 		// Â÷Áö¼¦ Ç® 1300-1139.98 161.02
 		// Â÷Áö¼¦ Ç® 899.325

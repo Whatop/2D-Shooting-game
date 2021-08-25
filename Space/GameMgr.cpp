@@ -52,6 +52,7 @@ void GameMgr::Init()
 	isSpawnEnemy = false;
 	HV_TYPE = 6;
 	TempScore = m_Score;
+	ChargeTime = 0.f;
 }
 
 void GameMgr::Release()
@@ -95,6 +96,7 @@ void GameMgr::Update()
 		UI::GetInst()->Update();
 
 	AddScore(MaxScore);
+	ChargeTime += dt;
 }
 
 void GameMgr::Render()
@@ -258,6 +260,22 @@ void GameMgr::Reset()
 	memset(HV_ShotType, 0, sizeof(HV_ShotType));
 	isBossSpawn = false;
 	CK_BossSpawn = false;
+}
+
+void GameMgr::ChocieScene()
+{
+	SpawnDelay = 0.f;
+	if(SpawnDelay > 5)
+	isSpawnEnemy = false;
+
+}
+
+void GameMgr::RemoveCharge()
+{
+	if (ChargeTime > 1.f) {
+		ChargeCount--;
+		ChargeTime = 0.f;
+	}
 }
 
 void GameMgr::SpawnEnemy()

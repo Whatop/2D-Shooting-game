@@ -186,12 +186,9 @@ void Stage1::OnCollisionCard()
 {
 	if (CollisionMgr::GetInst()->MouseWithBoxSize(ChoicePack[0]))
 	{
-
-		//닿았을때 + 크기변함
 		ChoicePack[0]->SetScale(0.6f, 0.6f);
-		if (INPUT->GetButtonDown()) { // 눌렀을때
+		if (INPUT->GetButtonDown()) {
 
-			//if(돈이 이카드보다 더 많을때라는 조건)
 			GameInfo->AddCard(RCrad[0]);
 			INPUT->ButtonDown(false);
 			GameInfo->isSpawnEnemy = true;
@@ -200,13 +197,10 @@ void Stage1::OnCollisionCard()
 	}
 	else if (CollisionMgr::GetInst()->MouseWithBoxSize(ChoicePack[1]))
 	{
-
-		//닿았을때 + 크기변함
 		ChoicePack[1]->SetScale(0.6f, 0.6f);
 
-		if (INPUT->GetButtonDown()) { // 눌렀을때
+		if (INPUT->GetButtonDown()) {
 
-			//if(돈이 이카드보다 더 많을때라는 조건)
 			GameInfo->AddCard(RCrad[1]);
 			INPUT->ButtonDown(false);
 			GameInfo->isSpawnEnemy = true;
@@ -215,12 +209,9 @@ void Stage1::OnCollisionCard()
 	}
 	else if (CollisionMgr::GetInst()->MouseWithBoxSize(ChoicePack[2]))
 	{
-
-		//닿았을때 + 크기변함
 		ChoicePack[2]->SetScale(0.6f, 0.6f);
 
-		//if(돈이 이카드보다 더 많을때라는 조건)
-		if (INPUT->GetButtonDown()) { // 눌렀을때
+		if (INPUT->GetButtonDown()) { 
 			GameInfo->AddCard(RCrad[2]);
 			INPUT->ButtonDown(false);
 			GameInfo->isSpawnEnemy = true;
@@ -229,7 +220,6 @@ void Stage1::OnCollisionCard()
 	}
 	else {
 		for (int i = 0; i < 3; i++) {
-
 			ChoicePack[i]->SetScale(0.55f, 0.55f);
 		}
 	}

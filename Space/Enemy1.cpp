@@ -79,7 +79,7 @@ void Enemy1::OnCollision(Object* obj)
 		float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 		obj->SetDestroy(true);
 		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-		GameInfo->ChargeCount--;
+		GameInfo->RemoveCharge();
 	}
 }
 

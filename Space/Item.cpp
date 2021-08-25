@@ -6,7 +6,6 @@ Item::Item(Vec2 Pos)
 	ItemCode = rand() % 3 + 0;
 	m_Item = Sprite::Create(L"Painting/Item/"+std::to_wstring(ItemCode)+L".png");
 	
-	
 	m_ColBox = Sprite::Create(L"Painting/Item/Item.png");
 	m_ColBox->SetParent(this);
 	m_ColBox->m_Visible = false;
@@ -34,39 +33,40 @@ void Item::Update(float deltaTime, float Time)
 	else if (ItemCode == 2) {
 		m_Tag = "None";
 	}
-	ObjMgr->CollisionCheak(this, "Player");
-	DestroyTime += dt;
-	Move();
-	if (m_Position.y > 600 - m_Size.y/2)
-		m_Rotation = m_Rotation * -1;
-	if (m_Position.y < 0 + m_Size.y/2)
-		m_Rotation = m_Rotation * -1;
-	if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - m_Size.x/2)
-		m_Rotation = m_Rotation * -1.5f;
-	if (m_Position.x < Camera::GetInst()->m_Position.x + m_Size.x/2)
-		m_Rotation = m_Rotation * -0.5f;
-	if (DestroyTime > 15.f) {
-		ObjMgr->RemoveObject(this);
-	}
-	if (DestroyTime > 10.f) {
-		if (m_Item->A <= 0) {
-			Under = true;
-			Over = false;
+	if (!GameInfo->isPause) {
+		ObjMgr->CollisionCheak(this, "Player");
+		DestroyTime += dt;
+		Move();
+		if (m_Position.y > 600 - m_Size.y / 2)
+			m_Rotation = m_Rotation * -1;
+		if (m_Position.y < 0 + m_Size.y / 2)
+			m_Rotation = m_Rotation * -1;
+		if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - m_Size.x / 2)
+			m_Rotation = m_Rotation * -1.5f;
+		if (m_Position.x < Camera::GetInst()->m_Position.x + m_Size.x / 2)
+			m_Rotation = m_Rotation * -0.5f;
+		if (DestroyTime > 15.f) {
+			ObjMgr->RemoveObject(this);
 		}
-		if (m_Item->A >= 255) {
-			Under = false;
-			Over = true;
-		}
+		if (DestroyTime > 10.f) {
+			if (m_Item->A <= 0) {
+				Under = true;
+				Over = false;
+			}
+			if (m_Item->A >= 255) {
+				Under = false;
+				Over = true;
+			}
 
-		if (Under) {
-			m_Item->A += 20;
-		}
-		if (Over) {
-			m_Item->A -= 20;
+			if (Under) {
+				m_Item->A += 20;
+			}
+			if (Over) {
+				m_Item->A -= 20;
+			}
 		}
 	}
 }
-
 void Item::Render()
 {
 	m_Item->Render();

@@ -76,6 +76,9 @@ public:
 	RankingPlayer* m_Rank;
 	StageScene m_Scene;
 	Vec2 BossPosition;
+
+	float ChargeTime;
+
 public:
 	void Init();
 	void Release();
@@ -112,5 +115,9 @@ public:
 	void AddCard(int card);
 
 	void Reset();
+
+	void ChocieScene();
+
+	void RemoveCharge();
 };
 

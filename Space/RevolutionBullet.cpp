@@ -14,7 +14,7 @@ RevolutionBullet::RevolutionBullet(float r)
 	OneCharge = false;
 	KeepRotation = r;
 	m_Rotation = GetPlayer->m_Rotation;
-	m_Atk = 1.f * GameInfo->Player_Coefficient;
+	m_Atk = 0.5f * GameInfo->Player_Coefficient;
 
 	m_RBullet->R = 0;
 	m_RBullet->G = 255;

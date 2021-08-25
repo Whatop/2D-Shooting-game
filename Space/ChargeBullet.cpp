@@ -13,7 +13,6 @@ ChargeBullet::ChargeBullet()
 	m_Layer = 2;
 	OneCharge = false;
 	GameInfo->ChargeCount++;
-	std::cout << GameInfo->ChargeCount << std::endl;
 	m_Rotation = GetPlayer->m_Rotation;
 	if (GameInfo->ChargeCount < 0)
 		GameInfo->ChargeCount = 0;
@@ -47,7 +46,7 @@ void ChargeBullet::Update(float deltaTime, float Time)
 			
 		}
 		SetScale(1.f * DelayTime, 1.f * DelayTime);
-		m_Atk = 2.f * DelayTime * GameInfo->Player_Coefficient;	
+		m_Atk = 1.5f * DelayTime * GameInfo->Player_Coefficient;	
 	
 	}
 }

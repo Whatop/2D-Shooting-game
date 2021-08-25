@@ -25,7 +25,9 @@ void EffectMgr::Update(float deltaTime, float time)
 	{
 		ObjMgr->RemoveObject(this);
 	}
-	Effect->Update(deltaTime, time);
+	if (!GameInfo->isPause) {
+		Effect->Update(deltaTime, time);
+	}
 }
 
 void EffectMgr::Render()

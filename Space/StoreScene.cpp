@@ -74,8 +74,8 @@ void StoreScene::Update(float deltaTime, float Time)
 {
 	GameInfo->CheatKey();
 
-
-	OnCollisionCard();
+	if(GameInfo->m_Scene == StageScene::NONE)
+		OnCollisionCard();
 }
 
 void StoreScene::Render()

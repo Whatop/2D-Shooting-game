@@ -280,7 +280,7 @@ void Boss::OnCollision(Object* obj)
 				float randy = (rand() % (int)BossTail->m_Size.y * m_Scale.y) + BossTail->m_Position.y - BossTail->m_Size.y / 2 * m_Scale.y;
 				obj->SetDestroy(true);
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-				GameInfo->ChargeCount--;
+				GameInfo->RemoveCharge();
 			}
 		}
 		if (!isDestroyTop) {
@@ -291,7 +291,7 @@ void Boss::OnCollision(Object* obj)
 				float randy = (rand() % (int)ColBoxTop->m_Size.y * m_Scale.y) + ColBoxTop->m_Position.y - ColBoxTop->m_Size.y / 2 * m_Scale.y;
 				obj->SetDestroy(true);
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-				GameInfo->ChargeCount--;
+				GameInfo->RemoveCharge();
 			}
 		}
 		if (isDestroyTop && isDestroyTail && !isDestroyBody) {
@@ -302,7 +302,7 @@ void Boss::OnCollision(Object* obj)
 				float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 				obj->SetDestroy(true);
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-				GameInfo->ChargeCount--;
+				GameInfo->RemoveCharge();
 			}
 		}
 		if (isDestroyBody) {
@@ -312,7 +312,7 @@ void Boss::OnCollision(Object* obj)
 				float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 				obj->SetDestroy(true);
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-				GameInfo->ChargeCount--;
+				GameInfo->RemoveCharge();
 
 			}
 		}
