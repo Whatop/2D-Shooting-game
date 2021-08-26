@@ -33,12 +33,14 @@ void EliteEnemy2::Update(float deltaTime, float Time)
 {
 	if (!GameInfo->isPause) {
 		SpawnMove += dt;
-		if (!OneDamege)
+		if (!OneDamege) {
 			ObjMgr->CollisionCheak(this, "Boom");
+		}
 		else {
 			DamegeCoolTime += dt;
-			
-			if (DamegeCoolTime > 4) {
+			std::cout << DamegeCoolTime << std::endl;
+
+			if (DamegeCoolTime > 4.f) {
 
 				DamegeCoolTime = 0.f;
 				OneDamege = false;

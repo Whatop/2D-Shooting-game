@@ -23,7 +23,7 @@ class Enemy3 : public Object
 
 
 	bool OneDamege;
-	bool DamegeCoolTime;
+	float DamegeCoolTime;
 public:
 	Enemy3(Vec2 Pos);
 	~Enemy3();

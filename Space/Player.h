@@ -23,7 +23,7 @@ class Player : public Object
 	int shot, shotgun, charge, induce, boomerang, doubleshot;
 	
 public:
-	Player();
+	Player(float hp = 100);
 	~Player();
 	
 	//플레이어 등장 움직임 후 선택화면 생성하도록 함수만들기 $

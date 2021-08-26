@@ -16,7 +16,7 @@ DoubleBullet::DoubleBullet(Vec2 Pos)
 	DelayTime = 1.f;
 	DestroyTime = 0.f;
 	m_Layer = 2;
-	m_Atk = 5.f * GameInfo->Player_Coefficient;
+	m_Atk = 5.f * GameInfo->HV_ShotType[5] * 0.5f *GameInfo->Player_Coefficient;
 	SetScale(0.75f, 0.75f);
 
 	m_Spark->R = 255;

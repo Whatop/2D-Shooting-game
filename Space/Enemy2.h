@@ -15,7 +15,7 @@ class Enemy2 : public Object
 
 
 	bool OneDamege;
-	bool DamegeCoolTime;
+	float DamegeCoolTime;
 public:
 	Enemy2(Vec2 Pos);
 	~Enemy2();

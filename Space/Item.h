@@ -9,8 +9,9 @@ class Item : public Object
 	bool Over;
 	bool Under;
 	int ItemCode;
+	bool isBonus;
 public:
-	Item(Vec2 Pos);
+	Item(Vec2 Pos, bool bonus = false);
 	~Item();
 
 	void Update(float deltaTime, float Time);

@@ -79,6 +79,11 @@ void Camera::Update(float deltaTime, float time)
 			sin(2.0f * 3.14159f * ShakeTimeX * 8 + 0.2f) * 2.2f +
 			sin(2.0f * 3.14159f * ShakeTimeX * 16 + 0.5f) * 2.1f) * (5 - ShakeTimeX) / 5;
 	}
+	/*
+	ÆøÅº ÅÍÆ®¸±¶§ Ãß°¡ÇÒ±î?
+	m_Position.x += (sin(2.0f * 3.14159f * ShakeTimeX * 4) * 2.3f +
+		sin(2.0f * 3.14159f * ShakeTimeX * 8 + 0.2f) * 2.2f +
+		sin(2.0f * 3.14159f * ShakeTimeX * 16 + 0.5f) * 2.1f) * (5 - ShakeTimeX) / 5;*/
 }
 
 void Camera::Render()
@@ -88,7 +93,5 @@ void Camera::Render()
 	D3DXMatrixScaling(&mScale, m_Scale.x, m_Scale.y, 1.f);
 
 	mWorld = mScale * mRot * mTrans;
-
-
 }
 

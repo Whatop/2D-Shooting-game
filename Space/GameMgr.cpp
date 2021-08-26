@@ -44,7 +44,6 @@ void GameMgr::Init()
 	CK_MiniBossSpawn = false;
 	CK_BossSpawn = false;
 
-	MaxHp = 0, Hp = 0;
 	BossMaxHp = 0, BossHp = 0;
 	MiniBossMaxHp = 0, MiniBossHp = 0;
 	ChargeCount = 0;
@@ -54,6 +53,9 @@ void GameMgr::Init()
 	TempScore = m_Score;
 	ChargeTime = 0.f;
 	isChoiceDelay = true;
+
+	//¹Ø¿¡ Ä«µå
+	UP_Charge = false;
 }
 
 void GameMgr::Release()
@@ -78,7 +80,11 @@ void GameMgr::ReleaseUI()
 
 void GameMgr::CreatePlayer()
 {
-	ObjMgr->AddObject(new Player(), "Player");
+	if(GameInfo->m_Scene == StageScene::STAGE1)
+		ObjMgr->AddObject(new Player(), "Player");
+	else
+		ObjMgr->AddObject(new Player(Hp), "Player");
+
 	m_isCreatePlayer = true;
 }
 
@@ -103,7 +109,9 @@ void GameMgr::Update()
 		if (SpawnDelay > 5) {
 			isSpawnEnemy = false;
 			isChoiceDelay = true;
-			SpawnDelay = 30.f;
+			isBossSpawn = false;
+			isMiniBossSpawn = false;
+			SpawnDelay = 40.f;
 			EnemyCount = 0;
 		}
 	}
@@ -276,7 +284,8 @@ void GameMgr::BossReset()
 
 void GameMgr::GunReset()
 {
-	memset(HV_ShotType, 0, sizeof(HV_ShotType));
+	for (int i = 0; i < 6; i++)
+		HV_ShotType[i] = 1;
 }
 
 void GameMgr::ChocieScene()

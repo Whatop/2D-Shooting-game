@@ -13,7 +13,7 @@ Boomerang::Boomerang()
 	m_Speed = 950.f;
 	DelayTime = 0.f;
 	DestroyTime = 0.f;
-	m_Atk = 30.f * GameInfo->Player_Coefficient;
+	m_Atk = 30.f * GameInfo->HV_ShotType[4] * 0.5f * GameInfo->Player_Coefficient;
 }
 
 Boomerang::~Boomerang()

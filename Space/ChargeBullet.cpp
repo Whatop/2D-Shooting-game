@@ -17,10 +17,11 @@ ChargeBullet::ChargeBullet()
 	if (GameInfo->ChargeCount < 0)
 		GameInfo->ChargeCount = 0;
 
-	//추가 능력
-	ObjMgr->AddObject(new RevolutionBullet(40), "Bullet");
-	ObjMgr->AddObject(new RevolutionBullet(20), "Bullet");
-
+	//추가 능력 
+	if (GameInfo->UP_Charge) {
+		ObjMgr->AddObject(new RevolutionBullet(40), "Bullet");
+		ObjMgr->AddObject(new RevolutionBullet(20), "Bullet");
+	}
 }
 
 ChargeBullet::~ChargeBullet()
@@ -46,7 +47,7 @@ void ChargeBullet::Update(float deltaTime, float Time)
 			
 		}
 		SetScale(1.f * DelayTime, 1.f * DelayTime);
-		m_Atk = 1.5f * DelayTime * GameInfo->Player_Coefficient;	
+		m_Atk = 1.5f * GameInfo->HV_ShotType[2] * 0.5f * DelayTime * GameInfo->Player_Coefficient;
 	
 	}
 }

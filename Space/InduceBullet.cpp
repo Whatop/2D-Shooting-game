@@ -19,7 +19,7 @@ InduceBullet::InduceBullet()
 	DelayTime = 1.f;
 	DestroyTime = 0.f;
 	m_Layer = 2;
-	m_Atk = 7.5f * GameInfo->Player_Coefficient;
+	m_Atk = 7.5f * GameInfo->HV_ShotType[3] * 0.5f * GameInfo->Player_Coefficient;
 	SetScale(1.f, 1.f);
 
 	m_Induce->R = 50;

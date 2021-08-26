@@ -12,8 +12,10 @@
 #include "Boom.h" 
 
 
-Player::Player()
+Player::Player(float hp)
 {
+	m_MaxHp = 100;
+	m_Hp = hp;
 	Init();
 	SetPosition(360, 360);
 	GameInfo->PlayerUpdate(this);
@@ -39,8 +41,6 @@ void Player::Init()
 	DOWN = 3;
 	HIT = 4;
 	m_Speed = 440.f;
-	m_MaxHp = 100;
-	m_Hp = m_MaxHp;
 	m_Rpm = 0.1f;
 	RpmDelayTime = 0.f;
 	isLeft = false;
@@ -238,6 +238,10 @@ void Player::OnCollision(Object* obj)
 	if (obj->m_Tag == "None") {
 		m_Hp -= 1;
 		obj->SetDestroy(true);
+	}	
+	if (obj->m_Tag == "Bonus") {
+		GameInfo->MaxScore += 100;
+		obj->SetDestroy(true);
 	}
 
 }
@@ -283,66 +287,55 @@ void Player::CollisionBox()
 void Player::GunType()
 {
 	// shot = 1, shotgun = 2, charge = 3, induce = 4, boomerang = 5;
-	// IT_Shot;
-	// IT_Shotgun;
-	// IT_Charge;
-	// IT_Induce;
-	// IT_Boomerang;
-	// IT_Doubleshot;
+	// IT_Shot;			GameInfo->HV_ShotType[shot]
+	// IT_Shotgun;		GameInfo->HV_ShotType[shotgun]
+	// IT_Charge;		GameInfo->HV_ShotType[charge]
+	// IT_Induce;		GameInfo->HV_ShotType[induce]
+	// IT_Boomerang;	GameInfo->HV_ShotType[boomerang]
+	// IT_Doubleshot;	GameInfo->HV_ShotType[doubleshot]
 
 	if (m_GunType == shot) {
 		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
-			for (int i = 0; i < GameInfo->HV_ShotType[shot]; i++) {
-				ObjMgr->AddObject(new Bullet, "Bullet");
-			}
+			ObjMgr->AddObject(new Bullet, "Bullet");
 			RpmDelayTime = 0;
 			m_Rpm = 0.45f;
 		}
 	}
 	else if (m_GunType == shotgun) {
 		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
-			for (int i = 0; i < GameInfo->HV_ShotType[shotgun]; i++) {
 				ObjMgr->AddObject(new ShotGun(0), "Bullet");
 				ObjMgr->AddObject(new ShotGun(5), "Bullet");
 				ObjMgr->AddObject(new ShotGun(-5), "Bullet");
-			}
 			RpmDelayTime = 0;
 			m_Rpm = 0.2f;
 		}
 	}
 	else if (m_GunType == charge) {
-		if (GameInfo->HV_ShotType[charge] > 0) {
 			if ((INPUT->GetKey('Z') == KeyState::PRESS) && RpmDelayTime > m_Rpm && GameInfo->ChargeCount < 20) {
 				ObjMgr->AddObject(new ChargeBullet, "ChargeBullet");
 				//RpmDelayTime = 0;
 				m_Rpm = 0.4f;
-			}
 		}
 	}
 	else if (m_GunType == induce) {
 		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
-			for (int i = 0; i < GameInfo->HV_ShotType[induce]; i++) {
-				ObjMgr->AddObject(new InduceBullet, "Bullet");
-			}
+			ObjMgr->AddObject(new InduceBullet, "Bullet");
+
 			RpmDelayTime = 0;
 			m_Rpm = 0.15f;
 		}
 	}
 	else if (m_GunType == boomerang) {
 		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
-			for (int i = 0; i < GameInfo->HV_ShotType[boomerang]; i++) {
 				ObjMgr->AddObject(new Boomerang, "Bullet");
-			}
 			RpmDelayTime = 0;
 			m_Rpm = 0.35f;
 		}
 	}
 	else if (m_GunType == doubleshot) {
 		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
-			for (int i = 0; i < GameInfo->HV_ShotType[doubleshot]; i++) {
-				ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 10, m_Position.y + 20)), "Bullet");
-				ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 10, m_Position.y - 20)), "Bullet");
-			}
+			ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 10, m_Position.y + 20)), "Bullet");
+			ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 10, m_Position.y - 20)), "Bullet");
 			RpmDelayTime = 0;
 			m_Rpm = 0.1f;
 		}

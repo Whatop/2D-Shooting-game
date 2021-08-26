@@ -15,7 +15,7 @@ class EliteEnemy2 : public Object
 	Vec2 m_RandomPosition;
 
 	bool OneDamege;
-	bool DamegeCoolTime;
+	float DamegeCoolTime;
 public:
 	EliteEnemy2(Vec2 Pos);
 	~EliteEnemy2();

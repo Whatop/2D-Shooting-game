@@ -17,7 +17,7 @@ class MiniBoss : public Object
 	int pattern;
 	
 	bool OneDamege;
-	bool DamegeCoolTime;
+	float DamegeCoolTime;
 public:
 	MiniBoss(Vec2 Pos);
 	~MiniBoss();

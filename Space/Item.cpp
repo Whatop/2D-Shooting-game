@@ -1,9 +1,12 @@
 #include "stdafx.h"
 #include "Item.h"
 
-Item::Item(Vec2 Pos)
+Item::Item(Vec2 Pos, bool bonus)
 {
 	ItemCode = rand() % 3 + 0;
+	if (bonus) {
+		ItemCode = 999;
+	}
 	m_Item = Sprite::Create(L"Painting/Item/"+std::to_wstring(ItemCode)+L".png");
 	
 	m_ColBox = Sprite::Create(L"Painting/Item/Item.png");
@@ -15,6 +18,7 @@ Item::Item(Vec2 Pos)
 	Under = false;
 	Over = true;
 	m_Layer = 2;
+
 	
 }
 
@@ -32,6 +36,9 @@ void Item::Update(float deltaTime, float Time)
 	}
 	else if (ItemCode == 2) {
 		m_Tag = "None";
+	}
+	else if (ItemCode == 999) {
+		m_Tag = "Bonus";
 	}
 	if (!GameInfo->isPause) {
 		ObjMgr->CollisionCheak(this, "Player");

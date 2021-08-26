@@ -18,7 +18,7 @@ ShotGun::ShotGun(float r)
 	DelayTime = 0.f;
 	DestroyTime = 0.f;
 	m_Rotation = D3DXToRadian(r);
-	m_Atk = 7.5f * GameInfo->Player_Coefficient;
+	m_Atk = 7.5f * GameInfo->HV_ShotType[1] * 0.5f * GameInfo->Player_Coefficient;
 	m_ShotGun->R = 255;
 	m_ShotGun->G = 10;
 	m_ShotGun->B = 10;

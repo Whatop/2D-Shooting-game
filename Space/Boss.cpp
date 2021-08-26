@@ -528,7 +528,7 @@ void Boss::State()
 			}
 			if (bonusTime < 3) {
 				bonusTime += dt;
-				ObjMgr->AddObject(new Item(m_Position), "Heal");
+				ObjMgr->AddObject(new Item(m_Position,true), "ITEM");
 			}
 			if (ChangeTime > 10) {
 				//if(GameInfo->m_Scene == StageScene::STAGE1)

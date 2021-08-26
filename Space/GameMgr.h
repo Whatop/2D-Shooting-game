@@ -81,6 +81,8 @@ public:
 	float ChargeTime;
 	bool isChoiceDelay;
 
+	bool UP_Charge;
+
 public:
 	void Init();
 	void Release();
