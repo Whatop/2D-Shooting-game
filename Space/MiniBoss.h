@@ -15,6 +15,9 @@ class MiniBoss : public Object
 	bool isBullet;
 	bool isMissile;
 	int pattern;
+	
+	bool OneDamege;
+	bool DamegeCoolTime;
 public:
 	MiniBoss(Vec2 Pos);
 	~MiniBoss();

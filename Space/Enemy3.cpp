@@ -14,7 +14,7 @@ Enemy3::Enemy3(Vec2 Pos)
 	m_Hp = 100;
 	m_Rotation = D3DXToRadian(180);
 	m_Speed = 350.f;
-	m_LastMoveTime = 2.f;
+	m_LastMoveTime = 1.f;
 	m_Layer = 2;
 	SpawnMove = 0.f;
 	ones = true;
@@ -30,7 +30,8 @@ Enemy3::Enemy3(Vec2 Pos)
 	impellent = 1.f;
 	SetScale(0.5f, 0.5f);
 	DestroyTime = 0.f;
-	Changecount = 0;
+	Changecount = 1;
+	OneDamege = false;
 }
 
 Enemy3::~Enemy3()
@@ -41,6 +42,15 @@ void Enemy3::Update(float deltaTime, float Time)
 {
 	if (!GameInfo->isPause) {
 		SpawnMove += dt;
+		if (!OneDamege)
+			ObjMgr->CollisionCheak(this, "Boom");
+		else {
+			DamegeCoolTime += dt;
+			if (DamegeCoolTime > 4) {
+				DamegeCoolTime = 0.f;
+				OneDamege = false;
+			}
+		}
 		if (SpawnMove < 2) {
 			m_Position.x -= (300 + rand() % 100) * dt;
 		}
@@ -94,6 +104,10 @@ void Enemy3::OnCollision(Object* obj)
 		obj->SetDestroy(true);
 		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 		GameInfo->RemoveCharge();
+	}
+	if (obj->m_Tag == "Boom") {
+		m_Hp -= obj->m_Atk;
+		OneDamege = true;
 	}
 }
 

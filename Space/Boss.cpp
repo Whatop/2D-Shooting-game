@@ -105,6 +105,8 @@ Boss::Boss(Vec2 Pos)
 	m_Layer = 2;
 	GameInfo->EnemyCount++;
 	ChangeTime = 0.f;
+	OneDamege = false;
+	DamegeCoolTime = 0.f;
 }
 
 Boss::~Boss()
@@ -114,6 +116,15 @@ Boss::~Boss()
 void Boss::Update(float deltaTime, float Time)
 {
 	if (!GameInfo->isPause) {
+		if (!OneDamege)
+			ObjMgr->CollisionCheak(this, "Boom");
+		else {
+			DamegeCoolTime += dt;
+			if (DamegeCoolTime > 4) {
+				DamegeCoolTime = 0.f;
+				OneDamege = false;
+			}
+		}
 		int aaa;
 		SpawnMove += dt;
 		if (!(GameInfo->AutoCamera && !GameInfo->CameraStop)) {
@@ -316,6 +327,17 @@ void Boss::OnCollision(Object* obj)
 
 			}
 		}
+	}
+	if (obj->m_Tag == "Boom") {
+		m_Hp -= obj->m_Atk;
+		BodyHp -= obj->m_Atk;
+		TopHp -= obj->m_Atk;
+		TailHp -= obj->m_Atk;
+		float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+		float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+
+		OneDamege = true;
 	}
 }
 

@@ -9,6 +9,7 @@
 #include "InputScoreScene.h"
 #include "InduceBullet.h"
 #include "RevolutionBullet.h" 
+#include "Boom.h" 
 
 
 Player::Player()
@@ -75,8 +76,11 @@ void Player::Init()
 
 void Player::Update(float deltaTime, float Time)
 {
+	if (INPUT->GetKey('C') == KeyState::DOWN) {
+		ObjMgr->AddObject(new Boom, "Boom");
+	}
 	if (GameInfo->isSpawnEnemy) {
-			m_Player->m_Visible = true;
+		m_Player->m_Visible = true;
 	}
 	else {
 		m_Player->m_Visible = false;
@@ -99,10 +103,10 @@ void Player::Update(float deltaTime, float Time)
 		Move();
 		CollisionBox();
 		GameInfo->PlayerUpdate(this);
-			Buff();
+		Buff();
 
-			if(m_Player->m_Visible == true)
-		GunType();
+		if (m_Player->m_Visible == true)
+			GunType();
 		if (!GameInfo->m_DebugMode) {
 			ColBox[LEFT]->m_Visible = false;
 			ColBox[RIGHT]->m_Visible = false;
@@ -240,22 +244,30 @@ void Player::OnCollision(Object* obj)
 
 void Player::Move()
 {
-	if (!isUp && INPUT->GetKey(VK_UP) == KeyState::PRESS) {
-		m_Position.y -= m_Speed * dt;
-	}
-	if (!isDown && INPUT->GetKey(VK_DOWN) == KeyState::PRESS) {
-		m_Position.y += m_Speed * dt;
-	}
-	if (!isLeft && INPUT->GetKey(VK_LEFT) == KeyState::PRESS) {
-		m_Position.x -= m_Speed * dt;
-	}
-	if (!isRight && INPUT->GetKey(VK_RIGHT) == KeyState::PRESS) {
-		m_Position.x += m_Speed * dt;
+	if (m_Player->m_Visible == true) {
+		if (INPUT->GetKey(VK_SHIFT) == KeyState::PRESS) {
+			m_Speed = 440.f / 2;
+		}
+		else {
+			m_Speed = 440.f;
+		}
+		if (!isUp && INPUT->GetKey(VK_UP) == KeyState::PRESS) {
+			m_Position.y -= m_Speed * dt;
+		}
+		if (!isDown && INPUT->GetKey(VK_DOWN) == KeyState::PRESS) {
+			m_Position.y += m_Speed * dt;
+		}
+		if (!isLeft && INPUT->GetKey(VK_LEFT) == KeyState::PRESS) {
+			m_Position.x -= m_Speed * dt;
+		}
+		if (!isRight && INPUT->GetKey(VK_RIGHT) == KeyState::PRESS) {
+			m_Position.x += m_Speed * dt;
+		}
 	}
 	if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
 		m_Position.x += 100 * dt;
 	}
-	
+
 }
 
 void Player::CollisionBox()
@@ -279,24 +291,24 @@ void Player::GunType()
 	// IT_Doubleshot;
 
 	if (m_GunType == shot) {
-				if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
-					for (int i = 0; i < GameInfo->HV_ShotType[shot]; i++) {
-						ObjMgr->AddObject(new Bullet, "Bullet");
-					}
-					RpmDelayTime = 0;
-					m_Rpm = 0.45f;
-		}
-	} 
-	else if (m_GunType == shotgun) {
-			if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
-				for (int i = 0; i < GameInfo->HV_ShotType[shotgun]; i++) {
-					ObjMgr->AddObject(new ShotGun(0), "Bullet");
-					ObjMgr->AddObject(new ShotGun(5), "Bullet");
-					ObjMgr->AddObject(new ShotGun(-5), "Bullet");
-				}
-				RpmDelayTime = 0;
-					m_Rpm = 0.2f;
+		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
+			for (int i = 0; i < GameInfo->HV_ShotType[shot]; i++) {
+				ObjMgr->AddObject(new Bullet, "Bullet");
 			}
+			RpmDelayTime = 0;
+			m_Rpm = 0.45f;
+		}
+	}
+	else if (m_GunType == shotgun) {
+		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
+			for (int i = 0; i < GameInfo->HV_ShotType[shotgun]; i++) {
+				ObjMgr->AddObject(new ShotGun(0), "Bullet");
+				ObjMgr->AddObject(new ShotGun(5), "Bullet");
+				ObjMgr->AddObject(new ShotGun(-5), "Bullet");
+			}
+			RpmDelayTime = 0;
+			m_Rpm = 0.2f;
+		}
 	}
 	else if (m_GunType == charge) {
 		if (GameInfo->HV_ShotType[charge] > 0) {
@@ -308,32 +320,32 @@ void Player::GunType()
 		}
 	}
 	else if (m_GunType == induce) {
-			if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
-				for (int i = 0; i < GameInfo->HV_ShotType[induce]; i++) {
-					ObjMgr->AddObject(new InduceBullet, "Bullet");
-				}
-				RpmDelayTime = 0;
-				m_Rpm = 0.15f;
+		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
+			for (int i = 0; i < GameInfo->HV_ShotType[induce]; i++) {
+				ObjMgr->AddObject(new InduceBullet, "Bullet");
 			}
+			RpmDelayTime = 0;
+			m_Rpm = 0.15f;
+		}
 	}
 	else if (m_GunType == boomerang) {
-			if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
-				for (int i = 0; i < GameInfo->HV_ShotType[boomerang]; i++) {
-					ObjMgr->AddObject(new Boomerang, "Bullet");
-				}
-					RpmDelayTime = 0;
-				m_Rpm = 0.35f;
+		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
+			for (int i = 0; i < GameInfo->HV_ShotType[boomerang]; i++) {
+				ObjMgr->AddObject(new Boomerang, "Bullet");
 			}
+			RpmDelayTime = 0;
+			m_Rpm = 0.35f;
+		}
 	}
 	else if (m_GunType == doubleshot) {
-			if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
-				for (int i = 0; i < GameInfo->HV_ShotType[doubleshot]; i++) {
-					ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 10, m_Position.y + 20)), "Bullet");
-					ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 10, m_Position.y - 20)), "Bullet");
-				}
-				RpmDelayTime = 0;
-				m_Rpm = 0.1f;
+		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
+			for (int i = 0; i < GameInfo->HV_ShotType[doubleshot]; i++) {
+				ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 10, m_Position.y + 20)), "Bullet");
+				ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 10, m_Position.y - 20)), "Bullet");
 			}
+			RpmDelayTime = 0;
+			m_Rpm = 0.1f;
+		}
 	}
 	if (INPUT->GetKey('1') == KeyState::DOWN) {
 		m_GunType = shot;
@@ -353,7 +365,7 @@ void Player::GunType()
 	if (INPUT->GetKey('6') == KeyState::DOWN) {
 		m_GunType = doubleshot;
 	}
-	if(m_GunType == 6)
+	if (m_GunType == 6)
 		m_GunType = GameInfo->HV_TYPE;
 }
 

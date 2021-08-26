@@ -186,9 +186,14 @@
     <ClCompile Include="DoubleBullet.cpp">
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Pet.cpp" />
     <ClCompile Include="RevolutionBullet.cpp">
       <Filter>Game\Object\Player\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Boom.cpp">
+      <Filter>Game\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Pet.cpp">
+      <Filter>Game\Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -333,9 +338,14 @@
     <ClInclude Include="DoubleBullet.h">
       <Filter>Game\Object\Player\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="Pet.h" />
     <ClInclude Include="RevolutionBullet.h">
       <Filter>Game\Object\Player\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Pet.h">
+      <Filter>Game\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Boom.h">
+      <Filter>Game\Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,6 +12,10 @@ class Enemy2 : public Object
 	bool ones;
 
 	Vec2 m_RandomPosition;
+
+
+	bool OneDamege;
+	bool DamegeCoolTime;
 public:
 	Enemy2(Vec2 Pos);
 	~Enemy2();

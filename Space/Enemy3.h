@@ -20,6 +20,10 @@ class Enemy3 : public Object
 	float HomingTime;
 	bool isHoming;
 	float DestroyTime;
+
+
+	bool OneDamege;
+	bool DamegeCoolTime;
 public:
 	Enemy3(Vec2 Pos);
 	~Enemy3();

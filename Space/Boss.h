@@ -57,6 +57,9 @@ class Boss : public Object
 	float TopHp;
 
 	float ChangeTime;
+
+	bool OneDamege;
+	bool DamegeCoolTime;
 public:
 	Boss(Vec2 Pos);
 	~Boss();

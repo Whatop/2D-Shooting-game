@@ -33,6 +33,7 @@ void MainScene::Init()
     m_Button[3]->SetPosition(300, 700);
 
     std::cout << "MainScene ÀÌµ¿" << std::endl;
+    GameInfo->GunReset();
     GameInfo->m_Scene = StageScene::NONE;
 }
 

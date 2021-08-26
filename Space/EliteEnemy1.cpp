@@ -20,6 +20,8 @@ EliteEnemy1::EliteEnemy1(Vec2 Pos)
 	SetScale(0.75f, 0.75f);
 	std::cout << "EliteEnemy1 »ý¼º" << std::endl;
 	GameInfo->EnemyCount++;
+	OneDamege = false;
+	DamegeCoolTime = 0.f;
 }
 
 EliteEnemy1::~EliteEnemy1()
@@ -29,6 +31,15 @@ EliteEnemy1::~EliteEnemy1()
 void EliteEnemy1::Update(float deltaTime, float Time)
 {
 	if (!GameInfo->isPause) {
+		if (!OneDamege)
+			ObjMgr->CollisionCheak(this, "Boom");
+		else {
+			DamegeCoolTime += dt;
+			if (DamegeCoolTime > 4) {
+				DamegeCoolTime = 0.f;
+				OneDamege = false;
+			}
+		}
 		SpawnMove += dt;
 		if (SpawnMove < 2) {
 			m_Position.x -= (300 + rand() % 100) * dt;
@@ -81,6 +92,14 @@ void EliteEnemy1::OnCollision(Object* obj)
 		obj->SetDestroy(true);
 		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 		GameInfo->RemoveCharge();
+	}
+	if (obj->m_Tag == "Boom") {
+		m_Hp -= obj->m_Atk;
+		float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+		float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+
+		OneDamege = true;
 	}
 }
 

@@ -69,7 +69,8 @@ void Stage1::Init()
 	ChoicePack[0]->SetScale(0.55f, 0.55f);
 	ChoicePack[1]->SetScale(0.55f, 0.55f);
 	ChoicePack[2]->SetScale(0.55f, 0.55f);
-	GameInfo->Reset();
+	GameInfo->BossReset();
+	
 }
 
 void Stage1::Release()

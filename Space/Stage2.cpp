@@ -68,7 +68,7 @@ void Stage2::Init()
 	ChoicePack[0]->SetScale(0.55f, 0.55f);
 	ChoicePack[1]->SetScale(0.55f, 0.55f);
 	ChoicePack[2]->SetScale(0.55f, 0.55f);
-	GameInfo->Reset();
+	GameInfo->BossReset();
 }
 
 void Stage2::Release()
@@ -96,6 +96,7 @@ void Stage2::Update(float deltaTime, float time)
 		MoveBG();
 		if(GameInfo->m_Scene == StageScene::STAGE2)
 			RestBG();
+
 		if (GameInfo->isSpawnEnemy) {
 			m_Choice->m_Visible = false;
 			for (int i = 0; i < 3; i++) {

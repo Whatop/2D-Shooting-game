@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "MiniMissile.h"
 
-MiniMissile::MiniMissile(Vec2 Pos)
+MiniMissile::MiniMissile(Vec2 Pos, float r)
 {
 	m_Missile = new Animation();
 	m_Missile->Init(0.1f, true);
@@ -13,9 +13,9 @@ MiniMissile::MiniMissile(Vec2 Pos)
 	m_ColBox->SetPosition(Pos);
 	m_ColBox->m_Visible = true;
 
-	m_Rotation = D3DXToRadian(190);;
+	m_Rotation = D3DXToRadian(r);;
 	turnRadian = m_Rotation;
-	vrad = 0.009f;
+	vrad = 0.006f;
 	Delay = 0.f;
 	isHoming = true;
 	HomingTime = 1.f;

@@ -5,6 +5,7 @@
 enum class StageScene {
 	STAGE1,
 	STAGE2,
+	STORE,
 	NONE
 };
 
@@ -78,6 +79,7 @@ public:
 	Vec2 BossPosition;
 
 	float ChargeTime;
+	bool isChoiceDelay;
 
 public:
 	void Init();
@@ -115,6 +117,8 @@ public:
 	void AddCard(int card);
 
 	void Reset();
+	void BossReset();
+	void GunReset();
 
 	void ChocieScene();
 

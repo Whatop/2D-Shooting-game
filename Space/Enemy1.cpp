@@ -19,6 +19,7 @@ Enemy1::Enemy1(Vec2 Pos)
 	GameInfo->EnemyCount++;
 	ones = true;
 	SetScale(0.85f, 0.85f);
+	OneDamege = false;
 }
 
 Enemy1::~Enemy1()
@@ -29,6 +30,17 @@ void Enemy1::Update(float deltaTime, float Time)
 {
 	if (!GameInfo->isPause) {
 		SpawnMove += dt;
+		if (!OneDamege)
+			ObjMgr->CollisionCheak(this, "Boom");
+		else {
+			DamegeCoolTime += dt;
+			
+			if (DamegeCoolTime > 4) {
+
+				DamegeCoolTime = 0.f;
+				OneDamege = false;
+			}
+		}
 		if (SpawnMove < 2) {
 			m_Position.x -= (300 + rand() % 100) * dt;
 		}
@@ -80,6 +92,10 @@ void Enemy1::OnCollision(Object* obj)
 		obj->SetDestroy(true);
 		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 		GameInfo->RemoveCharge();
+	}
+	if (obj->m_Tag == "Boom") {
+		m_Hp -= obj->m_Atk;
+		OneDamege = true;
 	}
 }
 

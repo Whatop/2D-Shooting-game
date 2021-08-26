@@ -13,7 +13,7 @@ class MiniMissile : public Object
 	bool isHoming;
 	
 public:
-	MiniMissile(Vec2 Pos);
+	MiniMissile(Vec2 Pos,float r=190);
 	~MiniMissile();
 
 	void Update(float deltaTime, float Time);

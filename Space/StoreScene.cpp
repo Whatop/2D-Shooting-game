@@ -67,14 +67,14 @@ void StoreScene::Init()
 		ObjMgr->AddObject(CardPack[i], "UI");
 		ObjMgr->AddObject(CardFrame[i], "UI");
 	}
-	GameInfo->m_Scene = StageScene::NONE;
+	GameInfo->m_Scene = StageScene::STORE;
 }
 
 void StoreScene::Update(float deltaTime, float Time)
 {
 	GameInfo->CheatKey();
 
-	if(GameInfo->m_Scene == StageScene::NONE)
+	if(GameInfo->m_Scene == StageScene::STORE)
 		OnCollisionCard();
 }
 

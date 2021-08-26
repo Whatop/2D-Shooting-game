@@ -29,6 +29,7 @@ MiniBoss::MiniBoss(Vec2 Pos)
 	GameInfo->EnemyCount++;
 	std::cout << m_Hp << std::endl;
 	pattern = 0;
+	OneDamege = false;
 }
 
 MiniBoss::~MiniBoss()
@@ -38,6 +39,15 @@ MiniBoss::~MiniBoss()
 void MiniBoss::Update(float deltaTime, float Time)
 {
 	if (!GameInfo->isPause) {
+		if(!OneDamege)
+		ObjMgr->CollisionCheak(this, "Boom");
+		else {
+			DamegeCoolTime += dt;
+			if (DamegeCoolTime > 4) {
+				DamegeCoolTime = 0.f;
+				OneDamege = false;
+			}
+		}
 		SpawnMove += dt;
 		if (SpawnMove < 2) {
 			m_Position.x -= (300 + rand() % 100) * dt;
@@ -55,7 +65,7 @@ void MiniBoss::Update(float deltaTime, float Time)
 
 			if (m_Hp <= 0)
 			{
-				ObjMgr->AddObject(new Item(m_Position), "Heal");
+				ObjMgr->AddObject(new Item(m_Position), "ITEM");
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
 				GameInfo->EnemyCount--;
 				GameInfo->MaxScore += 1000;
@@ -96,8 +106,10 @@ void MiniBoss::OnCollision(Object* obj)
 		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 		GameInfo->RemoveCharge();
 		std::cout << m_Hp << std::endl;
-		// Â÷Áö¼¦ Ç® 1300-1139.98 161.02
-		// Â÷Áö¼¦ Ç® 899.325
+	}
+	if (obj->m_Tag == "Boom") {
+		m_Hp -= obj->m_Atk;
+		OneDamege = true;
 	}
 }
 
@@ -170,9 +182,6 @@ void MiniBoss::Attack()
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 - 20), "EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 + 40), "EnemyBullet");
 			ObjMgr->AddObject(new EnemyRotationBullet(Vec2(m_Position.x - 10, m_Position.y), 180 - 40), "EnemyBullet");
-
-			ObjMgr->AddObject(new MiniMissile(Vec2(m_Position.x + 15, m_Position.y + 22)), "Missile");
-			ObjMgr->AddObject(new MiniMissile(Vec2(m_Position.x + 15, m_Position.y - 22)), "Missile");
 			isBullet = false;
 			AttackTime = 0.f;
 			pattern = 0;
@@ -183,6 +192,13 @@ void MiniBoss::Attack()
 		if (AttackDelay > 2) {
 			isBullet = true;
 			AttackDelay = 0;
+
+
+			ObjMgr->AddObject(new MiniMissile(Vec2(m_Position.x + 15, m_Position.y + 22),190+ -20), "Missile");
+			ObjMgr->AddObject(new MiniMissile(Vec2(m_Position.x + 15, m_Position.y - 22), 190 + 20), "Missile");
+
+			ObjMgr->AddObject(new MiniMissile(Vec2(m_Position.x + 15, m_Position.y + 22), 190 + -45), "Missile");
+			ObjMgr->AddObject(new MiniMissile(Vec2(m_Position.x + 15, m_Position.y - 22), 190 + 45), "Missile");
 		}
 	}
 }

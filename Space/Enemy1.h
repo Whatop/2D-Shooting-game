@@ -10,6 +10,9 @@ class Enemy1 : public Object
 	float SpawnMove;
 	bool ones;
 	Vec2 m_RandomPosition;
+
+	bool OneDamege;
+	bool DamegeCoolTime;
 public:
 	Enemy1(Vec2 Pos);
 	~Enemy1();
