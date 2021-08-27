@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "Bullet.h"
 
-InduceBullet::InduceBullet()
+InduceBullet::InduceBullet(Vec2 spawnpoint)
 {
 	m_Induce = new Animation();
 	m_Induce->Init(0.1f, true);
@@ -13,7 +13,7 @@ InduceBullet::InduceBullet()
 	m_InduceBullet = Sprite::Create(L"Painting/Bullet/Spread.png");
 	m_InduceBullet->SetParent(this);
 	m_InduceBullet->m_Visible = false;
-	Spawnpoint = Vec2(GetPlayer->m_Position.x + (GetPlayer->m_Size.x * m_Scale.x) / 2, GetPlayer->m_Position.y - 2);
+	Spawnpoint = Vec2(spawnpoint.x + (GetPlayer->m_Size.x * m_Scale.x) / 2, spawnpoint.y - 2);
 	SetPosition(Spawnpoint);
 	m_Speed = 600.f;
 	DelayTime = 1.f;

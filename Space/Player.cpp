@@ -77,20 +77,26 @@ void Player::Init()
 
 void Player::Update(float deltaTime, float Time)
 {
-	GameInfo->HV_TYPE = m_GunType;
 	if (INPUT->GetKey('C') == KeyState::DOWN) {
 		ObjMgr->AddObject(new Boom, "Boom");
 	}
 	if (INPUT->GetKey('B') == KeyState::DOWN) {
-		ObjMgr->AddObject(new Pet, "Pet");
+		ObjMgr->AddObject(new Pet(rand()% 6), "Pet");
 	}
-	if (GameInfo->isSpawnEnemy) {
-		m_Player->m_Visible = true;
+	if (!GameInfo->isSpawnEnemy) {
+		m_Player->m_Visible = false;
+		GameInfo->isGunType = true;
 	}
 	else {
-		m_Player->m_Visible = false;
+		m_Player->m_Visible = true;
+		if (GameInfo->isGunType == true) {
+			m_GunType = GameInfo->HV_TYPE;
+			GameInfo->isGunType = false;
+		}
 	}
+
 	if (!GameInfo->isPause) {
+		GameInfo->HV_TYPE = m_GunType;
 		RpmDelayTime += dt;
 		isLeft = false;
 		isRight = false;

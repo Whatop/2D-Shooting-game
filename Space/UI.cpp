@@ -53,6 +53,7 @@ void UI::Update()
 	for (int i = 0; i < 6; i++) {
 		Pack[i]->A = 105;
 	}
+	if(GameInfo->isSpawnEnemy)
 	Pack[GameInfo->HV_TYPE]->A = 255;
 }
 

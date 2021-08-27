@@ -1,7 +1,14 @@
 #include "stdafx.h"
 #include "Pet.h"
 
-Pet::Pet()
+#include "Bullet.h"
+#include "ShotGun.h"
+#include "ChargeBullet.h"
+#include "InduceBullet.h"
+#include "Boomerang.h"
+#include "DoubleBullet.h"
+
+Pet::Pet(int type)
 {
 	m_Pet = Sprite::Create(L"Painting/Player/Player0.png");
 	m_Pet->SetParent(this);
@@ -11,9 +18,13 @@ Pet::Pet()
 
 	m_Speed = 300.f;
 	Limit = 1.f;
+
 	GameInfo->PetCount++;
+	Count = GameInfo->PetCount;
 	std::cout << "펫 생성" << std::endl;
 	m_Rotation = D3DXToRadian(90);
+	// 펫 네마리까지
+	Gun = type;
 }
 
 Pet::~Pet()
@@ -22,8 +33,10 @@ Pet::~Pet()
 
 void Pet::Update(float deltaTime, float Time)
 {
-	if(!GameInfo->isPause)
+	if (!GameInfo->isPause) {
 		Move();
+		Attack();
+	}
 }
 
 void Pet::Render()
@@ -41,19 +54,88 @@ void Pet::Move()
 	
 	//
 	Vec2 A, B;
-	float S;
+	float X;
+	float Y;
+	if (Count == 1) {
+		X = -50;
+		Y = 60;
+	}
+	else if (Count == 2) {
+		X = -50;
+		Y = -60;
+	}
+	else if (Count == 3) {
+		X = -100;
+		Y = 120;
+	}
+	else if (Count == 4) {
+		X = -100;
+		Y = -120;
+	}
+	else {
+		X = -100;
+		Y = 0;
+	}
+
 	A = m_Position;
 
-	if (GetPlayer->m_Position.y > 360) // 플레이어의 위로
-		S = -100.f * GameInfo->PetCount;
-	else 
-		S = 100.f;
 
-	B = Vec2(GetPlayer->m_Position.x, GetPlayer->m_Position.y + S);
+	B = Vec2(GetPlayer->m_Position.x + X, GetPlayer->m_Position.y + Y);
 
 	Dire = B - A;
-	Limit = (sqrt(pow(A.x - B.x, 2) + pow(A.y - B.y, 2))/m_Speed*2);
+	Limit = (sqrt(pow(A.x - B.x, 2) + pow(A.y - B.y, 2))/m_Speed);
 
 	D3DXVec2Normalize(&Dire, &Dire);
-	Translate(Dire.x * m_Speed * Limit * dt, Dire.y * m_Speed * Limit * dt);
+	Translate(Dire.x * m_Speed * Limit * dt * 3, Dire.y * m_Speed * Limit * dt * 3);
+}
+
+void Pet::Attack()
+{
+	ShotTime += dt;
+	if (Gun == 0) {
+		if (ShotTime > 0.35f) {
+			ObjMgr->AddObject(new Bullet(m_Position), "Bullet");
+			ShotTime = 0.f;
+		}
+	}
+	else if (Gun == 1) {
+		if (ShotTime > 0.35f) {
+			ObjMgr->AddObject(new ShotGun(20,m_Position), "Bullet");
+			ObjMgr->AddObject(new ShotGun(10, m_Position), "Bullet");
+			ObjMgr->AddObject(new ShotGun(0, m_Position), "Bullet");
+			ObjMgr->AddObject(new ShotGun(-10, m_Position), "Bullet");
+			ObjMgr->AddObject(new ShotGun(-20, m_Position), "Bullet");
+			ShotTime = 0.f;
+		}
+	}
+	else if (Gun == 2) {
+		if (ShotTime > 0.4f) {
+			ObjMgr->AddObject(new ShotGun(25, m_Position), "Bullet");
+			ObjMgr->AddObject(new ShotGun(15, m_Position), "Bullet");
+			ObjMgr->AddObject(new ShotGun(5, m_Position), "Bullet");
+			ObjMgr->AddObject(new ShotGun(-15, m_Position), "Bullet");
+			ObjMgr->AddObject(new ShotGun(-25, m_Position), "Bullet");
+			ShotTime = 0.f;
+		}
+	}
+	else if (Gun == 3) {
+		if (ShotTime > 0.4f) {
+			ObjMgr->AddObject(new InduceBullet(m_Position), "Bullet");
+
+			ShotTime = 0.f;
+		}
+	}
+	else if (Gun == 4) {
+		if (ShotTime > 0.5f) {
+			ObjMgr->AddObject(new Boomerang(m_Position), "Bullet");
+			ShotTime = 0.f;
+		}
+	}
+	else if (Gun == 5) {
+		if (ShotTime > 0.3f) {
+			ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 6, m_Position.y + 12)), "Bullet");
+			ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 6, m_Position.y - 12)), "Bullet");
+			ShotTime = 0.f;
+		}
+	}
 }

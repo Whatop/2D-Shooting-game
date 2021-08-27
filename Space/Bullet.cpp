@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Bullet.h"
 
-Bullet::Bullet()
+Bullet::Bullet(Vec2 spawnpoint)
 {
 	m_Bolt = new Animation();
 	m_Bolt->Init(0.1f, true);
@@ -11,7 +11,8 @@ Bullet::Bullet()
 	m_Bullet = Sprite::Create(L"Painting/Bullet/Spread.png");
 	m_Bullet->SetParent(this);
 	m_Bullet->m_Visible = false;
-	Spawnpoint = Vec2(GetPlayer->m_Position.x + (GetPlayer->m_Size.x * m_Scale.x) / 2, GetPlayer->m_Position.y-2);
+	Spawnpoint = Vec2(spawnpoint.x + (GetPlayer->m_Size.x * 0.4f) / 2, spawnpoint.y-2);
+
 	SetPosition(Spawnpoint);
 	m_Speed = 600.f;
 	DelayTime = 1.f;

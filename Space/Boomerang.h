@@ -9,7 +9,7 @@ class Boomerang : public Object
 	float DelayTime;
 	float DestroyTime;
 public:
-	Boomerang();
+	Boomerang(Vec2 spawnpoint = GetPlayer->m_Position);
 	~Boomerang();
 
 	void Update(float deltaTime, float Time);

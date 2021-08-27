@@ -6,8 +6,13 @@ class Pet : public Object
 	Vec2 Dire;
 	float m_Speed;
 	float Limit;
+	float Count;
+
+	float ShotTime;
+
+	int Gun;
 public:
-	Pet();
+	Pet(int type = 1);
 	~Pet();
 
 	void Update(float deltaTime, float Time);
@@ -15,5 +20,6 @@ public:
 	void OnCollision(Object* obj);
 	
 	void Move();
+	void Attack();
 };
 

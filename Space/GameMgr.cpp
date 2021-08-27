@@ -55,6 +55,7 @@ void GameMgr::Init()
 	ChargeTime = 0.f;
 	isChoiceDelay = true;
 	PetCount = 0;
+
 	//¹Ø¿¡ Ä«µå 
 	UP_Charge = false;
 }
@@ -107,7 +108,7 @@ void GameMgr::Update()
 	ChargeTime += dt;
 	if (!isChoiceDelay) {
 		SpawnDelay += dt;
-		if (SpawnDelay > 5) {
+		if (SpawnDelay > 10) {
 			isSpawnEnemy = false;
 			isChoiceDelay = true;
 			isBossSpawn = false;

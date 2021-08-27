@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ShotGun.h"
 
-ShotGun::ShotGun(float r)
+ShotGun::ShotGun(float r, Vec2 spawnPos)
 {
 	m_ShotGun = new Animation();
 	m_ShotGun->Init(0.1f, true);
@@ -11,7 +11,8 @@ ShotGun::ShotGun(float r)
 	m_ColBox = Sprite::Create(L"Painting/Bullet/Spread.png");
 	m_ColBox->SetParent(this);
 	m_ColBox->m_Visible = false;
-	Spawnpoint = Vec2(GetPlayer->m_Position.x + (GetPlayer->m_Size.x * m_Scale.x) / 2, GetPlayer->m_Position.y - 2);
+	Spawnpoint = Vec2(spawnPos.x + (GetPlayer->m_Size.x * 0.4f) / 2, spawnPos.y - 2);
+	
 	SetPosition(Spawnpoint);
 
 	m_Speed = 1250.f;

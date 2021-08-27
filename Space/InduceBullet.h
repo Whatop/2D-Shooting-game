@@ -16,7 +16,7 @@ class InduceBullet : public Object
 	bool isHoming;
 
 public:
-	InduceBullet();
+	InduceBullet(Vec2 spawnpoint = GetPlayer->m_Position);
 	~InduceBullet();
 
 	void Update(float deltaTime, float Time);
