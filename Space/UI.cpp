@@ -53,9 +53,13 @@ void UI::Update()
 	for (int i = 0; i < 6; i++) {
 		Pack[i]->A = 105;
 	}
-	if(GameInfo->isSpawnEnemy)
-	Pack[GameInfo->HV_TYPE]->A = 255;
+	PlayerBar->A = 105;
+	if (GameInfo->isSpawnEnemy) {
+		Pack[GameInfo->HV_TYPE]->A = 255;
+		PlayerBar->A = 255;
+	}
 }
+
 
 void UI::Render()
 {
@@ -108,7 +112,7 @@ void UI::Render()
 		MiniBossBar->m_Visible = false;
 	}
 	Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
-	m_Test->print(std::to_string(int(GameInfo->m_Score)), 300, 50);
+	m_Test->print(std::to_string(int(GameInfo->m_Score)), 200, 50);
 	m_Test->print("Enemy : " + std::to_string(GameInfo->EnemyCount), 1650, 50);
 	Renderer::GetInst()->GetSprite()->End();
 }

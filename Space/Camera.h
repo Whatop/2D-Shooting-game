@@ -1,4 +1,7 @@
 #pragma once
+
+#define CamPos Camera::GetInst()->m_Position
+
 class Camera : public Singleton<Camera>
 {
 private:

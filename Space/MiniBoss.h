@@ -18,6 +18,14 @@ class MiniBoss : public Object
 	
 	bool OneDamege;
 	float DamegeCoolTime;
+
+	bool isPattern;
+	float Acc;
+	bool One;
+	
+	int PatternCount;
+	float PatternTime;
+
 public:
 	MiniBoss(Vec2 Pos);
 	~MiniBoss();
