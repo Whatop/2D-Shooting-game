@@ -81,6 +81,8 @@ public:
 	float ChargeTime;
 	bool isChoiceDelay;
 
+	int PetCount;
+
 	bool UP_Charge;
 
 public:

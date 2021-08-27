@@ -10,6 +10,7 @@
 #include "InduceBullet.h"
 #include "RevolutionBullet.h" 
 #include "Boom.h" 
+#include "Pet.h" 
 
 
 Player::Player(float hp)
@@ -64,7 +65,7 @@ void Player::Init()
 	ColBox[HIT]->m_Visible = false;
 	Defense->m_Visible = false;
 	GameInfo->CreateUI();
-	m_GunType = 6;
+	m_GunType = shot;
 
 	defenseTime = 0.f;
 	m_Layer = 2;
@@ -76,8 +77,12 @@ void Player::Init()
 
 void Player::Update(float deltaTime, float Time)
 {
+	GameInfo->HV_TYPE = m_GunType;
 	if (INPUT->GetKey('C') == KeyState::DOWN) {
 		ObjMgr->AddObject(new Boom, "Boom");
+	}
+	if (INPUT->GetKey('B') == KeyState::DOWN) {
+		ObjMgr->AddObject(new Pet, "Pet");
 	}
 	if (GameInfo->isSpawnEnemy) {
 		m_Player->m_Visible = true;

@@ -5,7 +5,7 @@ class UI : public Singleton<UI>
 	Sprite* BossBar;
 	Sprite* MiniBossBar;
 	TextMgr* m_Test;
-
+	Sprite* Pack[6];
 public:
 	UI();
 	~UI();

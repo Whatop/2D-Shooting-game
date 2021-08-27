@@ -12,6 +12,7 @@
 
 #include "MainScene.h"
 #include "Stage1.h"
+
 #include "Stage2.h"
 #include "StoreScene.h"
 
@@ -49,12 +50,12 @@ void GameMgr::Init()
 	ChargeCount = 0;
 	Player_Coefficient = 1.f;
 	isSpawnEnemy = false;
-	HV_TYPE = 6;
+	HV_TYPE = 1;
 	TempScore = m_Score;
 	ChargeTime = 0.f;
 	isChoiceDelay = true;
-
-	//¹Ø¿¡ Ä«µå
+	PetCount = 0;
+	//¹Ø¿¡ Ä«µå 
 	UP_Charge = false;
 }
 

@@ -16,11 +16,18 @@ void UI::Init()
 	PlayerBar->SetPosition(390, 900);
 
 	BossBar = Sprite::Create(L"Painting/UI/BossHp.png");
-	BossBar->SetPosition(1920/2, 100);
+	BossBar->SetPosition(1920 / 2, 100);
 
 	MiniBossBar = Sprite::Create(L"Painting/UI/BossHp.png");
-	MiniBossBar->SetPosition(1920/2, 100);
+	MiniBossBar->SetPosition(1920 / 2, 100);
 
+	for (int i = 0; i < 6; i++) {
+		Pack[i] = Sprite::Create(L"Painting/UI/Pack/" + std::to_wstring(i) + L".png");
+		Pack[i]->SetScale(0.35f, 0.35f);
+		Pack[i]->SetPosition(690 + i * Pack[i]->m_Size.x * Pack[i]->m_Scale.x, 900);
+		ObjMgr->AddObject(Pack[i], "UI");
+		Pack[i]->A = 205;
+	}
 
 	ObjMgr->AddObject(PlayerBar, "UI");
 	ObjMgr->AddObject(BossBar, "UI");
@@ -43,7 +50,10 @@ void UI::Release()
 
 void UI::Update()
 {
-
+	for (int i = 0; i < 6; i++) {
+		Pack[i]->A = 105;
+	}
+	Pack[GameInfo->HV_TYPE]->A = 255;
 }
 
 void UI::Render()

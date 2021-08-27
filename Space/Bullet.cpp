@@ -17,7 +17,7 @@ Bullet::Bullet()
 	DelayTime = 1.f;
 	DestroyTime = 0.f;
 	m_Layer = 2;
-	m_Atk = 45.f * GameInfo->HV_ShotType[0] * 0.5f * GameInfo->Player_Coefficient;
+	m_Atk = 45.f * GameInfo->HV_ShotType[0] * GameInfo->Player_Coefficient;
 	SetScale(1.5f, 1.5f);
 }
 
@@ -56,5 +56,6 @@ void Bullet::Move()
 	m_Rotation = GetPlayer->m_Rotation;
 	Dire.y = cos(m_Rotation);
 	Dire.x = sin(m_Rotation);
+
 	Translate(Dire.x * m_Speed*DelayTime * dt, Dire.y * m_Speed* DelayTime * dt);
 }
