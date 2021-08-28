@@ -7,9 +7,13 @@ class StoreScene : public Scene
 	Sprite* m_Button;
 
 	// 카드 툴
-	Sprite* CardFrame[5];
+	Sprite* CardFrame[6];
+
 	// 탄환 구매
 	Sprite* CardPack[6];
+
+
+	Sprite* PetPack[6];
 
 
 	// 공격력 UP, 체력 UP, 탄환 구매,
@@ -19,7 +23,8 @@ class StoreScene : public Scene
 
 	// 탄환 특수능력 (업그레이드)
 
-	int RCrad[5];
+	int RCrad[6];
+	int PCrad[6];
 	bool isShake;
 
 public:

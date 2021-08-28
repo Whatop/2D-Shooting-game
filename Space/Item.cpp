@@ -6,6 +6,7 @@ Item::Item(Vec2 Pos, bool bonus)
 	ItemCode = rand() % 3 + 0;
 	if (bonus) {
 		ItemCode = 999;
+		DestroyTime = 10.f;
 	}
 	m_Item = Sprite::Create(L"Painting/Item/"+std::to_wstring(ItemCode)+L".png");
 	
@@ -18,8 +19,7 @@ Item::Item(Vec2 Pos, bool bonus)
 	Under = false;
 	Over = true;
 	m_Layer = 2;
-
-	
+	DestroyTime = 0.f;
 }
 
 Item::~Item()
@@ -28,6 +28,9 @@ Item::~Item()
 
 void Item::Update(float deltaTime, float Time)
 {
+	if (GameInfo->isScoreScene) {
+		m_Item->m_Visible = false;
+	}
 	if (ItemCode == 0) {
 		m_Tag = "Heal";
 	}

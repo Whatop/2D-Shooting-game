@@ -7,7 +7,6 @@ UI::UI()
 
 UI::~UI()
 {
-	std::cout << "UI »èÁ¦" << std::endl;
 }
 
 void UI::Init()
@@ -21,6 +20,9 @@ void UI::Init()
 	MiniBossBar = Sprite::Create(L"Painting/UI/BossHp.png");
 	MiniBossBar->SetPosition(1920 / 2, 100);
 
+	UIScoreFrame = Sprite::Create(L"Painting/UI/ScoreUI2.png");
+	UIScoreFrame->SetPosition(1920 / 2, 1080/2);
+
 	for (int i = 0; i < 6; i++) {
 		Pack[i] = Sprite::Create(L"Painting/UI/Pack/" + std::to_wstring(i) + L".png");
 		Pack[i]->SetScale(0.35f, 0.35f);
@@ -32,16 +34,23 @@ void UI::Init()
 	ObjMgr->AddObject(PlayerBar, "UI");
 	ObjMgr->AddObject(BossBar, "UI");
 	ObjMgr->AddObject(MiniBossBar, "UI");
+	ObjMgr->AddObject(UIScoreFrame, "UI");
 
 
 	m_Test = new TextMgr();
 	m_Test->Init(50, true, false, "±¼¸²");
 	m_Test->SetColor(255, 255, 255, 255);
 
-	std::cout << "UI »ý¼º" << std::endl;
+	ScoreText = new TextMgr();
+	ScoreText->Init(80, true, false, "±¼¸²");
+	ScoreText->SetColor(255, 255, 255, 255);
+
 	PlayerBar->m_Visible = false;
 	BossBar->m_Visible = false;
 	MiniBossBar->m_Visible = false;
+	UIScoreFrame->m_Visible = false;
+	memset(limit, 0, sizeof(limit));
+	ScoredaleyTime = 0.f;
 }
 
 void UI::Release()
@@ -54,10 +63,23 @@ void UI::Update()
 		Pack[i]->A = 105;
 	}
 	PlayerBar->A = 105;
-	if (GameInfo->isSpawnEnemy) {
+	if (GameInfo->isSpawnEnemy && !GameInfo->isScoreScene) {
 		Pack[GameInfo->HV_TYPE]->A = 255;
 		PlayerBar->A = 255;
 	}
+
+	if (GameInfo->isScoreScene) {
+		if (ScoredaleyTime < 4)
+			ScoredaleyTime += dt;
+		
+		else
+			ScoreUI();
+	}
+	else {
+		UIScoreFrame->m_Visible = false;
+		ScoreText->SetColor(0, 255, 255, 255);
+	}
+
 }
 
 
@@ -111,8 +133,49 @@ void UI::Render()
 	else {
 		MiniBossBar->m_Visible = false;
 	}
+
 	Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
+
 	m_Test->print(std::to_string(int(GameInfo->m_Score)), 200, 50);
 	m_Test->print("Enemy : " + std::to_string(GameInfo->EnemyCount), 1650, 50);
+	ScoreTextUI();
+
 	Renderer::GetInst()->GetSprite()->End();
+}
+
+void UI::ScoreUI()
+{
+	UIScoreFrame->m_Visible = true;
+	if (limit[0] <= 1)
+		limit[0] += dt;
+
+	if (limit[0] >= 1 && limit[1] <= 1)
+		limit[1] += dt;
+
+	if (limit[1] >= 1 && limit[2] <= 1)
+		limit[2] += dt;
+
+	if (limit[2] >= 1 && limit[3] <= 1)
+		limit[3] += dt;
+
+	for (int i = 0; i < 4; i++) {
+		if (limit[i] > 1)
+			limit[i] = 1;
+	}
+}
+
+void UI::ScoreTextUI()
+{
+	ScoreText->SetColor(255, 255, 255, 255);
+	if (limit[0] > 0)
+		ScoreText->print("+ " + std::to_string(int(GameInfo->KillScore * limit[0])), 700, 350);
+
+	if (limit[1] > 0)
+		ScoreText->print("+ " + std::to_string(int(GameInfo->ItemScore * limit[1])), 700, 450);
+
+	if (limit[2] > 0)
+		ScoreText->print("+ " + std::to_string(int(GameInfo->EnemyCount * limit[2])), 700, 550);
+
+	if (limit[3] > 0)
+		ScoreText->print("= " + std::to_string(int(GameInfo->m_Score * limit[3])), 700, 650);
 }

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Stage1.h"
+#include "StoreScene.h"
 
 Stage1::Stage1()
 {
@@ -71,6 +72,16 @@ void Stage1::Init()
 	ChoicePack[2]->SetScale(0.55f, 0.55f);
 	GameInfo->BossReset();
 	
+	ScoreScene = Sprite::Create(L"Painting/GameScreen/ScoreScene.png");
+	ScoreScene->SetScale(0, 1.f);
+	ScoreScene->SetPosition(Camera::GetInst()->m_Position.x + 1920 / 2, 1080 / 2);
+	
+	ScoreText = Sprite::Create(L"Painting/UI/Score.png");
+	ScoreText->SetScale(0, 1.f);
+	ScoreText->SetPosition(Camera::GetInst()->m_Position.x + 1920 / 2, 0);
+
+	ScaleScene = 0.f;
+	ScaleText = 0.f;
 }
 
 void Stage1::Release()
@@ -110,8 +121,12 @@ void Stage1::Update(float deltaTime, float time)
 			}
 			OnCollisionCard();
 		}
+	
 	}
 	GameInfo->CheatKey();
+
+	if (GameInfo->isScoreScene)
+		NextScene();
 }
 
 void Stage1::Render()
@@ -122,9 +137,12 @@ void Stage1::Render()
 		}
 	}
 	m_Choice->Render();
+	ScoreScene->Render();
+	ScoreText->Render();
 	for (int i = 0; i < 3; i++) {
 		ChoicePack[i]->Render();
 	}
+	
 }
 
 void Stage1::BGInit()
@@ -189,7 +207,6 @@ void Stage1::OnCollisionCard()
 	{
 		ChoicePack[0]->SetScale(0.6f, 0.6f);
 		if (INPUT->GetButtonDown()) {
-
 			GameInfo->AddCard(RCrad[0]);
 			INPUT->ButtonDown(false);
 			GameInfo->isSpawnEnemy = true;
@@ -201,7 +218,6 @@ void Stage1::OnCollisionCard()
 		ChoicePack[1]->SetScale(0.6f, 0.6f);
 
 		if (INPUT->GetButtonDown()) {
-
 			GameInfo->AddCard(RCrad[1]);
 			INPUT->ButtonDown(false);
 			GameInfo->isSpawnEnemy = true;
@@ -222,6 +238,31 @@ void Stage1::OnCollisionCard()
 	else {
 		for (int i = 0; i < 3; i++) {
 			ChoicePack[i]->SetScale(0.55f, 0.55f);
+		}
+	}
+}
+
+void Stage1::NextScene()
+{
+	ScoreScene->SetPosition(Camera::GetInst()->m_Position.x + 1920 / 2, 1080 / 2);
+	ScoreText->SetPosition(Camera::GetInst()->m_Position.x + 1920 / 2, 100);
+
+	if(ScaleScene <= 1)
+		ScaleScene += dt;
+
+	if (ScaleText <= 1)
+		ScaleText += 2*dt;
+
+	ScoreScene->SetScale(ScaleScene, 1.f);
+	ScoreText->SetScale(ScaleText, 1.f);
+	GameInfo->isPause = true;
+
+	if (CollisionMgr::GetInst()->MouseWithBoxSize(ScoreScene))
+	{
+		if (INPUT->GetButtonDown()) {
+			GameInfo->isPause = false;
+			GameInfo->isScoreScene = false;
+			SceneDirector::GetInst()->ChangeScene(new StoreScene);
 		}
 	}
 }

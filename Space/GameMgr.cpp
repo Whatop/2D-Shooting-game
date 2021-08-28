@@ -52,12 +52,20 @@ void GameMgr::Init()
 	isSpawnEnemy = false;
 	HV_TYPE = 1;
 	TempScore = m_Score;
+
+	KillScore = 330.f;
+	ItemScore = 213.f;
+	BounsScore = 770.f;
+
 	ChargeTime = 0.f;
 	isChoiceDelay = true;
 	PetCount = 0;
 
 	//밑에 카드 
 	UP_Charge = false;
+	
+	// 보스 잡고 점수화면 
+	isScoreScene = false;
 }
 
 void GameMgr::Release()
@@ -70,6 +78,7 @@ void GameMgr::CreateUI()
 	{
 		UI::GetInst()->Init();
 		m_isCreateUI = true;
+		std::cout << "UI 생성" << std::endl;
 	}
 }
 
@@ -78,11 +87,12 @@ void GameMgr::ReleaseUI()
 	UI::GetInst()->Release();
 	UI::GetInst()->ReleaseInst();
 	m_isCreateUI = false;
+	std::cout << "UI 삭제" << std::endl;
 }
 
 void GameMgr::CreatePlayer()
 {
-	if(GameInfo->m_Scene == StageScene::STAGE1)
+	if (GameInfo->m_Scene == StageScene::STAGE1)
 		ObjMgr->AddObject(new Player(), "Player");
 	else
 		ObjMgr->AddObject(new Player(Hp), "Player");
@@ -100,7 +110,7 @@ void GameMgr::PlayerDeath()
 
 void GameMgr::Update()
 {
-	
+
 	if (m_isCreateUI)
 		UI::GetInst()->Update();
 
@@ -129,7 +139,7 @@ void GameMgr::Render()
 void GameMgr::AddScore(int maxscore)
 {
 	if (int(m_Score) < maxscore) {
-		if (int(m_Score)+4000 < maxscore)
+		if (int(m_Score) + 4000 < maxscore)
 			m_Score += 90;
 
 		else
@@ -185,12 +195,12 @@ void GameMgr::CheatKey()
 
 	//Camera::GetInst()->isVibration = true;
 	//Camera::GetInst()->ShakeTimeY = 0;
-	
+
 	//Camera::GetInst()->isVibration = true;
 	//Camera::GetInst()->ShakeTimeX = 0; 
-	
+
 	//ObjMgr->AddObject(new Item(Vec2(Camera::GetInst()->m_Position.x + 1500, 350)), "Heal");
-	
+
 	//	MaxScore += 3000;
 	if (INPUT->GetKey('V') == KeyState::DOWN)
 	{
@@ -207,10 +217,10 @@ void GameMgr::CheatKey()
 		}
 	}
 
-	if (INPUT->GetKey(VK_F2) == KeyState::DOWN ) {
+	if (INPUT->GetKey(VK_F2) == KeyState::DOWN) {
 		SceneDirector::GetInst()->ChangeScene(new MainScene());
 	}
-	if (INPUT->GetKey(VK_F3) == KeyState::DOWN &&m_Scene != StageScene::STAGE1) {
+	if (INPUT->GetKey(VK_F3) == KeyState::DOWN && m_Scene != StageScene::STAGE1) {
 		SceneDirector::GetInst()->ChangeScene(new Stage1());
 	}
 	if (INPUT->GetKey(VK_F4) == KeyState::DOWN && m_Scene != StageScene::STAGE2) {
@@ -234,8 +244,8 @@ void GameMgr::CheatKey()
 		CK_BossSpawn = false;
 	}
 	if (INPUT->GetKey('P') == KeyState::DOWN) {
-	//	ObjMgr->DeleteObject("Enemy");
-	//	EnemyCount = 0;
+		//	ObjMgr->DeleteObject("Enemy");
+		//	EnemyCount = 0;
 		isBossSpawn = true;
 		isMiniBossSpawn = false;
 		CK_BossSpawn = true;
@@ -271,7 +281,7 @@ void GameMgr::CheatKey()
 void GameMgr::AddCard(int card)
 {
 	// 단발 = 1, 샷건 = 2, 차지 = 3, 유도 = 4, 부메랑 = 5, 더블 = 6;
-	HV_ShotType[card]+= 1;
+	HV_ShotType[card] += 1;
 }
 
 void GameMgr::Reset()
@@ -293,14 +303,14 @@ void GameMgr::GunReset()
 void GameMgr::ChocieScene()
 {
 	SpawnDelay = 0.f;
-	
+
 	isChoiceDelay = false;
 	ObjMgr->DeleteObject("Enemy");
 }
 
 void GameMgr::RemoveCharge()
 {
-		ChargeCount--;
+	ChargeCount--;
 }
 
 void GameMgr::SpawnEnemy()
@@ -308,7 +318,7 @@ void GameMgr::SpawnEnemy()
 	if (isSpawnEnemy) {
 		SpawnDelay += dt;
 		//ObjMgr->AddObject(new Boss(), "Boss");
-		//ObjMgr->AddObject(new MiniBoss(Vec2(1920/2+500,1080/2)), "Boss");
+		//ObjMgr->AddObject(new MiniSBoss(Vec2(1920/2+500,1080/2)), "Boss");
 		if (m_Scene == StageScene::STAGE2) {
 			if (EnemyCount <= 0 && m_Score >= 1500 + TempScore && !isMiniBossSpawn && isOneBoss && isOneMiniBoss || CK_MiniBossSpawn) {
 				ObjMgr->AddObject(new MiniBoss(Vec2(Camera::GetInst()->m_Position.x + 1920 + 500, rand() % 450 + 100)), "Enemy");
@@ -334,12 +344,12 @@ void GameMgr::SpawnEnemy()
 				else
 					ObjMgr->AddObject(new EliteEnemy2(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "Enemy");
 
-				
+
 				SpawnDelay = 5.f;
 				if (m_Scene == StageScene::STAGE2) {
 					if (rand() % 2 == 0)
 						ObjMgr->AddObject(new Enemy3(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "Enemy");
-						SpawnDelay = 15.f;
+					SpawnDelay = 15.f;
 				}
 			}
 			else {
@@ -349,7 +359,7 @@ void GameMgr::SpawnEnemy()
 				ObjMgr->AddObject(new EliteEnemy2(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "Enemy");
 				SpawnDelay = 0.f;
 				if (m_Scene == StageScene::STAGE2) {
-						ObjMgr->AddObject(new Enemy3(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "Enemy");
+					ObjMgr->AddObject(new Enemy3(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 430 + 100)), "Enemy");
 					SpawnDelay = 15.f;
 				}
 			}

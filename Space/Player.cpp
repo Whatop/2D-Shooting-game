@@ -34,7 +34,7 @@ void Player::Init()
 {
 	m_Player = Sprite::Create(L"Painting/Player/Player0.png");
 	m_Player->SetParent(this);
-	SetScale(0.75f, 0.75f);
+	SetScale(0.65f, 0.65f);
 
 	LEFT = 0;
 	RIGHT = 1;
@@ -77,6 +77,9 @@ void Player::Init()
 
 void Player::Update(float deltaTime, float Time)
 {
+	if (GameInfo->isScoreScene) {
+		m_Player->A = 105;
+	}
 	if (INPUT->GetKey('C') == KeyState::DOWN) {
 		ObjMgr->AddObject(new Boom, "Boom");
 	}
@@ -158,7 +161,6 @@ void Player::Update(float deltaTime, float Time)
 			Defense->m_Visible = true;
 			defenseTime += dt;
 			if (defenseTime > 3.f) {
-
 				ones = true;
 				isHit = false;
 				defenseTime = 0.f;
@@ -288,9 +290,9 @@ void Player::Move()
 void Player::CollisionBox()
 {
 	ColBox[LEFT]->SetPosition(m_Position.x - m_Size.x / 2, m_Position.y);
-	ColBox[RIGHT]->SetPosition(m_Position.x + m_Size.x / 2, m_Position.y);
-	ColBox[UP]->SetPosition(m_Position.x, m_Position.y - m_Size.y / 2);
-	ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2);
+	ColBox[RIGHT]->SetPosition(m_Position.x + m_Size.x / 2 , m_Position.y);
+	ColBox[UP]->SetPosition(m_Position.x, m_Position.y - m_Size.y / 2+30);
+	ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2 - 30);
 	ColBox[HIT]->SetPosition(m_Position);
 	Defense->SetPosition(m_Position);
 }
@@ -324,7 +326,6 @@ void Player::GunType()
 	else if (m_GunType == charge) {
 			if ((INPUT->GetKey('Z') == KeyState::PRESS) && RpmDelayTime > m_Rpm && GameInfo->ChargeCount < 20) {
 				ObjMgr->AddObject(new ChargeBullet, "ChargeBullet");
-				//RpmDelayTime = 0;
 				m_Rpm = 0.4f;
 		}
 	}

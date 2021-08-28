@@ -21,6 +21,9 @@ EffectMgr::~EffectMgr()
 
 void EffectMgr::Update(float deltaTime, float time)
 {
+	if (GameInfo->isScoreScene) {
+		Effect->A = 105;
+	}
 	if (Effect->m_CurrentFrame >= End - 1)
 	{
 		ObjMgr->RemoveObject(this);

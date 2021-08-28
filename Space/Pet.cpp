@@ -8,7 +8,7 @@
 #include "Boomerang.h"
 #include "DoubleBullet.h"
 
-Pet::Pet(int type)
+Pet::Pet(int type, bool display)
 {
 	m_Pet = Sprite::Create(L"Painting/Player/Player0.png");
 	m_Pet->SetParent(this);
@@ -33,9 +33,14 @@ Pet::~Pet()
 
 void Pet::Update(float deltaTime, float Time)
 {
+	if (GameInfo->isScoreScene) {
+		m_Pet->A = 105;
+	}
 	if (!GameInfo->isPause) {
-		Move();
-		Attack();
+		Move(); 
+		if (!(!GameInfo->isBossSpawn && !GameInfo->isOneBoss)) {
+			Attack();
+		}
 	}
 }
 
@@ -51,8 +56,6 @@ void Pet::OnCollision(Object* obj)
 void Pet::Move()
 {
 	// 근접할수록 천천히 다가가기
-	
-	//
 	Vec2 A, B;
 	float X;
 	float Y;

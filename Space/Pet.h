@@ -12,7 +12,7 @@ class Pet : public Object
 
 	int Gun;
 public:
-	Pet(int type = 1);
+	Pet(int type = 1,bool display = false);
 	~Pet();
 
 	void Update(float deltaTime, float Time);

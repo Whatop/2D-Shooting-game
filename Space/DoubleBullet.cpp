@@ -31,6 +31,9 @@ DoubleBullet::~DoubleBullet()
 
 void DoubleBullet::Update(float deltaTime, float Time)
 {
+	if (GameInfo->isScoreScene) {
+		m_Spark->A = 105;
+	}
 	if (!GameInfo->isPause) {
 		DestroyTime += dt;
 		if (DelayTime < 5)

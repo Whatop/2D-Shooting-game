@@ -23,6 +23,7 @@ ShotGun::ShotGun(float r, Vec2 spawnPos)
 	m_ShotGun->R = 255;
 	m_ShotGun->G = 10;
 	m_ShotGun->B = 10;
+	m_Layer = 2;
 }
 
 ShotGun::~ShotGun()
@@ -31,6 +32,9 @@ ShotGun::~ShotGun()
 
 void ShotGun::Update(float deltaTime, float Time)
 {
+	if (GameInfo->isScoreScene) {
+		m_ShotGun->A = 105;
+	}
 	if (!GameInfo->isPause) {
 		DelayDestroy(this, 0.6f);
 		Move();

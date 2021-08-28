@@ -47,7 +47,7 @@ public:
 
 	float m_Score;
 	float TempScore;
-	// float EnemyScore,TtemScore, Nohitbonus 추가해야될것
+	float KillScore, ItemScore, BounsScore;
 
 	float Player_Coefficient; // 플레이어 공격력 계수
 
@@ -85,6 +85,8 @@ public:
 	int PetCount;
 
 	bool UP_Charge;
+
+	bool isScoreScene;
 
 public:
 	void Init();

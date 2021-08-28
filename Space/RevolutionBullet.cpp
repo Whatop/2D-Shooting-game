@@ -27,6 +27,9 @@ RevolutionBullet::~RevolutionBullet()
 
 void RevolutionBullet::Update(float deltaTime, float Time)
 {
+	if (GameInfo->isScoreScene) {
+		m_RBullet->A = 105;
+	}
 	if (!GameInfo->isPause) {
 
 		RMove();
@@ -34,7 +37,7 @@ void RevolutionBullet::Update(float deltaTime, float Time)
 			Move();
 		else {
 			if (!OneCharge) {
-				if (DelayTime < 4)
+				if (DelayTime < 4.f)
 					DelayTime += dt * 1.5f;
 
 				Spawnpoint = Vec2(GetPlayer->m_Position.x + (GetPlayer->m_Size.x * m_Scale.x) / 2, GetPlayer->m_Position.y - 2);

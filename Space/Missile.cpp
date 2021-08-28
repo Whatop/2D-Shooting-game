@@ -35,10 +35,10 @@ void Missile::Update(float deltaTime, float Time)
 		DestroyTime += dt;
 		m_Missile->Update(deltaTime, Time);
 		Move();
-		if (DestroyTime > 22.f) {
-			ObjMgr->RemoveObject(this);
-			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
-		}
+	}
+	if (DestroyTime > 22.f || GameInfo->isScoreScene) {
+		ObjMgr->RemoveObject(this);
+		ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
 	}
 }
 

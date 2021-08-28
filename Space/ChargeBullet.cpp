@@ -30,6 +30,9 @@ ChargeBullet::~ChargeBullet()
 
 void ChargeBullet::Update(float deltaTime, float Time)
 {
+	if (GameInfo->isScoreScene) {
+		m_ChargeBullet->A = 105;
+	}
 	if (!GameInfo->isPause) {
 
 		if (!(INPUT->GetKey('Z') == KeyState::PRESS) || OneCharge)

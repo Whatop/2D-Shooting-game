@@ -35,6 +35,10 @@ EnemyDirBullet::~EnemyDirBullet()
 
 void EnemyDirBullet::Update(float deltaTime, float Time)
 {
+	if (GameInfo->isScoreScene) {
+		m_Bolt->A = 105;
+		m_Bullet->A = 105;
+	}
 	if (!GameInfo->isPause) {
 		Move();
 		DelayDestroy(this, 4);

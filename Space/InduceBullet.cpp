@@ -40,6 +40,9 @@ InduceBullet::~InduceBullet()
 
 void InduceBullet::Update(float deltaTime, float Time)
 {
+	if (GameInfo->isScoreScene) {
+		m_Induce->A = 105;
+	}
 	if (!GameInfo->isPause) {
 		Iduce();
 		DestroyTime += dt;

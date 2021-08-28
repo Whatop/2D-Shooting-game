@@ -14,6 +14,7 @@ Boomerang::Boomerang(Vec2 spawnpoint)
 	DelayTime = 0.f;
 	DestroyTime = 0.f;
 	m_Atk = 30.f * GameInfo->HV_ShotType[4] * GameInfo->Player_Coefficient;
+	m_Layer = 2;
 }
 
 Boomerang::~Boomerang()
@@ -22,6 +23,9 @@ Boomerang::~Boomerang()
 
 void Boomerang::Update(float deltaTime, float Time)
 {
+	if (GameInfo->isScoreScene) {
+		m_Boomerang->A = 105;
+	}
 	if (!GameInfo->isPause) {
 		DelayTime += dt;
 		DestroyTime += dt;

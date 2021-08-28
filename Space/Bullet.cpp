@@ -28,6 +28,9 @@ Bullet::~Bullet()
 
 void Bullet::Update(float deltaTime, float Time)
 {
+	if (GameInfo->isScoreScene) {
+		m_Bolt->A = 105;
+	}
 	if (!GameInfo->isPause) {
 		DestroyTime += dt;
 		if (DelayTime < 5)

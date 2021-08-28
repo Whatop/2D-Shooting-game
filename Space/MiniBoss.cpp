@@ -104,7 +104,7 @@ void MiniBoss::Update(float deltaTime, float Time)
 			if (PatternTime > 6) {
 				//¿©±â¼­ ºóÄ­ µÎ°³ Or ÇÏ³ª
 				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 0), 180), "EnemyBullet");
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 50), 180), "EnemyBullet");
+				//ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 50), 180), "EnemyBullet");
 				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 100), 180), "EnemyBullet");
 				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 150), 180), "EnemyBullet");
 				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 200), 180), "EnemyBullet");

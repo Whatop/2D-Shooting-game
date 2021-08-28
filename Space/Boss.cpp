@@ -5,7 +5,6 @@
 #include "Box.h"
 #include "Missile.h"
 #include "Item.h"
-#include "StoreScene.h"
 
 Boss::Boss(Vec2 Pos)
 {
@@ -107,6 +106,7 @@ Boss::Boss(Vec2 Pos)
 	ChangeTime = 0.f;
 	OneDamege = false;
 	DamegeCoolTime = 0.f;
+	bonusTime = 0.f;
 }
 
 Boss::~Boss()
@@ -115,6 +115,12 @@ Boss::~Boss()
 
 void Boss::Update(float deltaTime, float Time)
 {
+	if (GameInfo->isScoreScene) {
+		m_Boss->A = 105;
+		Propeller->A = 105;
+		BossBody->A = 105;
+		DestroyTail->A = 105;
+	}
 	if (!GameInfo->isPause) {
 		if (!OneDamege)
 			ObjMgr->CollisionCheak(this, "Boom");
@@ -410,7 +416,7 @@ void Boss::Fire()
 
 		if (ShootTime > 0.5f) {
 
-			if (Count < 3) {
+			if (Count < 3.f) {
 				PilotAttack->NextFrame();
 				isShoot = false;
 				isDire = false;
@@ -418,7 +424,7 @@ void Boss::Fire()
 				DelayTime = 0;
 				Count++;
 			}
-			else if (Count > 2) {
+			else if (Count > 2.f) {
 				PilotAttack->BackFrame();
 				isShoot = false;
 				isDire = false;
@@ -426,7 +432,7 @@ void Boss::Fire()
 				DelayTime = 0;
 				Count++;
 			}
-			if (Count > 5) {
+			if (Count > 5.f) {
 				isShoot = false;
 				isDire = false;
 				ShootTime = 0;
@@ -453,7 +459,7 @@ void Boss::State()
 		ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2 * m_Scale.y);
 		ColBoxTop->SetPosition(BossBody->m_Position.x + 120, BossBody->m_Position.y + 138 / 2 - 26);
 
-		if (TailHp <= 0) {
+		if (TailHp <= 0.f) {
 			m_Speed = m_Speed / 1.5f;
 			m_Hp -= 300.f;
 			isDestroyTail = true;
@@ -467,7 +473,7 @@ void Boss::State()
 			isMove = false;
 			GameInfo->MaxScore += 500;
 		}
-		if (TopHp <= 0) {
+		if (TopHp <= 0.f) {
 			m_Hp -= 300.f;
 			isDestroyTop = true;
 			TopHp = 99999.f;
@@ -486,7 +492,7 @@ void Boss::State()
 			GameInfo->BossPosition = BossTail->m_Position;
 		}
 		if (isDestroyTop && isDestroyTail && !isDestroyBody) {
-			if (BodyHp <= 0) {
+			if (BodyHp <= 0.f) {
 				m_Hp -= 500.f;
 				for (int i = 0; i < 10; i++) {
 					float randx = (rand() % (int)BossBody->m_Size.x * m_Scale.x) + BossBody->m_Position.x - BossBody->m_Size.x / 2 * m_Scale.x;
@@ -497,7 +503,7 @@ void Boss::State()
 				isDestroyBody = true;
 			}
 		}
-		if (m_Hp < 0) {
+		if (m_Hp < 0.f) {
 			GameInfo->CameraStop = true;
 			if (!DieScene) {
 				Camera::GetInst()->isVibration = true;
@@ -524,15 +530,17 @@ void Boss::State()
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x + 100, m_Position.y - 50), 2, 2), "Effect");
 				isBoom = true;
 				GameInfo->EnemyCount--;
-
 			}
-			if (bonusTime < 3) {
+			BonusTime += dt;
+			if (BonusTime < 3) {
 				bonusTime += dt;
-				ObjMgr->AddObject(new Item(m_Position,true), "ITEM");
+				if (bonusTime > 0.01f) {
+					ObjMgr->AddObject(new Item(m_Position, true), "ITEM");
+					bonusTime = 0.f;
+				}
 			}
-			if (ChangeTime > 10) {
-				//if(GameInfo->m_Scene == StageScene::STAGE1)
-				SceneDirector::GetInst()->ChangeScene(new StoreScene);
+			if (ChangeTime > 10.f) {
+				GameInfo->isScoreScene = true;
 				ChangeTime = 0.f;
 			}
 		}
