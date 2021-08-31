@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "DoubleBullet.h"
 
-DoubleBullet::DoubleBullet(Vec2 Pos)
+DoubleBullet::DoubleBullet(Vec2 Pos, bool minibullet)
 {
 	m_Spark = new Animation();
 	m_Spark->Init(0.1f, true);
@@ -17,8 +17,10 @@ DoubleBullet::DoubleBullet(Vec2 Pos)
 	DestroyTime = 0.f;
 	m_Layer = 2;
 	m_Atk = 5.f * GameInfo->HV_ShotType[5] *GameInfo->Player_Coefficient;
-	SetScale(0.75f, 0.75f);
-
+	if(!minibullet)
+		SetScale(0.75f, 0.75f);
+	else
+		SetScale(0.5f, 0.5f);
 	m_Spark->R = 255;
 	m_Spark->G = 100;
 	m_Spark->B = 255;

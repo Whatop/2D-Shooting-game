@@ -1,14 +1,18 @@
 #include "stdafx.h"
 #include "Boomerang.h"
 
-Boomerang::Boomerang(Vec2 spawnpoint)
+Boomerang::Boomerang(Vec2 spawnpoint, bool minibullet)
 {
 
 	m_Boomerang = Sprite::Create(L"Painting/Bullet/Direct.png");
 	m_Boomerang->SetParent(this);
 	Spawnpoint = Vec2(spawnpoint.x + (GetPlayer->m_Size.x * m_Scale.x) / 2, spawnpoint.y - 2);
 	SetPosition(Spawnpoint);
-	SetScale(0.45f, 0.45f);
+	if(!minibullet)
+		SetScale(0.45f, 0.45f);
+	else
+		SetScale(0.25f, 0.25f);
+
 	//m_Boomerang->m_Visible = false;
 	m_Speed = 950.f;
 	DelayTime = 0.f;
@@ -34,7 +38,7 @@ void Boomerang::Update(float deltaTime, float Time)
 		}
 
 		Move();
-		m_Rotation += D3DXToRadian(2);
+		m_Rotation += D3DXToRadian(10);
 	//	m_Crossed->Update(deltaTime, Time);
 	}
 }

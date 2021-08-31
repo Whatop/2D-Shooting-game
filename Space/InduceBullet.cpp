@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "Bullet.h"
 
-InduceBullet::InduceBullet(Vec2 spawnpoint)
+InduceBullet::InduceBullet(Vec2 spawnpoint, bool minibullet)
 {
 	m_Induce = new Animation();
 	m_Induce->Init(0.1f, true);
@@ -20,7 +20,10 @@ InduceBullet::InduceBullet(Vec2 spawnpoint)
 	DestroyTime = 0.f;
 	m_Layer = 2;
 	m_Atk = 7.5f * GameInfo->HV_ShotType[3]* GameInfo->Player_Coefficient;
-	SetScale(1.f, 1.f);
+	if(!minibullet)
+		SetScale(1.f, 1.f);
+	else
+		SetScale(0.75f, 0.75f);
 
 	m_Induce->R = 50;
 	m_Induce->G = 255;

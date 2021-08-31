@@ -9,7 +9,7 @@ class DoubleBullet : public Object
 	float DelayTime;
 	float DestroyTime;
 public:
-	DoubleBullet(Vec2 Pos);
+	DoubleBullet(Vec2 Pos, bool minibullet = false);
 	~DoubleBullet();
 
 	void Update(float deltaTime, float Time);

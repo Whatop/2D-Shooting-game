@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Bullet.h"
 
-Bullet::Bullet(Vec2 spawnpoint)
+Bullet::Bullet(Vec2 spawnpoint, bool minibullet)
 {
 	m_Bolt = new Animation();
 	m_Bolt->Init(0.1f, true);
@@ -19,7 +19,10 @@ Bullet::Bullet(Vec2 spawnpoint)
 	DestroyTime = 0.f;
 	m_Layer = 2;
 	m_Atk = 45.f * GameInfo->HV_ShotType[0] * GameInfo->Player_Coefficient;
-	SetScale(1.5f, 1.5f);
+	if (!minibullet)
+		SetScale(1.5f, 1.5f);
+	else
+		SetScale(0.75f, 0.75f);
 }
 
 Bullet::~Bullet()

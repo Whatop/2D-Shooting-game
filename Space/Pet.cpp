@@ -94,10 +94,11 @@ void Pet::Move()
 
 void Pet::Attack()
 {
+	// ¾ÕÀ¸·Î ³ª°¡´Â ÃÑÅº, À¯µµÅº, 
 	ShotTime += dt;
 	if (Gun == 0) {
 		if (ShotTime > 0.35f) {
-			ObjMgr->AddObject(new Bullet(m_Position), "Bullet");
+			ObjMgr->AddObject(new Bullet(m_Position,true), "Bullet");
 			ShotTime = 0.f;
 		}
 	}
@@ -108,6 +109,7 @@ void Pet::Attack()
 			ObjMgr->AddObject(new ShotGun(0, m_Position), "Bullet");
 			ObjMgr->AddObject(new ShotGun(-10, m_Position), "Bullet");
 			ObjMgr->AddObject(new ShotGun(-20, m_Position), "Bullet");
+			Gun++;
 			ShotTime = 0.f;
 		}
 	}
@@ -119,25 +121,26 @@ void Pet::Attack()
 			ObjMgr->AddObject(new ShotGun(-15, m_Position), "Bullet");
 			ObjMgr->AddObject(new ShotGun(-25, m_Position), "Bullet");
 			ShotTime = 0.f;
+			Gun++;
 		}
 	}
 	else if (Gun == 3) {
 		if (ShotTime > 0.4f) {
-			ObjMgr->AddObject(new InduceBullet(m_Position), "Bullet");
+			ObjMgr->AddObject(new InduceBullet(m_Position, true), "Bullet");
 
 			ShotTime = 0.f;
 		}
 	}
 	else if (Gun == 4) {
 		if (ShotTime > 0.5f) {
-			ObjMgr->AddObject(new Boomerang(m_Position), "Bullet");
+			ObjMgr->AddObject(new Boomerang(m_Position, true), "Bullet");
 			ShotTime = 0.f;
 		}
 	}
 	else if (Gun == 5) {
 		if (ShotTime > 0.3f) {
-			ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 6, m_Position.y + 12)), "Bullet");
-			ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 6, m_Position.y - 12)), "Bullet");
+			ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 6, m_Position.y + 12), true), "Bullet");
+			ObjMgr->AddObject(new DoubleBullet(Vec2(m_Position.x + 6, m_Position.y - 12), true), "Bullet");
 			ShotTime = 0.f;
 		}
 	}

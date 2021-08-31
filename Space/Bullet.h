@@ -9,7 +9,7 @@ class Bullet : public Object
 	float DelayTime;
 	float DestroyTime;
 public:
-	Bullet(Vec2 spawnpoint = GetPlayer->m_Position);
+	Bullet(Vec2 spawnpoint = GetPlayer->m_Position, bool minibullet = false);
 	~Bullet();
 
 	void Update(float deltaTime, float Time);

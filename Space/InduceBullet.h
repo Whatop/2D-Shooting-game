@@ -16,7 +16,7 @@ class InduceBullet : public Object
 	bool isHoming;
 
 public:
-	InduceBullet(Vec2 spawnpoint = GetPlayer->m_Position);
+	InduceBullet(Vec2 spawnpoint = GetPlayer->m_Position, bool minibullet = false);
 	~InduceBullet();
 
 	void Update(float deltaTime, float Time);
