@@ -58,7 +58,7 @@ void Enemy3::Update(float deltaTime, float Time)
 		}
 		else {
 			if (ones) {
-				m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
+				m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 360 + 73));
 				ones = false;
 			}
 			ObjMgr->CollisionCheak(this, "Bullet");

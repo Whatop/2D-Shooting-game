@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Stage2.h"
+#include "Boom.h"
 
 Stage2::Stage2()
 {
@@ -19,13 +20,12 @@ void Stage2::Init()
 	Camera::GetInst()->m_Position = Vec2(0, -180);
 
 	UpWall = Sprite::Create(L"Painting/Wall.png");
-	UpWall->SetPosition(1920 / 2, -50);
+	UpWall->SetPosition(1920 / 2, -160);
 	UpWall->SetScale(19.2f, 1);
 
 	DownWall = Sprite::Create(L"Painting/Wall.png");
-	DownWall->SetPosition(1920 / 2, 650);
+	DownWall->SetPosition(1920 / 2, 520);
 	DownWall->SetScale(19.2f, 1);
-
 
 	Left_Limit = Sprite::Create(L"Painting/Wall.png");
 	Left_Limit->SetPosition(-50, 325);
@@ -34,6 +34,7 @@ void Stage2::Init()
 	Right_Limit = Sprite::Create(L"Painting/Wall.png");
 	Right_Limit->SetPosition(1970, 325);
 	Right_Limit->SetScale(1, 6.5f);
+
 	ObjMgr->AddObject(UpWall, "Wall");
 	ObjMgr->AddObject(DownWall, "Wall");
 	ObjMgr->AddObject(Left_Limit, "Wall");
@@ -60,10 +61,10 @@ void Stage2::Init()
 	ChoicePack[1] = Sprite::Create(L"Painting/Store/Pack/" + std::to_wstring(RCrad[1]) + L".png");
 	ChoicePack[2] = Sprite::Create(L"Painting/Store/Pack/" + std::to_wstring(RCrad[2]) + L".png");
 
-	m_Choice->SetPosition(1920 / 2, 1080 / 2);
-	ChoicePack[0]->SetPosition(1920 / 2 + 300, 1080 / 3);
-	ChoicePack[1]->SetPosition(1920 / 2, 1080 / 3);
-	ChoicePack[2]->SetPosition(1920 / 2 - 300, 1080 / 3);
+	m_Choice->SetPosition(1920 / 2, 800 / 2);
+	ChoicePack[0]->SetPosition(1920 / 2 + 300, 600.f / 3.f);
+	ChoicePack[1]->SetPosition(1920 / 2, 600.f / 3.f);
+	ChoicePack[2]->SetPosition(1920 / 2 - 300, 600.f / 3.f);
 
 	ChoicePack[0]->SetScale(0.55f, 0.55f);
 	ChoicePack[1]->SetScale(0.55f, 0.55f);
@@ -102,6 +103,9 @@ void Stage2::Update(float deltaTime, float time)
 			for (int i = 0; i < 3; i++) {
 				ChoicePack[i]->m_Visible = false;
 			}
+			if (INPUT->GetKey('C') == KeyState::DOWN && GameInfo->HV_Boom > 0) {
+				ObjMgr->AddObject(new Boom, "Boom");
+			}
 		}
 		else {
 			m_Choice->m_Visible = true;
@@ -134,7 +138,7 @@ void Stage2::BGInit()
 	int a = 1;
 	for (int i = 0; i < 10; i++) {
 		m_BackGround[i][0] = Sprite::Create(L"Painting/GameScreen/Stage2/" + std::to_wstring(a) + L".png");
-		m_BackGround[i][0]->SetPosition(1200 / 2, 600 / 2);
+		m_BackGround[i][0]->SetPosition(1200 / 2, 172);
 		m_BackGround[i][1] = Sprite::Create(L"Painting/GameScreen/Stage2/" + std::to_wstring(a) + L".png");
 		m_BackGround[i][1]->SetPosition(m_BackGround[i][0]->m_Position.x  +m_BackGround[i][0]->m_Size.x, m_BackGround[i][0]->m_Position.y);
 		m_BackGround[i][2] = Sprite::Create(L"Painting/GameScreen/Stage2/" + std::to_wstring(a) + L".png");

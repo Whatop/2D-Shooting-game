@@ -68,6 +68,9 @@ public:
 	int HV_ShotType[6];
 
 	int HV_TYPE;
+
+	int HV_Boom;
+
 	bool isGunType; // 타입 선택시 바꾸는거 한번만
 
 	bool IT_Shot;

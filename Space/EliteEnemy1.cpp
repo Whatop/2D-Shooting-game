@@ -9,7 +9,7 @@ EliteEnemy1::EliteEnemy1(Vec2 Pos)
 	m_EliteEnemy1->SetParent(this);
 
 	SetPosition(Pos);
-	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
+	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 360 + 73));
 	m_Hp = 300;
 	m_Rotation = D3DXToRadian(180);
 	m_Speed = 450.f;
@@ -51,7 +51,7 @@ void EliteEnemy1::Update(float deltaTime, float Time)
 			ObjMgr->CollisionCheak(this, "Bullet");
 			ObjMgr->CollisionCheak(this, "ChargeBullet");
 			if (ones) {
-				m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
+				m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 360 + 73));
 				ones = false;
 			}
 

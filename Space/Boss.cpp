@@ -84,7 +84,7 @@ Boss::Boss(Vec2 Pos)
 	m_MaxHp = 4500.f;
 	m_Hp = m_MaxHp;
 	m_Speed = 200.f;
-	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 1080));
+	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 360 + 100));
 	m_MoveWaitingTime = 3.f;
 	m_LastMoveTime = 3.f;
 	MS_Num = 0;
@@ -145,7 +145,7 @@ void Boss::Update(float deltaTime, float Time)
 
 		else {
 			if (ones) {
-				m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
+				m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 360 + 73));
 				ones = false;
 			}
 			if (GameInfo->AutoCamera && !GameInfo->CameraStop)
@@ -350,11 +350,10 @@ void Boss::OnCollision(Object* obj)
 void Boss::Move()
 {
 	if (MoveTime > 1.4f) {
-		if (MoveNum == 0) {
+		if (MoveNum == 0) 
 			m_RandomPosition = Vec2(m_Position.x + 100, 150);
-		}
 		if (MoveNum == 1)
-			m_RandomPosition = Vec2(m_Position.x + 600, 480);
+			m_RandomPosition = Vec2(m_Position.x + 600, 280);
 		if (MoveNum == 2)
 			m_RandomPosition = Vec2(m_Position.x + 100, 150);
 		if (MoveNum == 3) {

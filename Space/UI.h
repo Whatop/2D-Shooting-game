@@ -5,11 +5,16 @@ class UI : public Singleton<UI>
 	Sprite* BossBar;
 	Sprite* MiniBossBar;
 	TextMgr* m_Test;
+	TextMgr* Money;
 	Sprite* Pack[6];
+
+	Sprite* Boom[3];
 
 	Sprite* UIScoreFrame;
 
 	TextMgr* ScoreText;
+
+	Sprite* StateWindow;
 
 	// KILL, ITEM, BONUS, ALL
 	float limit[4];

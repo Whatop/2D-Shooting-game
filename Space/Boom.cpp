@@ -13,9 +13,12 @@ Boom::Boom()
 	m_ColBox->m_Visible = false;
 
 	SetPosition(GetPlayer->m_Position);
+
 	ScaleUp = 0.1f;
 	m_Boom->A = 100;
 	m_Atk = 100.f;
+
+	GameInfo->HV_Boom--;
 }
 
 Boom::~Boom()
@@ -27,8 +30,8 @@ void Boom::Update(float deltaTime, float Time)
 
 	if (!GameInfo->isPause) {
 		DelayDestroy(this,3.f);
-		if (ScaleUp < 10)
-			ScaleUp += 15* dt;
+			if (ScaleUp < 10)
+				ScaleUp += 15 * dt;
 
 		ObjMgr->CollisionCheak(this, "EnemyBullet");
 		ObjMgr->CollisionCheak(this, "Missile");

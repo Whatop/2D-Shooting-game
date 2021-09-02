@@ -22,6 +22,10 @@ void UI::Init()
 
 	UIScoreFrame = Sprite::Create(L"Painting/UI/ScoreUI2.png");
 	UIScoreFrame->SetPosition(1920 / 2, 1080/2);
+	
+	StateWindow = Sprite::Create(L"Painting/UI/StateWindow.png");
+	StateWindow->SetPosition(1920 / 2, 72.f/2.f);
+
 
 	for (int i = 0; i < 6; i++) {
 		Pack[i] = Sprite::Create(L"Painting/UI/Pack/" + std::to_wstring(i) + L".png");
@@ -31,15 +35,25 @@ void UI::Init()
 		Pack[i]->A = 205;
 	}
 
+	ObjMgr->AddObject(StateWindow, "UI");
 	ObjMgr->AddObject(PlayerBar, "UI");
 	ObjMgr->AddObject(BossBar, "UI");
 	ObjMgr->AddObject(MiniBossBar, "UI");
 	ObjMgr->AddObject(UIScoreFrame, "UI");
+	for (int i = 0; i < 3; i++) {
+		Boom[i] = Sprite::Create(L"Painting/UI/Boom.png");
+		Boom[i]->SetPosition(400 + 100 * i, 72.f / 2.f);
+		ObjMgr->AddObject(Boom[i], "UI");
+	}
 
 
 	m_Test = new TextMgr();
-	m_Test->Init(50, true, false, "±¼¸²");
-	m_Test->SetColor(255, 255, 255, 255);
+	m_Test->Init(72, true, false, "±¼¸²");
+	m_Test->SetColor(255, 255, 50, 50);
+
+	Money = new TextMgr();
+	Money->Init(72, true, false, "±¼¸²");
+	Money->SetColor(255, 255, 255, 0);
 
 	ScoreText = new TextMgr();
 	ScoreText->Init(80, true, false, "±¼¸²");
@@ -71,7 +85,6 @@ void UI::Update()
 	if (GameInfo->isScoreScene) {
 		if (ScoredaleyTime < 4)
 			ScoredaleyTime += dt;
-		
 		else
 			ScoreUI();
 	}
@@ -79,7 +92,27 @@ void UI::Update()
 		UIScoreFrame->m_Visible = false;
 		ScoreText->SetColor(0, 255, 255, 255);
 	}
-
+	if (GameInfo->HV_Boom == 1) {
+		Boom[0]->m_Visible = true;
+		Boom[1]->m_Visible = false;
+		Boom[2]->m_Visible = false;
+	}
+	else if(GameInfo->HV_Boom == 2)
+	{
+		Boom[0]->m_Visible = true;
+		Boom[1]->m_Visible = true;
+		Boom[2]->m_Visible = false;
+	}
+	else if (GameInfo->HV_Boom == 3) {
+		for (int i = 0; i < 3; i++) {
+			Boom[i]->m_Visible = true;
+		}
+	}
+	else if(GameInfo->HV_Boom <= 0) {
+		for (int i = 0; i < 3; i++) {
+			Boom[i]->m_Visible = false;
+		}
+	}
 }
 
 
@@ -136,7 +169,8 @@ void UI::Render()
 
 	Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
 
-	m_Test->print(std::to_string(int(GameInfo->m_Score)), 200, 50);
+	m_Test->print(std::to_string(int(GameInfo->m_Score)), 1920 / 2 - 170, 0);
+	Money->print(std::to_string(int(GameInfo->m_Score)), 1920 / 2 + 450, 0);
 	//m_Test->print("Enemy : " + std::to_string(GameInfo->EnemyCount), 1650, 50);
 	ScoreTextUI();
 

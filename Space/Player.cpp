@@ -9,7 +9,6 @@
 #include "InputScoreScene.h"
 #include "InduceBullet.h"
 #include "RevolutionBullet.h" 
-#include "Boom.h" 
 #include "Pet.h" 
 
 
@@ -18,7 +17,7 @@ Player::Player(float hp)
 	m_MaxHp = 100;
 	m_Hp = hp;
 	Init();
-	SetPosition(360, 360);
+	SetPosition(300, 180);
 	GameInfo->PlayerUpdate(this);
 	CollisionBox();
 	std::cout << "플레이어 생성" << std::endl;
@@ -73,6 +72,7 @@ void Player::Init()
 	BuffTime = 0.f;
 	isBuff = false;
 	isBuffOnes = true;
+
 }
 
 void Player::Update(float deltaTime, float Time)
@@ -80,11 +80,11 @@ void Player::Update(float deltaTime, float Time)
 	if (GameInfo->isScoreScene) {
 		m_Player->A = 105;
 	}
-	if (INPUT->GetKey('C') == KeyState::DOWN) {
-		ObjMgr->AddObject(new Boom, "Boom");
-	}
 	if (INPUT->GetKey('B') == KeyState::DOWN) {
 		ObjMgr->AddObject(new Pet(rand()% 6), "Pet");
+	}
+	if (INPUT->GetKey('J') == KeyState::DOWN) {
+		ObjMgr->AddObject(new Item(Vec2(m_Position.x + 1000,400/2)), "Pet");
 	}
 	if (!GameInfo->isSpawnEnemy) {
 		m_Player->m_Visible = false;
@@ -99,6 +99,7 @@ void Player::Update(float deltaTime, float Time)
 	}
 
 	if (!GameInfo->isPause) {
+		
 		GameInfo->HV_TYPE = m_GunType;
 		RpmDelayTime += dt;
 		isLeft = false;
