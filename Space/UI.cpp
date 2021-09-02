@@ -137,7 +137,7 @@ void UI::Render()
 	Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
 
 	m_Test->print(std::to_string(int(GameInfo->m_Score)), 200, 50);
-	m_Test->print("Enemy : " + std::to_string(GameInfo->EnemyCount), 1650, 50);
+	//m_Test->print("Enemy : " + std::to_string(GameInfo->EnemyCount), 1650, 50);
 	ScoreTextUI();
 
 	Renderer::GetInst()->GetSprite()->End();
@@ -145,7 +145,7 @@ void UI::Render()
 
 void UI::ScoreUI()
 {
-	UIScoreFrame->m_Visible = true;
+	//UIScoreFrame->m_Visible = true;
 	if (limit[0] <= 1)
 		limit[0] += dt;
 
@@ -167,15 +167,20 @@ void UI::ScoreUI()
 void UI::ScoreTextUI()
 {
 	ScoreText->SetColor(255, 255, 255, 255);
-	if (limit[0] > 0)
+	if (limit[0] > 0) {
+		ScoreText->print("Kill", 450, 350);
 		ScoreText->print("+ " + std::to_string(int(GameInfo->KillScore * limit[0])), 700, 350);
-
-	if (limit[1] > 0)
+	}
+	if (limit[1] > 0) {
+		ScoreText->print("Item", 450, 450);
 		ScoreText->print("+ " + std::to_string(int(GameInfo->ItemScore * limit[1])), 700, 450);
-
-	if (limit[2] > 0)
-		ScoreText->print("+ " + std::to_string(int(GameInfo->EnemyCount * limit[2])), 700, 550);
-
-	if (limit[3] > 0)
+	}
+	if (limit[2] > 0) {
+		ScoreText->print("Bonus", 450, 550);
+		ScoreText->print("+ " + std::to_string(int(GameInfo->BonusScore * limit[2])), 700, 550);
+	}
+	if (limit[3] > 0) {
+		ScoreText->print("All", 450, 650);
 		ScoreText->print("= " + std::to_string(int(GameInfo->m_Score * limit[3])), 700, 650);
+	}
 }

@@ -250,8 +250,8 @@ void Stage1::NextScene()
 	if(ScaleScene <= 1)
 		ScaleScene += dt;
 
-	if (ScaleText <= 1)
-		ScaleText += 2*dt;
+	if (ScaleText <= 1 && ScaleScene >= 1)
+		ScaleText += dt;
 
 	ScoreScene->SetScale(ScaleScene, 1.f);
 	ScoreText->SetScale(ScaleText, 1.f);

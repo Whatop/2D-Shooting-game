@@ -240,6 +240,7 @@ void Player::OnCollision(Object* obj)
 		}
 		else {
 			GameInfo->MaxScore += 500;
+			GameInfo->ItemScore += 500;
 		}
 		obj->SetDestroy(true);
 	}
@@ -253,7 +254,8 @@ void Player::OnCollision(Object* obj)
 		obj->SetDestroy(true);
 	}	
 	if (obj->m_Tag == "Bonus") {
-		GameInfo->MaxScore += 100;
+		GameInfo->MaxScore += 50;
+		GameInfo->BonusScore += 50;
 		obj->SetDestroy(true);
 	}
 
@@ -291,8 +293,8 @@ void Player::CollisionBox()
 {
 	ColBox[LEFT]->SetPosition(m_Position.x - m_Size.x / 2, m_Position.y);
 	ColBox[RIGHT]->SetPosition(m_Position.x + m_Size.x / 2 , m_Position.y);
-	ColBox[UP]->SetPosition(m_Position.x, m_Position.y - m_Size.y / 2+30);
-	ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2 - 30);
+	ColBox[UP]->SetPosition(m_Position.x, m_Position.y - m_Size.y / 2 + 35);
+	ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2 - 35);
 	ColBox[HIT]->SetPosition(m_Position);
 	Defense->SetPosition(m_Position);
 }

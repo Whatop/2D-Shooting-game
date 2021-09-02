@@ -53,9 +53,9 @@ void GameMgr::Init()
 	HV_TYPE = 1;
 	TempScore = m_Score;
 
-	KillScore = 330.f;
-	ItemScore = 213.f;
-	BounsScore = 770.f;
+	KillScore = 0.f;
+	ItemScore = 0.f;
+	BonusScore = 0.f;
 
 	ChargeTime = 0.f;
 	isChoiceDelay = true;

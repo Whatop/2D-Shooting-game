@@ -11,6 +11,10 @@ MiniBoss::MiniBoss(Vec2 Pos)
 	m_Enemy = Sprite::Create(L"Painting/Enemy/Enemy.png");
 	m_Enemy->SetParent(this);
 
+	m_Pattern = Sprite::Create(L"Painting/Enemy/Temp.png");
+	m_Pattern->m_Visible = false;
+	m_Pattern->SetScale(1.f, 0.2f);
+	m_Pattern->SetPosition(Camera::GetInst()->m_Position.x + 1920/2, GetPlayer->m_Position.y);
 	SetPosition(Pos);
 	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 1080));
 	m_MaxHp = 1300;
@@ -32,6 +36,7 @@ MiniBoss::MiniBoss(Vec2 Pos)
 	OneDamege = false;
 	isPattern = false;
 	Acc = 1.f;
+	BulletPattern = 1.f;
 }
 
 MiniBoss::~MiniBoss()
@@ -57,6 +62,8 @@ void MiniBoss::Update(float deltaTime, float Time)
 			SpawnMove += dt;
 			if (SpawnMove < 2) {
 				m_Position.x -= (300 + rand() % 100) * dt;
+				ObjMgr->CollisionCheak(this, "Bullet");
+				ObjMgr->CollisionCheak(this, "ChargeBullet");
 			}
 			else {
 				if (ones) {
@@ -75,6 +82,7 @@ void MiniBoss::Update(float deltaTime, float Time)
 					ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
 					GameInfo->EnemyCount--;
 					GameInfo->MaxScore += 1000;
+					GameInfo->KillScore += 1000;
 					GameInfo->ChocieScene();
 
 					ObjMgr->RemoveObject(this);
@@ -88,6 +96,7 @@ void MiniBoss::Update(float deltaTime, float Time)
 			}
 		}
 		else {
+			m_Pattern->m_Visible = true;
 			ObjMgr->CollisionCheak(this, "Bullet");
 			ObjMgr->CollisionCheak(this, "ChargeBullet");
 			if (Acc < 7.5f)
@@ -103,22 +112,57 @@ void MiniBoss::Update(float deltaTime, float Time)
 			PatternTime += dt;
 			if (PatternTime > 6) {
 				//¿©±â¼­ ºóÄ­ µÎ°³ Or ÇÏ³ª
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 0), 180), "EnemyBullet");
-				//ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 50), 180), "EnemyBullet");
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 100), 180), "EnemyBullet");
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 150), 180), "EnemyBullet");
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 200), 180), "EnemyBullet");
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 250), 180), "EnemyBullet");
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 300), 180), "EnemyBullet");
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 350), 180), "EnemyBullet");
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 400), 180), "EnemyBullet");
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 450), 180), "EnemyBullet");
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 500), 180), "EnemyBullet");
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 550), 180), "EnemyBullet");
-				ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 600), 180), "EnemyBullet");
+				if (PatternCount % 2 == 0) {
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 0), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 30), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 60), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 90), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 120), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 150), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 180), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 210), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 240), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 270), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 300), 180), "EnemyBullet");
+				}
+				else {
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 330), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 360), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 390), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 420), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 450), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 480), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 510), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 540), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 570), 180), "EnemyBullet");
+					ObjMgr->AddObject(new EnemyRotationBullet(Vec2(CamPos.x + 1920 + 100, 600), 180), "EnemyBullet");
+				}
 				PatternCount++;
-				PatternTime = 4;
+				PatternTime = 5;
 			}
+			BulletPattern += dt;
+			m_Pattern->SetPosition(Camera::GetInst()->m_Position.x + 1920 / 2, GetPlayer->m_Position.y);
+			if (m_Pattern->A <= 0) {
+				Under = true;
+				Over = false;
+				std::cout << BulletPattern << std::endl;
+			}
+			if (m_Pattern->A >= 255) {
+				Under = false;
+				Over = true;
+				std::cout << BulletPattern << std::endl;
+			}
+			if (Under) {
+				m_Pattern->A += 1 * BulletPattern;
+			}
+			if (Over) {
+				m_Pattern->A -= 1 * BulletPattern;
+			}
+			if (BulletPattern >= 3.f) {
+				BulletPattern = 1.f;
+
+			}
+			//GameInfo->MiniBossHpUpdate(m_MaxHp, m_Hp);
 		}
 	}
 }
@@ -126,6 +170,7 @@ void MiniBoss::Update(float deltaTime, float Time)
 void MiniBoss::Render()
 {
 	m_Enemy->Render();
+	m_Pattern->Render();
 }
 
 void MiniBoss::OnCollision(Object* obj)

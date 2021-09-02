@@ -47,9 +47,13 @@ public:
 
 	float m_Score;
 	float TempScore;
-	float KillScore, ItemScore, BounsScore;
+	float KillScore, ItemScore, BonusScore;
+	
+	float m_Money;
 
 	float Player_Coefficient; // 플레이어 공격력 계수
+	float Pet_Coefficient; // 펫 공격력 계수
+	float Enemy_Coefficient; // 적 공격력 계수
 
 	float SpawnDelay;
 	float AddDelay;

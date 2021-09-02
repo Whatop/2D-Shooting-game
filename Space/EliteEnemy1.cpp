@@ -30,6 +30,7 @@ EliteEnemy1::~EliteEnemy1()
 
 void EliteEnemy1::Update(float deltaTime, float Time)
 {
+	
 	if (!GameInfo->isPause) {
 		if (!OneDamege)
 			ObjMgr->CollisionCheak(this, "Boom");
@@ -42,15 +43,18 @@ void EliteEnemy1::Update(float deltaTime, float Time)
 		}
 		SpawnMove += dt;
 		if (SpawnMove < 2) {
-			m_Position.x -= (300 + rand() % 100) * dt;
+			m_Position.x -= (300 + rand() % 100) * dt; 
+			ObjMgr->CollisionCheak(this, "Bullet");
+			ObjMgr->CollisionCheak(this, "ChargeBullet");
 		}
 		else {
+			ObjMgr->CollisionCheak(this, "Bullet");
+			ObjMgr->CollisionCheak(this, "ChargeBullet");
 			if (ones) {
 				m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
 				ones = false;
 			}
-			ObjMgr->CollisionCheak(this, "Bullet");
-			ObjMgr->CollisionCheak(this, "ChargeBullet");
+
 			m_LastMoveTime += dt;
 			if (m_LastMoveTime >= 4)
 				Move();
@@ -62,6 +66,7 @@ void EliteEnemy1::Update(float deltaTime, float Time)
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
 				GameInfo->EnemyCount--;
 				GameInfo->MaxScore += 300;
+				GameInfo->KillScore += 300;
 			}
 			if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
 				m_Position.x += 100 * dt;

@@ -53,6 +53,8 @@ void Enemy3::Update(float deltaTime, float Time)
 		}
 		if (SpawnMove < 2) {
 			m_Position.x -= (300 + rand() % 100) * dt;
+			ObjMgr->CollisionCheak(this, "Bullet");
+			ObjMgr->CollisionCheak(this, "ChargeBullet");
 		}
 		else {
 			if (ones) {
@@ -62,7 +64,7 @@ void Enemy3::Update(float deltaTime, float Time)
 			ObjMgr->CollisionCheak(this, "Bullet");
 			ObjMgr->CollisionCheak(this, "ChargeBullet");
 			m_LastMoveTime += dt;
-			if (m_LastMoveTime >= 4 || isBoomMode)
+			if (m_LastMoveTime >= 2 || isBoomMode)
 				Move();
 			if (m_Hp <= 0)
 			{
@@ -72,6 +74,7 @@ void Enemy3::Update(float deltaTime, float Time)
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
 				GameInfo->EnemyCount--;
 				GameInfo->MaxScore += 100;
+				GameInfo->KillScore += 100;
 			}
 			if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
 				m_Position.x += 100 * dt;

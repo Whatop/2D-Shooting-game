@@ -57,4 +57,5 @@ void Boomerang::OnCollision(Object* obj)
 void Boomerang::Move()
 {
 	m_Position.x += (m_Speed - 350 * DelayTime)* dt;
+
 }

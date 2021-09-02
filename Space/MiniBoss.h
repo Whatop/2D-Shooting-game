@@ -2,6 +2,9 @@
 class MiniBoss : public Object
 {
 	Sprite* m_Enemy;
+
+	Sprite* m_Pattern;
+
 	Vec2 m_RandomPosition;
 	float m_Hp, m_MaxHp;
 	float m_Speed;
@@ -26,6 +29,10 @@ class MiniBoss : public Object
 	int PatternCount;
 	float PatternTime;
 
+	bool Over;
+	bool Under;
+
+	float BulletPattern;
 public:
 	MiniBoss(Vec2 Pos);
 	~MiniBoss();

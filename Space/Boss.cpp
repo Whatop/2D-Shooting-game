@@ -40,7 +40,7 @@ Boss::Boss(Vec2 Pos)
 	BossBehind->SetScale(2, 2);
 	DestroyBody->SetScale(2, 2);
 	DestroyTail->SetScale(2, 2);
-	ColBoxTop->SetScale(2, 2);
+	ColBoxTop->SetScale(4, 5);
 
 	BossBody->SetPosition(m_Position.x + 74, m_Position.y + 20);
 	BossTail->SetPosition(BossBody->m_Position.x - 222 - 74, BossBody->m_Position.y - 138 / 2 - 92 / 2);
@@ -472,6 +472,7 @@ void Boss::State()
 			}
 			isMove = false;
 			GameInfo->MaxScore += 500;
+			GameInfo->KillScore += 500;
 		}
 		if (TopHp <= 0.f) {
 			m_Hp -= 300.f;
@@ -484,6 +485,7 @@ void Boss::State()
 			}
 			PilotAttack->m_CurrentFrame = 4;
 			GameInfo->MaxScore += 500;
+			GameInfo->KillScore += 500;
 		}
 		if(isDestroyTail){
 			GameInfo->BossPosition = ColBoxTop->m_Position;
@@ -510,6 +512,7 @@ void Boss::State()
 				Camera::GetInst()->ShakeTimeY = 0;
 				DieScene = true;
 				GameInfo->MaxScore += 1500;
+				GameInfo->KillScore += 1500;
 				GameInfo->isBossSpawn = false;
 			}
 			DestroyTime += dt;
