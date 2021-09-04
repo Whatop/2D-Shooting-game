@@ -137,5 +137,7 @@ public:
 	void ChocieScene();
 
 	void RemoveCharge();
+
+	void SpawnCoin(Vec2 Pos);
 };
 

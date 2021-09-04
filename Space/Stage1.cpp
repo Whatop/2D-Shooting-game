@@ -2,6 +2,7 @@
 #include "Stage1.h"
 #include "StoreScene.h"
 #include "Boom.h"
+#include "Coin.h"
 
 Stage1::Stage1()
 {
@@ -83,6 +84,13 @@ void Stage1::Init()
 
 	ScaleScene = 0.f;
 	ScaleText = 0.f;
+	GameInfo->SpawnCoin(Vec2(1920 / 2, 100 - 180));
+	GameInfo->SpawnCoin(Vec2(1920 / 2, 200 - 180));
+	GameInfo->SpawnCoin(Vec2(1920 / 2, 300 - 180));
+	GameInfo->SpawnCoin(Vec2(1920 / 2, 400 - 180));
+	GameInfo->SpawnCoin(Vec2(1920 / 2, 500 - 180));
+	GameInfo->SpawnCoin(Vec2(1920 / 2, 600 - 180));
+	GameInfo->SpawnCoin(Vec2(1920 / 2, 700 - 180));
 }
 
 void Stage1::Release()

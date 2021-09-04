@@ -195,6 +195,7 @@
     <ClCompile Include="Pet.cpp">
       <Filter>Game\Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Coin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -347,5 +348,6 @@
     <ClInclude Include="Boom.h">
       <Filter>Game\Object\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Coin.h" />
   </ItemGroup>
 </Project>

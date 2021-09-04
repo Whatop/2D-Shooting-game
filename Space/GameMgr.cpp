@@ -16,6 +16,8 @@
 #include "Stage2.h"
 #include "StoreScene.h"
 
+#include "Coin.h"
+
 #include <algorithm>
 
 GameMgr::GameMgr()
@@ -313,6 +315,11 @@ void GameMgr::ChocieScene()
 void GameMgr::RemoveCharge()
 {
 	ChargeCount--;
+}
+
+void GameMgr::SpawnCoin(Vec2 Pos)
+{
+	ObjMgr->AddObject(new Coin(Pos), "Coin");
 }
 
 void GameMgr::SpawnEnemy()

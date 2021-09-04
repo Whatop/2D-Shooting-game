@@ -45,10 +45,6 @@ Sprite* Sprite::Create(std::wstring fileName, D3DCOLOR ColorKey)
 	}
 }
 
-
-
-
-
 void Sprite::Render()
 {
 	if (m_Parent)
