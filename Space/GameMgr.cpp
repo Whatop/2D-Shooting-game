@@ -70,6 +70,8 @@ void GameMgr::Init()
 	isScoreScene = false;
 
 	HV_Boom = 3;
+
+	MoneyPokeyPos = Vec2(0, 0);
 }
 
 void GameMgr::Release()
@@ -119,6 +121,7 @@ void GameMgr::Update()
 		UI::GetInst()->Update();
 
 	AddScore(MaxScore);
+	AddMoney(MaxMoney);
 	ChargeTime += dt;
 	if (!isChoiceDelay) {
 		SpawnDelay += dt;
@@ -151,6 +154,16 @@ void GameMgr::AddScore(int maxscore)
 	}
 	else if (int(m_Score) > maxscore) {
 		m_Score = maxscore;
+	}
+}
+
+void GameMgr::AddMoney(int money)
+{
+	if (int(m_Money) < money) {
+			m_Money += 1;
+	}
+	else if (int(m_Money) > money) {
+		m_Money = money;
 	}
 }
 

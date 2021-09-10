@@ -513,6 +513,7 @@ void Boss::State()
 				GameInfo->MaxScore += 1500;
 				GameInfo->KillScore += 1500;
 				GameInfo->isBossSpawn = false;
+				GameInfo->SpawnCoin(m_Position);
 			}
 			DestroyTime += dt;
 			EffectTime += dt;

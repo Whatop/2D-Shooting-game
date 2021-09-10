@@ -65,6 +65,7 @@ void Enemy2::Update(float deltaTime, float Time)
 				GameInfo->EnemyCount--;
 				GameInfo->MaxScore += 100;
 				GameInfo->KillScore += 100;
+				GameInfo->SpawnCoin(m_Position);
 			}
 			if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
 				m_Position.x += 100 * dt;

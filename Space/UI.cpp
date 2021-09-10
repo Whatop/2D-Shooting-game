@@ -170,7 +170,7 @@ void UI::Render()
 	Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
 
 	m_Test->print(std::to_string(int(GameInfo->m_Score)), 1920 / 2 - 170, 0);
-	Money->print(std::to_string(int(GameInfo->m_Score)), 1920 / 2 + 450, 0);
+	Money->print(std::to_string(int(GameInfo->m_Money)), 1920 / 2 + 450, 0);
 	//m_Test->print("Enemy : " + std::to_string(GameInfo->EnemyCount), 1650, 50);
 	ScoreTextUI();
 

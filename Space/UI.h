@@ -4,6 +4,7 @@ class UI : public Singleton<UI>
 	Sprite* PlayerBar;
 	Sprite* BossBar;
 	Sprite* MiniBossBar;
+
 	TextMgr* m_Test;
 	TextMgr* Money;
 	Sprite* Pack[6];

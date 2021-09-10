@@ -27,6 +27,7 @@ public:
 	GameMgr();
 	~GameMgr();
 
+	Vec2 MoneyPokeyPos;
 	std::vector<RankingPlayer*> Ranks;
 
 	bool m_isCreatePlayer;
@@ -42,6 +43,7 @@ public:
 	bool isPause;
 
 	int MaxScore;
+	int MaxMoney;
 
 	int EnemyCount;
 
@@ -123,6 +125,7 @@ public:
 	void Render();
 
 	void AddScore(int score);
+	void AddMoney(int money);
 	void RankInit();
 	void SortRanking();
 	

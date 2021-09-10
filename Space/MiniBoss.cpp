@@ -86,6 +86,7 @@ void MiniBoss::Update(float deltaTime, float Time)
 					GameInfo->ChocieScene();
 
 					ObjMgr->RemoveObject(this);
+					GameInfo->SpawnCoin(m_Position);
 				}
 
 				if (GameInfo->AutoCamera && !GameInfo->CameraStop) {

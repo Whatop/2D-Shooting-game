@@ -7,6 +7,7 @@ class Stage1 : public Scene
 	Sprite* Right_Limit;
 	Sprite* Left_Limit;
 
+	Sprite* MoneyColBox;
 	Sprite* m_Choice;
 	Sprite* ChoicePack[3];
 
