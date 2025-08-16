@@ -270,7 +270,7 @@ void Stage1::NextScene()
 	if (ScaleText <= 1 && ScaleScene >= 1)
 		ScaleText += dt;
 
-	ScoreScene->SetScale(ScaleScene, 1.f);
+	ScoreScene->SetScale(ScaleScene, 1.5f);
 	ScoreText->SetScale(ScaleText, 1.f);
 	GameInfo->isPause = true;
 
@@ -282,4 +282,11 @@ void Stage1::NextScene()
 			SceneDirector::GetInst()->ChangeScene(new StoreScene);
 		}
 	}
+	if (INPUT->GetKey('Z') == KeyState::DOWN) {
+
+		GameInfo->isPause = false;
+		GameInfo->isScoreScene = false;
+		SceneDirector::GetInst()->ChangeScene(new StoreScene);
+	}
+
 }

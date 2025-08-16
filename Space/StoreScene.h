@@ -27,6 +27,11 @@ class StoreScene : public Scene
 	int PCrad[6];
 	bool isShake;
 
+	int      m_CardCost[5];   // 1~6
+	int      m_PetCost[6];    // 10~20
+	TextMgr* m_CardCostTxt[5];
+	TextMgr* m_PetCostTxt[6];
+
 public:
 	StoreScene();
 	~StoreScene();

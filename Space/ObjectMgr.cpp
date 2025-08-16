@@ -50,6 +50,34 @@ void ObjectMgr::CollisionCheak(Object* obj, const std::string tag)
 		}
 	}
 }
+// ObjectMgr.cpp
+void ObjectMgr::ReleaseByTag(const std::wstring& tag) {
+	// m_byTag[tag] 안의 객체들만 안전하게 파괴/해제
+	auto it = m_byTag.find(tag);
+	if (it == m_byTag.end()) return;
+
+	auto& vec = it->second;
+	for (auto* obj : vec) {
+		// 프로젝트 규약에 맞춰 안전 파괴
+		// 예: obj->SetDestroy(true); 또는 delete obj;
+		// 여기서는 실제 구현에 맞춰 교체
+		delete obj;
+	}
+	vec.clear();
+}
+
+void ObjectMgr::ReleaseExceptTags(const std::unordered_set<std::wstring>& keep) {
+	for (auto& kv : m_byTag) {
+		const auto& tag = kv.first;
+		if (keep.find(tag) != keep.end()) continue; // 보존 태그는 스킵
+
+		auto& vec = kv.second;
+		for (auto* obj : vec) {
+			delete obj; // 또는 SetDestroy(true)
+		}
+		vec.clear();
+	}
+}
 
 void ObjectMgr::DeleteObject(std::string tag)
 {

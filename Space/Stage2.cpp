@@ -70,6 +70,8 @@ void Stage2::Init()
 	ChoicePack[1]->SetScale(0.55f, 0.55f);
 	ChoicePack[2]->SetScale(0.55f, 0.55f);
 	GameInfo->BossReset();
+
+	GameInfo->SpawnPet();
 }
 
 void Stage2::Release()

@@ -8,6 +8,7 @@ class RankScene : public Scene
 	TextMgr* m_First;
 	TextMgr* m_Secend;
 	TextMgr* m_Third;
+
 public:
 	RankScene();
 	~RankScene();

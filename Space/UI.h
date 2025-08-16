@@ -17,6 +17,8 @@ class UI : public Singleton<UI>
 
 	Sprite* StateWindow;
 
+	TextMgr* m_CardLvTxt[6];
+
 	// KILL, ITEM, BONUS, ALL
 	float limit[4];
 

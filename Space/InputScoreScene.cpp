@@ -25,7 +25,7 @@ void InputScoreScene::Init()
 	m_NameText->SetPosition(1920 / 2, 300);
 
 	m_BackButton = Sprite::Create(L"Painting/Scene/BackButton.png");
-	m_BackButton->SetPosition(1700, 900);
+	m_BackButton->SetPosition(1700, 500);
 
 	m_Name = new TextMgr();
 	m_Score = new TextMgr();

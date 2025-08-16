@@ -1,7 +1,18 @@
 #pragma once
+
 #define GameInfo GameMgr::GetInst()
 #define GetPlayer GameMgr::GetInst()->GetPlayerInfo()
 
+struct PendingShop {
+	int goldCost = 0;          // 총 차감 예정 골드
+	int cardUp[6] = { 0 };      // 무기 타입별 카드 업그레이드 개수
+	int petAdd[6] = { 0 };      // 무기 타입별 펫 추가 개수
+
+	void Clear() {
+		goldCost = 0;
+		for (int i = 0; i < 6; ++i) { cardUp[i] = 0; petAdd[i] = 0; }
+	}
+};
 enum class StageScene {
 	STAGE1,
 	STAGE2,
@@ -18,6 +29,7 @@ public:
 
 class GameMgr : public Singleton<GameMgr>
 {
+	PendingShop pendingShop;   // 상점에서 누적시켜둘 요청 버킷
 	Object* PlayerInfo;
 
 	float MaxHp, Hp;
@@ -74,7 +86,12 @@ public:
 	int HV_Boom;
 
 	bool isGunType; // 타입 선택시 바꾸는거 한번만
+	std::vector<int> OwnedPetTypes;  // 구입한 펫들의 공격타입을 순서대로 보관
+	// 편의 함수(원하면 .cpp로 빼도 됨)
+	void AddOwnedPetType(int type) { OwnedPetTypes.push_back(type); }
+	void ClearOwnedPetTypes() { OwnedPetTypes.clear(); PetCount = 0; }
 
+	void SpawnPet();
 	bool IT_Shot;
 	bool IT_Shotgun;
 	bool IT_Charge;
@@ -126,6 +143,7 @@ public:
 
 	void AddScore(int score);
 	void AddMoney(int money);
+	void RemoveMoney(int money);
 	void RankInit();
 	void SortRanking();
 	
@@ -142,5 +160,7 @@ public:
 	void RemoveCharge();
 
 	void SpawnCoin(Vec2 Pos);
+
+
 };
 

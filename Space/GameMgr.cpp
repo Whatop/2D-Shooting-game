@@ -17,6 +17,7 @@
 #include "StoreScene.h"
 
 #include "Coin.h"
+#include "Pet.h"
 
 #include <algorithm>
 
@@ -26,6 +27,20 @@ GameMgr::GameMgr()
 
 GameMgr::~GameMgr()
 {
+}
+
+void GameMgr::SpawnPet()
+{	
+	// 1) 기존 펫 제거(중복 소환 방지)
+	ObjMgr->DeleteObject("Pet");
+
+	// 2) 재소환 전 카운트 리셋
+	PetCount = 0;
+
+	// 3) 보유중인 타입들 그대로 전부 재소환
+	for (int type : OwnedPetTypes) {
+		ObjMgr->AddObject(new Pet(type), "Pet");
+	}
 }
 
 void GameMgr::Init()
@@ -72,6 +87,8 @@ void GameMgr::Init()
 	HV_Boom = 3;
 
 	MoneyPokeyPos = Vec2(0, 0);
+
+
 }
 
 void GameMgr::Release()
@@ -165,6 +182,10 @@ void GameMgr::AddMoney(int money)
 	else if (int(m_Money) > money) {
 		m_Money = money;
 	}
+}
+void GameMgr::RemoveMoney(int money)
+{
+	MaxMoney -= money;
 }
 
 void GameMgr::RankInit()

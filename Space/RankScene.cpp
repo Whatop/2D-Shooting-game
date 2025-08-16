@@ -15,12 +15,13 @@ void RankScene::Init()
 
 	m_BG = Sprite::Create(L"Painting/Scene/Black.png");
 	m_BG->SetPosition(1920 / 2, 1080 / 2);
+	m_BG->SetScale(1.5f, 1.5f);
 
 	m_Rank = Sprite::Create(L"Painting/Scene/Rank.png");
 	m_Rank->SetPosition(1920 / 2, 100);
 
-	m_Back = Sprite::Create(L"Painting/Button/ReturnTitle.png");
-	m_Back->SetPosition(1700, 900);
+	m_Back = Sprite::Create(L"Painting/Scene/BackButton.png");
+	m_Back->SetPosition(1700, 400);
 
 	m_First = new TextMgr();
 	m_Secend = new TextMgr();

@@ -26,6 +26,7 @@ void UI::Init()
 	StateWindow = Sprite::Create(L"Painting/UI/StateWindow.png");
 	StateWindow->SetPosition(1920 / 2, 72.f/2.f);
 
+	UIScoreFrame->m_Layer = 2;
 
 	for (int i = 0; i < 6; i++) {
 		Pack[i] = Sprite::Create(L"Painting/UI/Pack/" + std::to_wstring(i) + L".png");
@@ -35,17 +36,20 @@ void UI::Init()
 		Pack[i]->A = 205;
 	}
 
+	if (GameInfo->m_Scene != StageScene::STORE) {
+
+		ObjMgr->AddObject(PlayerBar, "UI");
+		ObjMgr->AddObject(BossBar, "UI");
+		ObjMgr->AddObject(MiniBossBar, "UI");
+		ObjMgr->AddObject(UIScoreFrame, "UI");
+	}
 	ObjMgr->AddObject(StateWindow, "UI");
-	ObjMgr->AddObject(PlayerBar, "UI");
-	ObjMgr->AddObject(BossBar, "UI");
-	ObjMgr->AddObject(MiniBossBar, "UI");
-	ObjMgr->AddObject(UIScoreFrame, "UI");
-	for (int i = 0; i < 3; i++) {
+
+	for (int i = 0; i < 3; i++) {                 
 		Boom[i] = Sprite::Create(L"Painting/UI/Boom.png");
 		Boom[i]->SetPosition(400 + 100 * i, 72.f / 2.f);
 		ObjMgr->AddObject(Boom[i], "UI");
 	}
-
 
 	m_Test = new TextMgr();
 	m_Test->Init(72, true, false, "굴림");
@@ -58,6 +62,12 @@ void UI::Init()
 	ScoreText = new TextMgr();
 	ScoreText->Init(80, true, false, "굴림");
 	ScoreText->SetColor(255, 255, 255, 255);
+
+	for (int i = 0; i < 6; ++i) {
+		m_CardLvTxt[i] = new TextMgr();
+		m_CardLvTxt[i]->Init(24, true, false, "굴림"); // 폰트/크기 프로젝트에 맞춰 조정
+		m_CardLvTxt[i]->SetColor(255, 255, 255, 255); // A,R,G,B
+	}
 
 	PlayerBar->m_Visible = false;
 	BossBar->m_Visible = false;
@@ -173,6 +183,15 @@ void UI::Render()
 	Money->print(std::to_string(int(GameInfo->m_Money)), 1920 / 2 + 450, 0);
 	//m_Test->print("Enemy : " + std::to_string(GameInfo->EnemyCount), 1650, 50);
 	ScoreTextUI();
+
+	for (int i = 0; i < 6; ++i) {
+
+		int lv = GameInfo->HV_ShotType[i];               // 핵심: 해당 타입 레벨
+
+		Vec2 p = Pack[i]->m_Position;
+		// Pack 이미지 바로 아래 Y + 80~100 정도로 맞추면 보기 좋음
+		m_CardLvTxt[i]->print("LV: " + std::to_string(lv), int(p.x - 35), int(p.y + 95));
+	}
 
 	Renderer::GetInst()->GetSprite()->End();
 }

@@ -31,7 +31,7 @@ Matrix Object::GetMatrix()
 	Vec2 RotCenter = Vec2(0, 0);
 	Vec2 ScaleCenter = Vec2(0, 0);
 	if (m_Tag != "UI")
-	{
+	 {
 		RotCenter.x = -Camera::GetInst()->m_Position.x + m_RotationCenter.x;
 		RotCenter.y = -Camera::GetInst()->m_Position.y + m_RotationCenter.y;
 

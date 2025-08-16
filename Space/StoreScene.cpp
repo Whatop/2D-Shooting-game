@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "StoreScene.h"
 #include "Stage2.h"
+#include "Pet.h" 
 
 StoreScene::StoreScene()
 {
@@ -14,11 +15,14 @@ void StoreScene::Init()
 {
 	ObjMgr->Release();
 	GameInfo->ReleaseUI();
+	GameInfo->m_Scene = StageScene::STORE;
+
 	Camera::GetInst()->m_Position = Vec2(0, 0);
+
 	m_BackGround = Sprite::Create(L"Painting/Store/BG.png");
 	m_BackGround->SetPosition(1920 / 2, 1080 / 2);
 
-	m_Button = Sprite::Create(L"Painting/Button/exit.png");
+	m_Button = Sprite::Create(L"Painting/Scene/BackButton.png");
 	m_Button->SetPosition(100, 900);
 	m_Button->SetScale(0.75f, 0.75f);
 
@@ -27,8 +31,9 @@ void StoreScene::Init()
 	CardFrame[2] = Sprite::Create(L"Painting/Store/Frame.png");
 	CardFrame[3] = Sprite::Create(L"Painting/Store/Frame.png");
 	CardFrame[4] = Sprite::Create(L"Painting/Store/Frame.png");
-
+	
 	srand(time(NULL));
+	GameInfo->CreateUI();
 	for (int i = 0; i < 6; i++) {
 		RCrad[i] = rand() % 6;
 		PCrad[i] = rand() % 6;
@@ -76,8 +81,6 @@ void StoreScene::Init()
 			}
 		}
 	}
-
-	ObjMgr->AddObject(m_BackGround, "UI");
 	ObjMgr->AddObject(m_Button, "UI");
 
 	for (int i = 0; i < 5; i++) {
@@ -87,7 +90,21 @@ void StoreScene::Init()
 	for (int i = 0; i < 6; i++) {
 		ObjMgr->AddObject(PetPack[i], "UI");
 	}
-	GameInfo->m_Scene = StageScene::STORE;
+	// [추가] 가격 롤링
+	for (int i = 0; i < 5; ++i)  m_CardCost[i] = (rand() % 6) + 1;     // 1~6
+	for (int i = 0; i < 6; ++i)  m_PetCost[i] = (rand() % 11) + 10;   // 10~20
+
+	   // 가격 텍스트 객체 생성(폰트/색상은 UI와 톤 맞춤)
+		for (int i = 0; i < 5; ++i) {
+			m_CardCostTxt[i] = new TextMgr();
+			m_CardCostTxt[i]->Init(28, true, false, "굴림");
+			m_CardCostTxt[i]->SetColor(255, 255, 230, 80); // A,R,G,B
+		}
+	for (int i = 0; i < 6; ++i) {
+		m_PetCostTxt[i] = new TextMgr();
+		m_PetCostTxt[i]->Init(26, true, false, "굴림");
+		m_PetCostTxt[i]->SetColor(255, 255, 255, 255);
+	}
 }
 
 void StoreScene::Update(float deltaTime, float Time)
@@ -99,7 +116,26 @@ void StoreScene::Update(float deltaTime, float Time)
 }
 
 void StoreScene::Render()
-{
+{ 
+	// 가격 텍스트 출력 (팩 바로 아래)
+	Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
+
+	for (int i = 0; i < 5; ++i) {
+		if (m_CardCost[i] >= 0 && CardPack[i]) {
+			Vec2 p = CardPack[i]->m_Position;
+			m_CardCostTxt[i]->print("Gold: " + std::to_string(m_CardCost[i]),
+				int(p.x - 50), int(p.y + 230));
+		}
+	}
+	for (int i = 0; i < 6; ++i) {
+		if (m_PetCost[i] >= 0 && PetPack[i]) {
+			Vec2 p = PetPack[i]->m_Position;
+			m_PetCostTxt[i]->print("Gold: " + std::to_string(m_PetCost[i]),
+				int(p.x - 40), int(p.y + 50));
+		}
+	}
+
+	Renderer::GetInst()->GetSprite()->End();
 }
 
 void StoreScene::Release()
@@ -108,113 +144,82 @@ void StoreScene::Release()
 
 void StoreScene::OnCollisionCard()
 {
-	if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[0]))
+	// ===== 카드팩(5개): 하이라이트/클릭 처리 =====
+	bool anyCardHover = false;
+	for (int i = 0; i < 5; ++i)
 	{
-		//닿았을때 색깔 변함
-		CardFrame[0]->R = 255;
-		CardFrame[0]->G = 255;
-		CardFrame[0]->B = 51;
+		if (!CardFrame[i] || !CardPack[i] || m_CardCost[i] < 0) continue;
 
-		//닿았을때 + 크기변함
-		CardFrame[0]->SetScale(0.6f, 0.6f);
-		CardPack[0]->SetScale(0.6f, 0.6f);
-		if (INPUT->GetButtonDown()) { // 눌렀을때
+		if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[i]))
+		{
+			anyCardHover = true;
 
-			//if(돈이 이카드보다 더 많을때라는 조건)
-			GameInfo->AddCard(RCrad[0]);
-			CardFrame[0]->SetDestroy(true);
-			CardPack[0]->SetDestroy(true);
+			// 하이라이트 + 확대
+			CardFrame[i]->R = 255; CardFrame[i]->G = 255; CardFrame[i]->B = 51;
+			CardFrame[i]->SetScale(0.6f, 0.6f);
+			CardPack[i]->SetScale(0.6f, 0.6f);
+
+			if (INPUT->GetButtonDown()) {
+				if (GameInfo->m_Money >= m_CardCost[i]) {
+					GameInfo->RemoveMoney(m_CardCost[i]);
+					// 무기 타입 데미지 증가 (해당 카드 타입)
+					GameInfo->AddCard(RCrad[i]); // 내부에서 HV_ShotType[type] 증가 가정
+
+					// 슬롯 제거 표시
+					CardFrame[i]->SetDestroy(true);
+					CardPack[i]->SetDestroy(true);
+					m_CardCost[i] = -1; // 렌더에서 가격표시 중단
+				}
+			}
+			break; // 한 슬롯만 활성 처리
 		}
 	}
-	else if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[1]))
-	{
-		//닿았을때 색깔 변함
-		CardFrame[1]->R = 255;
-		CardFrame[1]->G = 255;
-		CardFrame[1]->B = 51;
-
-		//닿았을때 + 크기변함
-		CardFrame[1]->SetScale(0.6f, 0.6f);
-		CardPack[1]->SetScale(0.6f, 0.6f);
-
-		if (INPUT->GetButtonDown()) { // 눌렀을때
-
-			//if(돈이 이카드보다 더 많을때라는 조건)
-			GameInfo->AddCard(RCrad[1]);
-			CardFrame[1]->SetDestroy(true);
-			CardPack[1]->SetDestroy(true);
-		}
-	}
-	else if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[2]))
-	{
-		//닿았을때 색깔 변함
-		CardFrame[2]->R = 255;
-		CardFrame[2]->G = 255;
-		CardFrame[2]->B = 51;
-
-		//닿았을때 + 크기변함
-		CardFrame[2]->SetScale(0.6f, 0.6f);
-		CardPack[2]->SetScale(0.6f, 0.6f);
-
-		//if(돈이 이카드보다 더 많을때라는 조건)
-		if (INPUT->GetButtonDown()) { // 눌렀을때
-			GameInfo->AddCard(RCrad[2]);
-			CardFrame[2]->SetDestroy(true);
-			CardPack[2]->SetDestroy(true);
-		}
-	}
-	else if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[3]))
-	{
-		//닿았을때 색깔 변함
-		CardFrame[3]->R = 255;
-		CardFrame[3]->G = 255;
-		CardFrame[3]->B = 51;
-
-		//닿았을때 + 크기변함
-		CardFrame[3]->SetScale(0.6f, 0.6f);
-		CardPack[3]->SetScale(0.6f, 0.6f);
-
-		//if(돈이 이카드보다 더 많을때라는 조건)
-		if (INPUT->GetButtonDown()) { // 눌렀을때
-			GameInfo->AddCard(RCrad[3]);
-			CardFrame[3]->SetDestroy(true);
-			CardPack[3]->SetDestroy(true);
-		}
-	}
-	else if (CollisionMgr::GetInst()->MouseWithBoxSize(CardFrame[4]))
-	{
-		//닿았을때 색깔 변함
-		CardFrame[4]->R = 255;
-		CardFrame[4]->B = 51;
-		CardFrame[4]->G = 255;
-
-		//닿았을때 + 크기변함
-		CardFrame[4]->SetScale(0.6f, 0.6f);
-		CardPack[4]->SetScale(0.6f, 0.6f);
-
-		if (INPUT->GetButtonDown()) { // 눌렀을때
-		//if(돈이 이카드보다 더 많을때라는 조건)
-			GameInfo->AddCard(RCrad[4]);
-			CardFrame[4]->SetDestroy(true);
-			CardPack[4]->SetDestroy(true);
-		}
-	}
-	else {
+	if (!anyCardHover) {
 		for (int i = 0; i < 5; i++) {
-
+			if (!CardFrame[i] || !CardPack[i]) continue;
 			CardFrame[i]->SetScale(0.55f, 0.55f);
 			CardPack[i]->SetScale(0.55f, 0.55f);
-			CardFrame[i]->R = 255;
-			CardFrame[i]->B = 255;
-			CardFrame[i]->G = 255;
+			CardFrame[i]->R = 255; CardFrame[i]->G = 255; CardFrame[i]->B = 255;
 		}
 	}
 
+	// ===== 펫팩(6개): 하이라이트/클릭 처리 =====
+	bool anyPetHover = false;
+	for (int i = 0; i < 6; ++i)
+	{
+		if (!PetPack[i] || m_PetCost[i] < 0) continue;
+
+		if (CollisionMgr::GetInst()->MouseWithBoxSize(PetPack[i]))
+		{
+			anyPetHover = true;
+
+			PetPack[i]->SetScale(0.28f, 0.28f);
+
+			if (INPUT->GetButtonDown()) {
+				if (GameInfo->MaxMoney >= m_PetCost[i]) {
+					GameInfo->RemoveMoney(m_PetCost[i]);
+					GameInfo->AddOwnedPetType(PCrad[i]);  // 이 줄이 핵심
+					PetPack[i]->SetDestroy(true);
+					m_PetCost[i] = -1;
+
+				}
+			}
+
+			break;
+		}
+	}
+	if (!anyPetHover) {
+		for (int i = 0; i < 6; i++) {
+			if (!PetPack[i]) continue;
+			PetPack[i]->SetScale(0.25f, 0.25f);
+		}
+	}
+
+	// 뒤로가기
 	if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button) && INPUT->GetButtonDown())
 	{
 		SceneDirector::GetInst()->ChangeScene(new Stage2());
 	}
-
 
 
 }

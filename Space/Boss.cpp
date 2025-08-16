@@ -547,6 +547,14 @@ void Boss::State()
 				ChangeTime = 0.f;
 			}
 		}
+		else {
+			BossBody->A = 100;
+			BossTail->A = 100;
+			BossBehind->A = 100;
+			DestroyBody->A = 100;
+			DestroyTail->A = 100;
+			ColBoxTop->A = 100;
+		}
 	}
 
 
