@@ -138,11 +138,14 @@ void Stage1::Update(float deltaTime, float time)
 		MoneyColBox->m_Position.x += 100 * dt;
 		GameInfo->MoneyPokeyPos= MoneyColBox->m_Position;
 	}
+	//std::cout << "마우스 위치 y : " << INPUT->GetMousePos().y << std::endl;
 	GameInfo->CheatKey();
 
 	if (GameInfo->isScoreScene) {
 		NextScene();
 		GameInfo->MoneyPokeyPos.x += 100 * dt;
+
+
 	}
 }
 

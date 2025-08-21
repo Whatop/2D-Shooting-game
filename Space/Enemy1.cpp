@@ -128,11 +128,12 @@ void Enemy1::Move()
 	}
 	else
 	{
+		const float h = App::GetInst()->m_Height;
+		const float scaleH = h / 1080.f;
+		const float minY = -60.f * scaleH;
+		const float maxY = 387.f * scaleH;
 
-		if (m_Position.y < 360)
-			m_RandomPosition.y = (rand() % 400 + 180);
-		else
-			m_RandomPosition.y = (rand() % 250 + 63);
+		m_RandomPosition.y = RandRange(minY, maxY);
 
 
 		if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - 600)

@@ -6,6 +6,7 @@ class Stage2 : public Scene
 	Sprite* DownWall;
 	Sprite* Right_Limit;
 	Sprite* Left_Limit;
+	Sprite* MoneyColBox;
 
 	Sprite* m_Choice;
 	Sprite* ChoicePack[3];

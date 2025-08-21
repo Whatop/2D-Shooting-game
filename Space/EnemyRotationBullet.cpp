@@ -14,7 +14,7 @@ EnemyRotationBullet::EnemyRotationBullet(Vec2 Pos, float r)
 	SetPosition(Pos);
 
 	m_Rotation = D3DXToRadian(r);
-	m_Speed = 500.f;
+	m_Speed = 700.f;
 	m_Atk = 15.f;
 	if (GameInfo->m_Scene == StageScene::STAGE1)
 	{
@@ -41,7 +41,7 @@ void EnemyRotationBullet::Update(float deltaTime, float Time)
 	}
 	if (!GameInfo->isPause) {
 		Move();
-		DelayDestroy(this, 4);
+		DelayDestroy(this, 10);
 		m_Bolt->Update(deltaTime, Time);
 	}
 

@@ -35,6 +35,12 @@ void Stage2::Init()
 	Right_Limit->SetPosition(1970, 325);
 	Right_Limit->SetScale(1, 6.5f);
 
+
+	MoneyColBox = Sprite::Create(L"Painting/UI/Money.png");
+	MoneyColBox->SetPosition(1920 / 2 + 390.f, 72.f / 2.f - 180);
+	MoneyColBox->m_Visible = false;
+	ObjMgr->AddObject(MoneyColBox, "MoneyPoket");
+
 	ObjMgr->AddObject(UpWall, "Wall");
 	ObjMgr->AddObject(DownWall, "Wall");
 	ObjMgr->AddObject(Left_Limit, "Wall");
@@ -93,6 +99,7 @@ void Stage2::Update(float deltaTime, float time)
 		Left_Limit->m_Visible = true;
 		Right_Limit->m_Visible = true;
 	}
+
 	if (!GameInfo->isPause) {
 		
 		GameInfo->SpawnEnemy();
@@ -116,6 +123,8 @@ void Stage2::Update(float deltaTime, float time)
 			}
 			OnCollisionCard();
 		}
+		MoneyColBox->m_Position.x += 100 * dt;
+		GameInfo->MoneyPokeyPos = MoneyColBox->m_Position;
 	}
 	GameInfo->CheatKey();
 }

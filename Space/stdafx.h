@@ -24,6 +24,7 @@ inline void SafeDelete(T*& x);
 #include<sstream>
 #include<cmath>
 #include<mmsystem.h>
+
 //
 #include <fmod.h>
 

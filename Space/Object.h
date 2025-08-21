@@ -47,6 +47,9 @@ public:
 	void SetTag(const std::string tag);
 	void SetParent(Object* obj);
 	void DelayDestroy(Object* obj,float destroyTime);
+	inline float RandRange(float a, float b) {
+		return a + (b - a) * (float(rand()) / float(RAND_MAX));
+	}
 public:
 	bool GetDestroy() { return m_Destroy; }
 };
