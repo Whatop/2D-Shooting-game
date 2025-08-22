@@ -33,7 +33,7 @@ class MiniBoss : public Object
 	bool Under;
 
 	float BulletPattern;
-	enum class P2Step { Exit, Idle, AoE_Windup, AoE_Fire, Return, P1Boost };
+	enum class P2Step { Exit, Idle, AoE_Windup, AoE_Fire, Return, P1Boost,Hold };
 
 	bool        m_InPhase2 = false;
 
@@ -58,7 +58,11 @@ class MiniBoss : public Object
 	float       m_DashDur = 0.35f;   // 돌진 지속
 	float       m_Recovery = 0.4f;    // 후딜
 
-	float m_AoEHold = 1.5f;
+	float m_AoEHold = 0.f;      // AoE 유지 시간
+	float m_FanSpawnTimer = 0.f; // FireFanWall 주기용
+	float m_EnemySpawnTimer = 0.f; // FireFanWall 주기용
+
+
 	// 충돌 판정 확장
 	float       m_HitboxScale = 1.0f;  // 돌진 직후 1.8x로 키웠다가 복구
 	Vec2        m_BaseColSize = Vec2(140, 140); // 보스 충돌 기본 크기(프로젝트에 맞춰 조정)
@@ -78,7 +82,7 @@ class MiniBoss : public Object
 
 	// 기존 유틸 선언 옆에 추가
 	void FireWallGrid(int cols, int rows, float spacingX, float spacingY, float speed);
-	void FireFan(int count, float speed, float angleOffsetDeg = 0.f);
+	void FireFanWall();
 
 public:
 	MiniBoss(Vec2 Pos);

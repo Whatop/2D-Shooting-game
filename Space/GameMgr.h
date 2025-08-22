@@ -123,6 +123,7 @@ public:
 
 public:
 	void CreatePlayer();
+	void SpawnEnemyStageTwo();
 	void PlayerDeath();
 	Object* GetPlayerInfo() { return PlayerInfo; }
 	void PlayerUpdate(Object* obj) { PlayerInfo = obj; }

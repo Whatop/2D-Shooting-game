@@ -25,7 +25,7 @@ MiniBoss::MiniBoss(Vec2 Pos)
     m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 1080));
 
     m_MaxHp = 2000;
-    m_Hp = 1001;
+    m_Hp = m_MaxHp;
     m_Rotation = D3DXToRadian(270);
     m_Speed = 450.f;
     m_LastMoveTime = 2.f;
@@ -49,6 +49,7 @@ MiniBoss::MiniBoss(Vec2 Pos)
     m_StepT = 0.f;
     m_RedlineFires = 0;
     m_Phase1Boost = false;
+
 }
 
 MiniBoss::~MiniBoss() {}
@@ -103,13 +104,19 @@ void MiniBoss::Update(float deltaTime, float Time)
         m_LastMoveTime += dt;
         if (m_LastMoveTime >= 5.f && m_Phase1Boost) Move();
 
+        m_AoETarget.x = Camera::GetInst()->m_Position.x + App::GetInst()->m_Width / 2;
+        m_Pattern->SetPosition(m_AoETarget);
 
 
         if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
             m_Position.x += 100 * dt;
         }
-        if(m_Phase1Boost )
-        Attack(); // 미사일+총알
+        if (m_Phase1Boost) {
+            Attack(); // 미사일+총알
+
+            ObjMgr->CollisionCheak(this, "Bullet");
+            ObjMgr->CollisionCheak(this, "ChargeBullet");
+        }
 
         if (m_Hp <= 0) {
             ObjMgr->AddObject(new Item(m_Position), "ITEM");
@@ -123,8 +130,6 @@ void MiniBoss::Update(float deltaTime, float Time)
             return;
         }
         // 2페에서도 피격 체크
-        ObjMgr->CollisionCheak(this, "Bullet");
-        ObjMgr->CollisionCheak(this, "ChargeBullet");
         GameInfo->MiniBossHpUpdate(m_MaxHp, m_Hp);
     }
 
@@ -200,9 +205,32 @@ void MiniBoss::Phase2Update(float t)
 
     case P2Step::AoE_Fire:
         AoE_FireTick();              // 탄막 발사 + 카운트++
-        m_P2Step = P2Step::Idle;
+        m_P2Step = P2Step::Hold;
         m_StepT = 0.f;
         break;
+    case P2Step::Hold: {
+        m_AoEHold -= dt;
+        m_FanSpawnTimer += dt;
+        m_EnemySpawnTimer += dt;
+
+        // 5초마다 FireFanWall 생성
+        if (m_FanSpawnTimer >= 5.f) {
+            FireFanWall();
+            m_FanSpawnTimer = 0.f;
+        }
+        if (m_EnemySpawnTimer >= 12.f) {
+            GameInfo->SpawnEnemyStageTwo();
+            m_EnemySpawnTimer = 0.f;
+        }
+
+
+        // 30초가 끝나면 Idle로 복귀
+        if (m_AoEHold <= 0.f) {
+            m_P2Step = P2Step::Idle;
+            m_StepT = 0.f;
+        }
+        break;
+    }
 
     case P2Step::Return: {
         // 우측 목표 지점으로 복귀
@@ -212,6 +240,7 @@ void MiniBoss::Phase2Update(float t)
             SpawnMove = 0;
             m_StepT = 0;
             m_Phase1Boost = true;
+            GameInfo->isOneMiniBoss = true;
         }
         if (m_StepT > 2.f) {
             SpawnMove += dt;
@@ -237,7 +266,7 @@ void MiniBoss::AoE_WindupTick(float t)
 {
     // 1) 알파 올리기(255까지)
     if (m_AoEAlpha < 255) {
-        m_AoEAlpha = min(255, m_AoEAlpha + int(290 * dt));
+        m_AoEAlpha = min(255, m_AoEAlpha + int(300 * dt));
         m_Pattern->A = m_AoEAlpha;
         return; // 아직 255가 아니면 여기서 종료
     }
@@ -258,10 +287,10 @@ void MiniBoss::AoE_FireTick()
     //    cols=7, rows=3, spacingX/spacingY는 상황에 맞춰 조절
     FireWallGrid(/*cols*/10, /*rows*/3, /*spacingX*/400.f, /*spacingY*/45.f, /*speed*/2000);
 
-    // 2) 보조 부채꼴은 유지하되 개수 랜덤
-    int n = rand() % 8 + 7; // 5~10
-    FireFan(n, 320.f, 0.f);
-
+    m_P2Step = P2Step::Hold;
+    m_AoEHold = 10.f;
+    m_FanSpawnTimer = 0.f;
+    m_EnemySpawnTimer = 10.f;
     m_Pattern->A = 0;
 
     ++m_RedlineFires;
@@ -293,20 +322,36 @@ void MiniBoss::FireWallGrid(int cols, int rows, float spacingX, float spacingY, 
     }
 }
 
-
-void MiniBoss::FireFan(int count, float /*speed*/, float angleOffsetDeg)
+void MiniBoss::FireFanWall()
 {
-    // 플레이어를 바라보는 중심 각도
-    float base = atan2f(GetPlayer->m_Position.y - m_Position.y,
-        GetPlayer->m_Position.x - m_Position.x);
-    base += D3DXToRadian(angleOffsetDeg);
+    int ver = rand() % 2 + 1;   // 1=왼→오, 2=오→왼
+    int count = 8;              // 총알 개수
+    int hole = rand() % count;  // 피할 구멍 인덱스
 
-    float spread = D3DXToRadian(60.f);
-    for (int i = 0; i < count; ++i) {
-        float t = (count == 1) ? 0.f : (float(i) / float(count - 1) - 0.5f);
-        float ang = base + t * spread;     // 라디안
-        float deg = D3DXToDegree(ang);     // EnemyRotationBullet은 deg 사용
-        ObjMgr->AddObject(new EnemyRotationBullet(m_Position, deg), "EnemyBullet");
+    float spawnX;
+    Vec2 vel;
+
+    if (ver == 1) {
+        // 왼쪽에서 오른쪽
+        spawnX = Camera::GetInst()->m_Position.x - 100;
+        vel = Vec2(700.f, 0.f);   // 오른쪽으로 빠르게
+    }
+    else {
+        // 오른쪽에서 왼쪽
+        spawnX = Camera::GetInst()->m_Position.x + App::GetInst()->m_Width + 100;
+        vel = Vec2(-700.f, 0.f);  // 왼쪽으로 빠르게
+    }
+
+    // y 좌표 기준 [-100, 430] 범위에서 시작
+    float startY = -100.f;
+    float endY = 430.f;
+    float spacing = (endY - startY) / (count - 1);
+
+    for (int i = 0; i < count; i++) {
+        if (i == hole) continue; // 구멍 뚫기
+
+        float y = startY + i * spacing;
+        ObjMgr->AddObject(new EnemyDirBullet(Vec2(spawnX, y), vel), "EnemyBullet");
     }
 }
 
@@ -359,7 +404,7 @@ void MiniBoss::Move()
     const int EPSILON = 10;
     if (abs(m_Position.x - m_RandomPosition.x) > EPSILON && abs(m_Position.y - m_RandomPosition.y) > EPSILON)
     {
-        if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width / 2 &&
+        if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width / 1.7f &&
             m_Position.x < Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - 100)
             m_Position.x += Dire.x * m_Speed * dt;
 
@@ -372,13 +417,14 @@ void MiniBoss::Move()
         const float minY = -60.f * scaleH;
         const float maxY = 387.f * scaleH;
 
-        m_RandomPosition.y = RandRange(minY, maxY);
 
         if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - 600)
-            m_RandomPosition.x = (rand() % -500 - 100) + (int)m_Position.x;
+            m_RandomPosition.x = (rand() % -400 - 100) + (int)m_Position.x;
         else
             m_RandomPosition.x = (rand() % 500 + 300) + (int)m_Position.x;
 
+
+        m_RandomPosition.y = RandRange(minY, maxY);
         m_LastMoveTime = 2.f;
     }
 }

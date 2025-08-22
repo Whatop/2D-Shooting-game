@@ -133,7 +133,7 @@ void GameMgr::PlayerDeath()
 
 void GameMgr::Update()
 {
-
+	std::cout << "¸¶¿ì½º ÁÂÇ¥ y : " << INPUT->GetMousePos().y << std::endl;
 	if (m_isCreateUI)
 		UI::GetInst()->Update();
 
@@ -408,4 +408,13 @@ void GameMgr::SpawnEnemy()
 			}
 		}
 	}
+}
+void GameMgr::SpawnEnemyStageTwo() {
+	ObjMgr->AddObject(new Enemy1(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 330 + 50)), "Enemy");
+	ObjMgr->AddObject(new Enemy2(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 330 + 50)), "Enemy");
+	ObjMgr->AddObject(new EliteEnemy1(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 230 + 80)), "Enemy");
+	ObjMgr->AddObject(new EliteEnemy2(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 230 + 80)), "Enemy");
+	ObjMgr->AddObject(new Enemy3(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 330 + 50)), "Enemy");
+	ObjMgr->AddObject(new Enemy3(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 330 + 50)), "Enemy");
+	ObjMgr->AddObject(new Enemy3(Vec2(Camera::GetInst()->m_Position.x + 1920 + rand() % 480 + 100, rand() % 330 + 50)), "Enemy");
 }
