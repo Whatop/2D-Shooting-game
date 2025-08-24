@@ -31,7 +31,7 @@ void UI::Init()
 	for (int i = 0; i < 6; i++) {
 		Pack[i] = Sprite::Create(L"Painting/UI/Pack/" + std::to_wstring(i) + L".png");
 		Pack[i]->SetScale(0.35f, 0.35f);
-		Pack[i]->SetPosition(690 + i * Pack[i]->m_Size.x * Pack[i]->m_Scale.x, 900);
+		Pack[i]->SetPosition(790 + i * Pack[i]->m_Size.x * Pack[i]->m_Scale.x, 900);
 		ObjMgr->AddObject(Pack[i], "UI");
 		Pack[i]->A = 205;
 	}
@@ -47,7 +47,7 @@ void UI::Init()
 
 	for (int i = 0; i < 3; i++) {                 
 		Boom[i] = Sprite::Create(L"Painting/UI/Boom.png");
-		Boom[i]->SetPosition(400 + 100 * i, 72.f / 2.f);
+		Boom[i]->SetPosition(100 + 100 * i, 72.f / 2.f);
 		ObjMgr->AddObject(Boom[i], "UI");
 	}
 
@@ -62,6 +62,11 @@ void UI::Init()
 	ScoreText = new TextMgr();
 	ScoreText->Init(80, true, false, "±¼¸²");
 	ScoreText->SetColor(255, 255, 255, 255);
+
+
+	StageText = new TextMgr();
+	StageText->Init(80, true, false, "±¼¸²");
+	StageText->SetColor(255, 255, 155, 255);
 
 	for (int i = 0; i < 6; ++i) {
 		m_CardLvTxt[i] = new TextMgr();
@@ -179,8 +184,9 @@ void UI::Render()
 
 	Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
 
-	m_Test->print(std::to_string(int(GameInfo->m_Score)), 1920 / 2 - 170, 0);
-	Money->print(std::to_string(int(GameInfo->m_Money)), 1920 / 2 + 450, 0);
+	m_Test->print(std::to_string(int(GameInfo->m_Score)), 1920 / 2 - 470, 0);
+	Money->print(std::to_string(int(GameInfo->m_Money)), 1920 / 2 + 150, 0);
+	StageText->print("STAGE " + std::to_string(int(GameInfo->Stage)), 1920 - 300, 0);
 	//m_Test->print("Enemy : " + std::to_string(GameInfo->EnemyCount), 1650, 50);
 	ScoreTextUI();
 

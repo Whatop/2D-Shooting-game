@@ -13,12 +13,11 @@ class Stage1 : public Scene
 
 	Sprite* ScoreScene;
 	Sprite* ScoreText;
-
+	SoundMgr* m_Bgm;
 	float ScaleScene;
 	float ScaleText;
 	int RCrad[3];
 
-	
 public:
 	Stage1();
 	~Stage1();

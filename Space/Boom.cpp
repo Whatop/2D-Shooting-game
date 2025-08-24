@@ -19,6 +19,9 @@ Boom::Boom()
 	m_Atk = 100.f;
 
 	GameInfo->HV_Boom--;
+	SoundMgr* effect = new SoundMgr("Sound/buffe.wav", false);
+	effect->play();
+	effect->volumeSetting(0.02f);
 }
 
 Boom::~Boom()

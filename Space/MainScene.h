@@ -2,11 +2,14 @@
 class MainScene : public Scene
 {
 	Sprite* m_MainScene;
+	Sprite* Exp;
 	Sprite* m_Title;
-	Sprite* m_Button[4];
+	Sprite* m_Button[5];
 
 	SoundMgr* BG;
 	SoundMgr* Button;
+
+	bool isExplain;
 public:
 	MainScene();
 	~MainScene();

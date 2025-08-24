@@ -9,7 +9,7 @@ Enemy1::Enemy1(Vec2 Pos)
 	m_Enemy1->SetParent(this);
 
 	SetPosition(Pos);
-	m_Hp = 100;
+	m_Hp = 100 * pow(1.5f, GameInfo->Stage - 1);;
 	m_Rotation = D3DXToRadian(180);
 	m_Speed = 450.f;
 	m_LastMoveTime = 2.f;
@@ -55,7 +55,7 @@ void Enemy1::Update(float deltaTime, float Time)
 			ObjMgr->CollisionCheak(this, "Bullet");
 			ObjMgr->CollisionCheak(this, "ChargeBullet");
 			m_LastMoveTime += dt;
-			if (m_LastMoveTime >= 4)
+			if (m_LastMoveTime >= 4/ pow(1.5f, GameInfo->Stage - 1))
 				Move();
 			if (m_Hp <= 0)
 			{
@@ -67,6 +67,10 @@ void Enemy1::Update(float deltaTime, float Time)
 				GameInfo->MaxScore += 100;
 				GameInfo->KillScore += 100;
 				GameInfo->SpawnCoin(m_Position);
+
+				SoundMgr* effect = new SoundMgr("Sound/snd_bomb.wav", false);
+				effect->play();
+				effect->volumeSetting(0.02f);
 			}
 			if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
 				m_Position.x += 100 * dt;

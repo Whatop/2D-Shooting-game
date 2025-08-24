@@ -10,7 +10,7 @@ EliteEnemy1::EliteEnemy1(Vec2 Pos)
 
 	SetPosition(Pos);
 	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 360 + 73));
-	m_Hp = 300;
+	m_Hp = 300 * pow(1.5f, GameInfo->Stage - 1);;
 	m_Rotation = D3DXToRadian(180);
 	m_Speed = 450.f;
 	m_LastMoveTime = 2.f;
@@ -22,6 +22,7 @@ EliteEnemy1::EliteEnemy1(Vec2 Pos)
 	GameInfo->EnemyCount++;
 	OneDamege = false;
 	DamegeCoolTime = 0.f;
+	
 }
 
 EliteEnemy1::~EliteEnemy1()
@@ -56,7 +57,7 @@ void EliteEnemy1::Update(float deltaTime, float Time)
 			}
 
 			m_LastMoveTime += dt;
-			if (m_LastMoveTime >= 4)
+			if (m_LastMoveTime >= 4 / pow(1.5f, GameInfo->Stage - 1))
 				Move();
 			if (m_Hp <= 0)
 			{
@@ -68,6 +69,10 @@ void EliteEnemy1::Update(float deltaTime, float Time)
 				GameInfo->MaxScore += 300;
 				GameInfo->KillScore += 300;
 				GameInfo->SpawnCoin(m_Position);
+
+				SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
+				effect->play();
+				effect->volumeSetting(0.03f);
 			}
 			if (GameInfo->AutoCamera && !GameInfo->CameraStop) {
 				m_Position.x += 100 * dt;

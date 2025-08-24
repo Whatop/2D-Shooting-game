@@ -25,7 +25,7 @@ MiniMissile::MiniMissile(Vec2 Pos, float r)
 	m_ColBox->SetScale(0.5f, 0.5f);
 	m_ColBox->m_Visible = false;
 	DestroyTime = 0.f;
-	m_Atk = 15.f;
+	m_Atk = 15.f * pow(1.5f, GameInfo->Stage - 1);;
 }
 MiniMissile::~MiniMissile()
 {

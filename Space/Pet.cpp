@@ -94,7 +94,7 @@ void Pet::Move()
 
 void Pet::Attack()
 {
-	// ¾ÕÀ¸·Î ³ª°¡´Â ÃÑÅº, À¯µµÅº, 
+	// ´Ü¹ß, ¼¦°Ç , Â÷Áö, À¯µµ, ºÎ¸Þ¶û, ´õºí¼¦
 	ShotTime += dt;
 	if (Gun == 0) {
 		if (ShotTime > 0.35f) {
@@ -109,19 +109,13 @@ void Pet::Attack()
 			ObjMgr->AddObject(new ShotGun(0, m_Position), "Bullet");
 			ObjMgr->AddObject(new ShotGun(-10, m_Position), "Bullet");
 			ObjMgr->AddObject(new ShotGun(-20, m_Position), "Bullet");
-			Gun++;
 			ShotTime = 0.f;
 		}
 	}
 	else if (Gun == 2) {
 		if (ShotTime > 0.4f) {
-			ObjMgr->AddObject(new ShotGun(25, m_Position), "Bullet");
-			ObjMgr->AddObject(new ShotGun(15, m_Position), "Bullet");
-			ObjMgr->AddObject(new ShotGun(5, m_Position), "Bullet");
-			ObjMgr->AddObject(new ShotGun(-15, m_Position), "Bullet");
-			ObjMgr->AddObject(new ShotGun(-25, m_Position), "Bullet");
+			ObjMgr->AddObject(new ChargeBullet, "ChargeBullet");
 			ShotTime = 0.f;
-			Gun++;
 		}
 	}
 	else if (Gun == 3) {

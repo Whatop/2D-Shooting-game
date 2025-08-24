@@ -4,6 +4,7 @@ class BossBullet : public Object
 	Animation* m_BossBullet;
 	float DestroyTime;
 	float m_Speed;
+	int random;
 	Vec2 Dire;
 public:
 	BossBullet(Vec2 spawnPos, Vec2 dir);

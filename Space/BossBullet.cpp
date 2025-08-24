@@ -15,7 +15,9 @@ BossBullet::BossBullet(Vec2 spawnPos, Vec2 dir)
 	Dire = dir;
 	m_Layer = 2;
 	m_Rotation = (std::atan2(dir.y, dir.x));
-	m_Atk = 5.f;
+	m_Atk = 5.f * pow(1.5f, GameInfo->Stage - 1);;
+	random = 0;
+	
 }
 
 BossBullet::~BossBullet()
@@ -30,19 +32,28 @@ void BossBullet::Update(float deltaTime, float Time)
 		DestroyTime += dt;
 		Move();
 
-		if (DestroyTime > 5) {
+		if (DestroyTime > 7) {
 			ObjMgr->RemoveObject(this);
 			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, m_Position, 1 * DestroyTime, 1 * DestroyTime), "Effect");
 		}
-		if (m_Position.y > 600 - m_Size.y / 2)
-			m_Rotation = m_Rotation * -1;
-		if (m_Position.y < 0 + m_Size.y / 2)
-			m_Rotation = m_Rotation * -1;
-		if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - m_Size.x / 2)
-			m_Rotation = m_Rotation * -1.5f;
-		if (m_Position.x < Camera::GetInst()->m_Position.x + m_Size.x / 2)
-			m_Rotation = m_Rotation * -0.5f;
-		m_Atk = 5.f * m_Scale.x;
+		if (m_Position.y > 445 - m_Size.y / 2 ||
+			m_Position.y < -110 + m_Size.y / 2)
+		{
+			// 위아래 반사
+			Dire.y = -Dire.y;
+			random = rand() % 4 == 0 ? 3 : 0;  // 25% 확률 플레이어 도탄
+		}
+
+		if (m_Position.x > Camera::GetInst()->m_Position.x + App::GetInst()->m_Width - m_Size.x / 2 ||
+			m_Position.x < Camera::GetInst()->m_Position.x + m_Size.x / 2)
+		{
+			// 좌우 반사
+			Dire.x = -Dire.x;
+			random = rand() % 4 == 0 ? 3 : 0;  // 25% 확률 플레이어 도탄
+		}
+
+
+		m_Atk = 5.f * m_Scale.x * pow(1.5f, GameInfo->Stage - 1);
 		m_BossBullet->Update(deltaTime, Time);
 	}
 }
@@ -58,9 +69,15 @@ void BossBullet::OnCollision(Object* obj)
 
 void BossBullet::Move()
 {
-	Dire.x = cos(m_Rotation);
-	Dire.y = sin(m_Rotation);
+	if (random == 3) {
+		// 플레이어 방향 재조정
+		Dire = GameInfo->GetPlayerInfo()->m_Position - m_Position;
+		D3DXVec2Normalize(&Dire, &Dire);
+		std::cout << "도탄됨! (플레이어 향함)" << std::endl;
 
-	m_Rotation = std::atan2f(Dire.y, Dire.x);
+		random = 0; // 한 번 튄 뒤에는 다시 일반 모드
+	}
+
+	m_Rotation = atan2f(Dire.y, Dire.x);
 	Translate(Dire.x * m_Speed * dt, Dire.y * m_Speed * dt);
 }

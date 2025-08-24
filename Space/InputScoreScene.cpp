@@ -35,6 +35,12 @@ void InputScoreScene::Init()
 
 	m_isTextEntered = true;
 	GameInfo->m_Scene = StageScene::NONE;
+    SoundMgr::GetInst()->StopAll();
+
+
+    m_Bgm = new SoundMgr("Sound/Store.wav", true);
+    m_Bgm->play();
+    m_Bgm->volumeSetting(0.1f);
 }
 
 void InputScoreScene::Release()
@@ -43,53 +49,46 @@ void InputScoreScene::Release()
 
 void InputScoreScene::Update(float deltaTime, float Time)
 {
-	if (m_isTextEntered)
-	{
-		if (name.size() > 10)
-			m_isTextEntered = false;
+    if (m_isTextEntered)
+    {
+        if (name.size() > 10)
+            m_isTextEntered = false;
 
-		for (int i = 0; i < 256; i++)
-		{
-			m_PrevKey[i] = m_Key[i];
-			m_Key[i] = static_cast<bool>(GetAsyncKeyState(i));
-		}
-		for (int i = 0x41; i < 0x5A; i += 0x01)
-		{
-			bool key = false;
-			bool prevkey = false;
-			prevkey = m_PrevKey[i];
-			key = m_Key[i];
-			if (key && !prevkey)
-			{
-				std::string str;
-				str = (char)i;
-				name += str;
-			}
-		}
-		if (INPUT->GetKey(VK_BACK) == KeyState::DOWN && name.size() >= 1)
-		{
-			name = name.substr(1);
-		}
-	}
+        for (int i = 0; i < 256; i++)
+        {
+            m_PrevKey[i] = m_Key[i];
+            m_Key[i] = static_cast<bool>(GetAsyncKeyState(i));
+        }
 
-	if (name.size() > 0)
-	{
-		m_OverOne = true;
-	}
-	else if (name.size() <= 0)
-	{
-		m_OverOne = false;
-	}
+        // 알파벳 A~Z
+        for (int i = 0x41; i <= 0x5A; i++)
+        {
+            bool key = m_Key[i];
+            bool prevKey = m_PrevKey[i];
+            if (key && !prevKey)
+            {
+                name += static_cast<char>(i);
+            }
+        }
 
-	if (m_OverOne)
-	{
-		if (CollisionMgr::GetInst()->MouseWithBoxSize(m_BackButton) && INPUT->GetButtonDown())
-		{
-			GameInfo->m_Rank->name = name;
-			GameInfo->m_Rank->score = GameInfo->m_Score;
-			SceneDirector::GetInst()->ChangeScene(new MainScene());
-		}
-	}
+        // Backspace → 마지막 글자 지우기
+        if (INPUT->GetKey(VK_BACK) == KeyState::DOWN && !name.empty())
+        {
+            name.pop_back();
+        }
+    }
+
+    m_OverOne = !name.empty();
+
+    if (m_OverOne)
+    {
+        if (CollisionMgr::GetInst()->MouseWithBoxSize(m_BackButton) && INPUT->GetButtonDown())
+        {
+            GameInfo->m_Rank->name = name;
+            GameInfo->m_Rank->score = GameInfo->m_Score;
+            SceneDirector::GetInst()->ChangeScene(new MainScene());
+        }
+    }
 }
 
 void InputScoreScene::Render()

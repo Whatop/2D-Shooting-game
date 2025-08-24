@@ -102,7 +102,7 @@ void MiniBoss::Update(float deltaTime, float Time)
         Phase2Update(dt);
 
         m_LastMoveTime += dt;
-        if (m_LastMoveTime >= 5.f && m_Phase1Boost) Move();
+        if (m_LastMoveTime >= 5.f / pow(1.5f, GameInfo->Stage - 1) && m_Phase1Boost) Move();
 
         m_AoETarget.x = Camera::GetInst()->m_Position.x + App::GetInst()->m_Width / 2;
         m_Pattern->SetPosition(m_AoETarget);
@@ -124,9 +124,13 @@ void MiniBoss::Update(float deltaTime, float Time)
             GameInfo->EnemyCount--;
             GameInfo->MaxScore += 1000;
             GameInfo->KillScore += 1000;
-            GameInfo->ChocieScene();
+            GameInfo->isScoreScene = true;
             ObjMgr->RemoveObject(this);
             GameInfo->SpawnCoin(m_Position);
+
+            SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
+            effect->play();
+            effect->volumeSetting(0.03f);
             return;
         }
         // 2페에서도 피격 체크

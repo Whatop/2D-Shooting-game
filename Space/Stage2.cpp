@@ -1,12 +1,9 @@
 #include "stdafx.h"
 #include "Stage2.h"
+#include "Stage1.h"
 #include "Boom.h"
 
 Stage2::Stage2()
-{
-}
-
-Stage2::~Stage2()
 {
 }
 
@@ -75,9 +72,30 @@ void Stage2::Init()
 	ChoicePack[0]->SetScale(0.55f, 0.55f);
 	ChoicePack[1]->SetScale(0.55f, 0.55f);
 	ChoicePack[2]->SetScale(0.55f, 0.55f);
+
+	ScoreScene = Sprite::Create(L"Painting/GameScreen/ScoreScene.png");
+	ScoreScene->SetScale(0, 1.f);
+	ScoreScene->SetPosition(Camera::GetInst()->m_Position.x + 1920 / 2, 1080 / 2);
+
+	ScoreText = Sprite::Create(L"Painting/UI/Score.png");
+	ScoreText->SetScale(0, 1.f);
+	ScoreText->SetPosition(Camera::GetInst()->m_Position.x + 1920 / 2, 0);
+
+	ScaleScene = 0.f;
+	ScaleText = 0.f;
+
 	GameInfo->BossReset();
 
 	GameInfo->SpawnPet();
+	GameInfo->Stage++;
+	SoundMgr::GetInst()->StopAll();
+	m_Bgm = new SoundMgr("Sound/Stage2.wav", true);
+	m_Bgm->play();
+	m_Bgm->volumeSetting(0.1f);
+}
+
+Stage2::~Stage2()
+{
 }
 
 void Stage2::Release()
@@ -86,6 +104,7 @@ void Stage2::Release()
 
 void Stage2::Update(float deltaTime, float time)
 {
+	m_Bgm->Update(dt, time);
 	if (!GameInfo->m_DebugMode) {
 		UpWall->m_Visible = false;
 		DownWall->m_Visible = false;
@@ -126,7 +145,11 @@ void Stage2::Update(float deltaTime, float time)
 		MoneyColBox->m_Position.x += 100 * dt;
 		GameInfo->MoneyPokeyPos = MoneyColBox->m_Position;
 	}
-	GameInfo->CheatKey();
+	if (GameInfo->isScoreScene) {
+		NextScene();
+		GameInfo->MoneyPokeyPos.x += 100 * dt;
+	}
+	//GameInfo->CheatKey();
 }
 
 void Stage2::Render()
@@ -136,6 +159,8 @@ void Stage2::Render()
 			m_BackGround[i][j]->Render();
 		}
 	}
+	ScoreScene->Render();
+	ScoreText->Render();
 	m_Choice->Render();
 	for (int i = 0; i < 3; i++) {
 		ChoicePack[i]->Render();
@@ -212,6 +237,12 @@ void Stage2::OnCollisionCard()
 			ChoicePack[i]->SetScale(0.55f, 0.55f);
 		}
 	}
+		if (GameInfo->isScoreScene) {
+		NextScene();
+		GameInfo->MoneyPokeyPos.x += 100 * dt;
+
+
+	}
 }
 
 void Stage2::RestBG()
@@ -252,3 +283,36 @@ void Stage2::MoveBG()
 		}
 	}
 }
+
+void Stage2::NextScene()
+{
+	ScoreScene->SetPosition(Camera::GetInst()->m_Position.x + 1920 / 2, 1080 / 2);
+	ScoreText->SetPosition(Camera::GetInst()->m_Position.x + 1920 / 2, 100);
+
+	if (ScaleScene <= 1)
+		ScaleScene += dt;
+
+	if (ScaleText <= 1 && ScaleScene >= 1)
+		ScaleText += dt;
+
+	ScoreScene->SetScale(ScaleScene, 1.5f);
+	ScoreText->SetScale(ScaleText, 1.f);
+	GameInfo->isPause = true;
+
+	if (CollisionMgr::GetInst()->MouseWithBoxSize(ScoreScene))
+	{
+		if (INPUT->GetButtonDown()) {
+			GameInfo->isPause = false;
+			GameInfo->isScoreScene = false;
+			SceneDirector::GetInst()->ChangeScene(new Stage1);
+		}
+	}
+	if (INPUT->GetKey('Z') == KeyState::DOWN) {
+
+		GameInfo->isPause = false;
+		GameInfo->isScoreScene = false;
+		SceneDirector::GetInst()->ChangeScene(new Stage1);
+	}
+
+}
+

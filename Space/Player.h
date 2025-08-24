@@ -18,7 +18,7 @@ class Player : public Object
 
 	bool one;
 
-	// 단발, 샷건 , 차지, 유도, 부메랑, 
+	// 단발, 샷건 , 차지, 유도, 부메랑, 더블샷
 	int m_GunType;
 	int shot, shotgun, charge, induce, boomerang, doubleshot;
 	

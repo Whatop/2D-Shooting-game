@@ -150,6 +150,9 @@ void Player::Update(float deltaTime, float Time)
 				Camera::GetInst()->ShakeTimeX = 0;
 
 				ones = false;
+				SoundMgr* effect = new SoundMgr("Sound/snd_damage.wav", false);
+				effect->play();
+				effect->volumeSetting(0.12f);
 			}
 		}
 		if (ones) {

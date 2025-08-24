@@ -8,17 +8,10 @@ Stage1::Stage1()
 {
 }
 
-Stage1::~Stage1()
-{
-}
-
 void Stage1::Init()
 {
 	ObjMgr->Release();
 	GameInfo->Init();
-	GameInfo->m_Score = 0;
-	GameInfo->MaxScore = 0;
-
 	BGInit();
 	Camera::GetInst()->m_Position = Vec2(0, -180);
 
@@ -48,6 +41,9 @@ void Stage1::Init()
 	DownWall->m_Visible = false;
 
 	std::cout << "STAGE 1 이동" << std::endl;
+	if(GameInfo->m_Scene == StageScene::NONE)
+		GameInfo->MaxScore = 0;
+
 	GameInfo->m_Scene = StageScene::STAGE1;
 
 	if (!GameInfo->m_isCreatePlayer)
@@ -76,7 +72,7 @@ void Stage1::Init()
 	
 
 	MoneyColBox = Sprite::Create(L"Painting/UI/Money.png");
-	MoneyColBox->SetPosition(1920 / 2 + 390.f, 72.f / 2.f-180);
+	MoneyColBox->SetPosition(1920 / 2 + 90.f, 72.f / 2.f-180);
 	MoneyColBox->m_Visible = false;
 	ObjMgr->AddObject(MoneyColBox, "MoneyPoket");
 
@@ -90,6 +86,18 @@ void Stage1::Init()
 
 	ScaleScene = 0.f;
 	ScaleText = 0.f;
+	GameInfo->Stage++;
+	GameInfo->SpawnPet();
+
+	SoundMgr::GetInst()->StopAll();
+
+	m_Bgm = new SoundMgr("Sound/Stage1.wav", false);
+	m_Bgm->play();
+	m_Bgm->volumeSetting(0.1f);
+}
+
+Stage1::~Stage1()
+{
 }
 
 void Stage1::Release()
@@ -139,7 +147,7 @@ void Stage1::Update(float deltaTime, float time)
 		GameInfo->MoneyPokeyPos= MoneyColBox->m_Position;
 	}
 	//std::cout << "마우스 위치 y : " << INPUT->GetMousePos().y << std::endl;
-	GameInfo->CheatKey();
+	//GameInfo->CheatKey();
 
 	if (GameInfo->isScoreScene) {
 		NextScene();

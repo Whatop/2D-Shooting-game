@@ -23,6 +23,8 @@
 
 GameMgr::GameMgr()
 {
+	Hp = 100;
+	SoundMgr::GetInst()->Init();
 }
 
 GameMgr::~GameMgr()
@@ -87,7 +89,7 @@ void GameMgr::Init()
 	HV_Boom = 3;
 
 	MoneyPokeyPos = Vec2(0, 0);
-
+	played = false;
 
 }
 
@@ -115,9 +117,6 @@ void GameMgr::ReleaseUI()
 
 void GameMgr::CreatePlayer()
 {
-	if (GameInfo->m_Scene == StageScene::STAGE1)
-		ObjMgr->AddObject(new Player(), "Player");
-	else
 		ObjMgr->AddObject(new Player(Hp), "Player");
 
 	m_isCreatePlayer = true;
@@ -133,7 +132,7 @@ void GameMgr::PlayerDeath()
 
 void GameMgr::Update()
 {
-	std::cout << "마우스 좌표 y : " << INPUT->GetMousePos().y << std::endl;
+	//std::cout << "마우스 좌표 y : " << INPUT->GetMousePos().y << std::endl;
 	if (m_isCreateUI)
 		UI::GetInst()->Update();
 
@@ -150,6 +149,13 @@ void GameMgr::Update()
 			SpawnDelay = 40.f;
 			EnemyCount = 0;
 		}
+	}
+	GameInfo->CheatKey();
+
+	if (MaxScore > 99999) {
+		SoundMgr* sfx = new SoundMgr("Sound/Test.wav", false);
+		sfx->play();
+		played = true; // 중복 재생 방지
 	}
 }
 

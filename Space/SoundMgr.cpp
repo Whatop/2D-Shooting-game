@@ -23,7 +23,43 @@ SoundMgr::~SoundMgr() {
     FMOD_Sound_Release(m_sound);
 }
 
+// === 추가: 전체 제어 구현 ===
+void SoundMgr::StopAll()
+{
+    if (!g_sound_system) return;
 
+    FMOD_CHANNELGROUP* master = nullptr;
+    FMOD_System_GetMasterChannelGroup(g_sound_system, &master);
+    if (master)
+    {
+        // 모든 재생 채널(효과음/배경음 포함) 즉시 정지
+        FMOD_ChannelGroup_Stop(master);
+    }
+}
+
+void SoundMgr::PauseAll(bool pause)
+{
+    if (!g_sound_system) return;
+
+    FMOD_CHANNELGROUP* master = nullptr;
+    FMOD_System_GetMasterChannelGroup(g_sound_system, &master);
+    if (master)
+    {
+        FMOD_ChannelGroup_SetPaused(master, pause);
+    }
+}
+
+void SoundMgr::MuteAll(bool mute)
+{
+    if (!g_sound_system) return;
+
+    FMOD_CHANNELGROUP* master = nullptr;
+    FMOD_System_GetMasterChannelGroup(g_sound_system, &master);
+    if (master)
+    {
+        FMOD_ChannelGroup_SetMute(master, mute);
+    }
+}
 void SoundMgr::Init() {
     FMOD_System_Create(&g_sound_system);
     FMOD_System_Init(g_sound_system, 32, FMOD_INIT_NORMAL, NULL);
@@ -75,6 +111,14 @@ void SoundMgr::volumeDown() {
 
 }
 
+void SoundMgr::volumeSetting(float valume) {
+    if (valume > SOUND_MIN && SOUND_MAX > valume) {
+        m_volume = valume;
+    }
+
+    FMOD_Channel_SetVolume(m_channel, m_volume);
+
+}
 
 void SoundMgr::Update(float deltaTime, float Time) {
     FMOD_Channel_IsPlaying(m_channel, &m_bool);

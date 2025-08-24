@@ -25,13 +25,17 @@ public:
 
     static void Init();
     static void Release();
-
+    static void StopAll();                 // 모든 채널 정지
+    static void PauseAll(bool pause = true);
+    static void ResumeAll() { PauseAll(false); }
+    static void MuteAll(bool mute = true);
     void play();
     void pause();
     void resume();
     void stop();
     void volumeUp();
     void volumeDown();
+    void volumeSetting(float val);
 
     void Update(float deltaTime, float Time);
 };

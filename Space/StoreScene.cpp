@@ -105,11 +105,17 @@ void StoreScene::Init()
 		m_PetCostTxt[i]->Init(26, true, false, "±¼¸²");
 		m_PetCostTxt[i]->SetColor(255, 255, 255, 255);
 	}
+
+
+	SoundMgr::GetInst()->StopAll();
+	m_Bgm = new SoundMgr("Sound/Store.wav", false);
+	m_Bgm->play();
+	m_Bgm->volumeSetting(0.1f);
 }
 
 void StoreScene::Update(float deltaTime, float Time)
 {
-	GameInfo->CheatKey();
+	//GameInfo->CheatKey();
 
 	if (GameInfo->m_Scene == StageScene::STORE)
 		OnCollisionCard();

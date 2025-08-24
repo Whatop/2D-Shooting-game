@@ -14,6 +14,7 @@ class UI : public Singleton<UI>
 	Sprite* UIScoreFrame;
 
 	TextMgr* ScoreText;
+	TextMgr* StageText;
 
 	Sprite* StateWindow;
 

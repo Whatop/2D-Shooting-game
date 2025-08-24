@@ -81,7 +81,7 @@ Boss::Boss(Vec2 Pos)
 	DestroyTail->m_Visible = false;
 	ColBoxTop->m_Visible = false;
 	m_ColBox->m_Visible = false;
-	m_MaxHp = 4500.f;
+	m_MaxHp = 4500.f * pow(1.5f, GameInfo->Stage - 1);
 	m_Hp = m_MaxHp;
 	m_Speed = 200.f;
 	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 360 + 100));
@@ -90,9 +90,9 @@ Boss::Boss(Vec2 Pos)
 	MS_Num = 0;
 	MoveNum = 0;
 
-	TailHp = 750.f;
-	BodyHp = 700.f;
-	TopHp = 700.f;
+	TailHp = 750.f * pow(1.5f, GameInfo->Stage - 1);
+	BodyHp = 700.f * pow(1.5f, GameInfo->Stage - 1);
+	TopHp = 700.f * pow(1.5f, GameInfo->Stage - 1);
 	DestroyTime = 1.f;
 	EffectTime = 0.f;
 	isDestroyTop = false;
@@ -351,11 +351,11 @@ void Boss::Move()
 {
 	if (MoveTime > 1.4f) {
 		if (MoveNum == 0) 
-			m_RandomPosition = Vec2(m_Position.x + 100, 150);
+			m_RandomPosition = Vec2(m_Position.x - 100, 150);
 		if (MoveNum == 1)
 			m_RandomPosition = Vec2(m_Position.x + 600, 280);
 		if (MoveNum == 2)
-			m_RandomPosition = Vec2(m_Position.x + 100, 150);
+			m_RandomPosition = Vec2(m_Position.x - 100, 150);
 		if (MoveNum == 3) {
 			m_RandomPosition = Vec2(m_Position.x + 800, 360);
 			MoveNum = 0;
@@ -463,12 +463,17 @@ void Boss::State()
 			m_Hp -= 300.f;
 			isDestroyTail = true;
 			DestroyTail->m_Visible = true;
-			TailHp = 99999.f;
+			TailHp = 99999999.f;
 			for (int i = 0; i < 10; i++) {
 				float randx = (rand() % (int)BossTail->m_Size.x * m_Scale.x) + BossTail->m_Position.x - BossTail->m_Size.x / 2 * m_Scale.x;
 				float randy = (rand() % (int)BossTail->m_Size.y * m_Scale.y) + BossTail->m_Position.y - BossTail->m_Size.y / 2 * m_Scale.y;
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 			}
+
+			SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
+			effect->play();
+			effect->volumeSetting(0.2f);
+			
 			isMove = false;
 			GameInfo->MaxScore += 500;
 			GameInfo->KillScore += 500;
@@ -476,7 +481,7 @@ void Boss::State()
 		if (TopHp <= 0.f) {
 			m_Hp -= 300.f;
 			isDestroyTop = true;
-			TopHp = 99999.f;
+			TopHp = 99999999.f;
 			for (int i = 0; i < 10; i++) {
 				float randx = (rand() % (int)ColBoxTop->m_Size.x * m_Scale.x) + ColBoxTop->m_Position.x - ColBoxTop->m_Size.x / 2 * m_Scale.x;
 				float randy = (rand() % (int)ColBoxTop->m_Size.y * m_Scale.y) + ColBoxTop->m_Position.y - ColBoxTop->m_Size.y / 2 * m_Scale.y;
@@ -485,6 +490,9 @@ void Boss::State()
 			PilotAttack->m_CurrentFrame = 4;
 			GameInfo->MaxScore += 500;
 			GameInfo->KillScore += 500;
+			SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
+			effect->play();
+			effect->volumeSetting(0.1f);
 		}
 		if(isDestroyTail){
 			GameInfo->BossPosition = ColBoxTop->m_Position;
@@ -502,6 +510,9 @@ void Boss::State()
 				}
 				DestroyBody->m_Visible = true;
 				isDestroyBody = true;
+				SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
+				effect->play();
+				effect->volumeSetting(0.1f);
 			}
 		}
 		if (m_Hp < 0.f) {
@@ -514,6 +525,10 @@ void Boss::State()
 				GameInfo->KillScore += 1500;
 				GameInfo->isBossSpawn = false;
 				GameInfo->SpawnCoin(m_Position);
+
+				SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
+				effect->play();
+				effect->volumeSetting(0.1f);
 			}
 			DestroyTime += dt;
 			EffectTime += dt;

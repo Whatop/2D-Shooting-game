@@ -53,6 +53,7 @@ public:
 	bool isOneMiniBoss;
 	
 	bool isPause;
+	bool played;
 
 	int MaxScore;
 	int MaxMoney;
@@ -84,6 +85,7 @@ public:
 	int HV_TYPE;
 
 	int HV_Boom;
+	int Stage = 1;   // 현재 스테이지
 
 	bool isGunType; // 타입 선택시 바꾸는거 한번만
 	std::vector<int> OwnedPetTypes;  // 구입한 펫들의 공격타입을 순서대로 보관

@@ -9,6 +9,7 @@ class InputScoreScene : public Scene
 	TextMgr* m_Name;
 
 	Sprite* m_BackButton;
+	SoundMgr* m_Bgm;
 public:
 	InputScoreScene();
 	~InputScoreScene();

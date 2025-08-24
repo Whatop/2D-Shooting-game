@@ -14,6 +14,7 @@ class StoreScene : public Scene
 
 
 	Sprite* PetPack[6];
+	SoundMgr* m_Bgm;
 
 
 	// 공격력 UP, 체력 UP, 탄환 구매,

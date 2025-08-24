@@ -15,7 +15,7 @@ EnemyDirBullet::EnemyDirBullet(Vec2 Pos, Vec2 Dir, float Speed )
 	m_Dire = Dir;
 	m_Speed = Speed;
 	m_Rotation = (std::atan2(m_Dire.y, m_Dire.x));
-	m_Atk = 15.f;
+	m_Atk = 15.f * pow(1.5f, GameInfo->Stage - 1);;
 	if (GameInfo->m_Scene == StageScene::STAGE1)
 	{
 		m_Bolt->R = 51;
