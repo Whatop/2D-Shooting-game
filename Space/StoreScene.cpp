@@ -175,6 +175,16 @@ void StoreScene::OnCollisionCard()
 					CardFrame[i]->SetDestroy(true);
 					CardPack[i]->SetDestroy(true);
 					m_CardCost[i] = -1; // 렌더에서 가격표시 중단
+					SoundMgr* effect = new SoundMgr("Sound/snd_buyitem.wav", false);
+					effect->play();
+					effect->volumeSetting(0.1f);
+				}
+				else {
+					SoundMgr* effect = new SoundMgr("Sound/Click.wav", false);
+					effect->play();
+					effect->volumeSetting(0.1f);
+					INPUT->ButtonDown(false);
+
 				}
 			}
 			break; // 한 슬롯만 활성 처리
@@ -208,9 +218,17 @@ void StoreScene::OnCollisionCard()
 					PetPack[i]->SetDestroy(true);
 					m_PetCost[i] = -1;
 
+					SoundMgr* effect = new SoundMgr("Sound/snd_buyitem.wav", false);
+					effect->play();
+					effect->volumeSetting(0.1f);
+				}
+				else {
+					SoundMgr* effect = new SoundMgr("Sound/Click.wav", false);
+					effect->play();
+					effect->volumeSetting(0.1f);
+					INPUT->ButtonDown(false);
 				}
 			}
-
 			break;
 		}
 	}

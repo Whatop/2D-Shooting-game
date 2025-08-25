@@ -9,6 +9,7 @@ class Player : public Object
 	float m_MaxHp, m_Hp, m_Speed, m_Rpm;
 	float defenseTime;
 	bool ones;
+	bool lastLife;
 	float TempTime;
 	float Damage_Received;
 

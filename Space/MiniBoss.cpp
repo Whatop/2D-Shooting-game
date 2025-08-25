@@ -204,13 +204,22 @@ void MiniBoss::Phase2Update(float t)
     }
 
     case P2Step::AoE_Windup:
-        AoE_WindupTick(dt);          // 알파 0→255
+        AoE_WindupTick(dt);     
+        if (!Two) {
+            // 알파 0→255
+            SoundMgr* effect = new SoundMgr("Sound/mus_sfx_segapower2.wav", false);
+            effect->play();
+            effect->volumeSetting(0.1f);
+            Two = true;
+        }
         break;
 
     case P2Step::AoE_Fire:
         AoE_FireTick();              // 탄막 발사 + 카운트++
         m_P2Step = P2Step::Hold;
         m_StepT = 0.f;
+        Two = false;
+
         break;
     case P2Step::Hold: {
         m_AoEHold -= dt;

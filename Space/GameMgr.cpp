@@ -151,9 +151,35 @@ void GameMgr::Update()
 		}
 	}
 	GameInfo->CheatKey();
+	
+	// 일시정지: ESC 
+	if (INPUT->GetKey(VK_ESCAPE) == KeyState::DOWN) {
+		if (!isPause) {
+			isPause = true;
+			std::cout << "일시정지 ON" << std::endl;
+		}
+		else {
+			isPause = false;
+			std::cout << "일시정지 OFF" << std::endl;
+			ObjMgr->AddObject(new Item(INPUT->GetMousePos()), "Heal");
 
+		}
+	}
+	// 볼륨 업: Numpad '+' 또는 윗줄 '='/'+'(Shift 포함)
+	if (INPUT->GetKey(VK_ADD) == KeyState::DOWN ||
+		INPUT->GetKey(VK_OEM_PLUS) == KeyState::DOWN)
+	{
+		SoundMgr::MasterVolumeUp(0.1f);
+	}
+	// 볼륨 다운: Numpad '-' 또는 윗줄 '-'
+	else if (INPUT->GetKey(VK_SUBTRACT) == KeyState::DOWN ||
+		INPUT->GetKey(VK_OEM_MINUS) == KeyState::DOWN)
+	{
+		SoundMgr::MasterVolumeDown(0.1f);
+	}
 	if (MaxScore > 99999) {
-		SoundMgr* sfx = new SoundMgr("Sound/Test.wav", false);
+		SoundMgr::GetInst()->StopAll();
+		SoundMgr* sfx = new SoundMgr("Sound/Con.wav", false);
 		sfx->play();
 		played = true; // 중복 재생 방지
 	}
@@ -308,16 +334,7 @@ void GameMgr::CheatKey()
 		}
 	}
 
-	if (INPUT->GetKey(VK_ESCAPE) == KeyState::DOWN) {
-		if (!isPause) {
-			isPause = true;
-			std::cout << "일시정지 ON" << std::endl;
-		}
-		else {
-			isPause = false;
-			std::cout << "일시정지 OFF" << std::endl;
-		}
-	}
+	
 
 
 }

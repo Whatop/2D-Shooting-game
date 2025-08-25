@@ -20,6 +20,7 @@ Item::Item(Vec2 Pos, bool bonus)
 	Over = true;
 	m_Layer = 2;
 	DestroyTime = 0.f;
+
 }
 
 Item::~Item()

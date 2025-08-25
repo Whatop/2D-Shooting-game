@@ -34,9 +34,8 @@ void Stage2::Init()
 
 
 	MoneyColBox = Sprite::Create(L"Painting/UI/Money.png");
-	MoneyColBox->SetPosition(1920 / 2 + 390.f, 72.f / 2.f - 180);
-	MoneyColBox->m_Visible = false;
-	ObjMgr->AddObject(MoneyColBox, "MoneyPoket");
+	MoneyColBox->SetPosition(1920 / 2 - 90.f, 72.f / 2.f - 180);
+	ObjMgr->AddObject(MoneyColBox, "MoneyPoket"); 
 
 	ObjMgr->AddObject(UpWall, "Wall");
 	ObjMgr->AddObject(DownWall, "Wall");

@@ -7,6 +7,7 @@
 #define SOUND_MIN 0.0f
 #define SOUND_DEFAULT 0.5f
 #define SOUND_WEIGHT 0.1f
+#define SOUND_MASTER_STEP 0.05f
 
 class SoundMgr :public Singleton<SoundMgr>
 {
@@ -18,10 +19,19 @@ private:
 
     float m_volume;
     FMOD_BOOL m_bool;
+    static std::vector<SoundMgr*> s_instances;
+    static float s_masterVolume; // 0.0~1.0
+
 public:
     SoundMgr();
     SoundMgr(const char* path, bool loop);
     ~SoundMgr();
+
+    // === master volume controls (global) ===
+    static void SetMasterVolume(float v);        // 0.0 ~ 1.0
+    static float GetMasterVolume();
+    static void MasterVolumeUp(float step = SOUND_MASTER_STEP);
+    static void MasterVolumeDown(float step = SOUND_MASTER_STEP);
 
     static void Init();
     static void Release();
@@ -38,5 +48,11 @@ public:
     void volumeSetting(float val);
 
     void Update(float deltaTime, float Time);
+
+
+private:
+
+    void ApplyVolume();
+
 };
 #endif

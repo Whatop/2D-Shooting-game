@@ -72,8 +72,7 @@ void Stage1::Init()
 	
 
 	MoneyColBox = Sprite::Create(L"Painting/UI/Money.png");
-	MoneyColBox->SetPosition(1920 / 2 + 90.f, 72.f / 2.f-180);
-	MoneyColBox->m_Visible = false;
+	MoneyColBox->SetPosition(1920 / 2 - 90.f, 72.f / 2.f-180);
 	ObjMgr->AddObject(MoneyColBox, "MoneyPoket");
 
 	ScoreScene = Sprite::Create(L"Painting/GameScreen/ScoreScene.png");
@@ -91,7 +90,7 @@ void Stage1::Init()
 
 	SoundMgr::GetInst()->StopAll();
 
-	m_Bgm = new SoundMgr("Sound/Stage1.wav", false);
+	m_Bgm = new SoundMgr("Sound/Stage1.wav", true);
 	m_Bgm->play();
 	m_Bgm->volumeSetting(0.1f);
 }
@@ -113,7 +112,6 @@ void Stage1::Update(float deltaTime, float time)
 
 		Left_Limit->m_Visible = false;
 		Right_Limit->m_Visible = false;
-		MoneyColBox->m_Visible = false;
 	}
 	else {
 		UpWall->m_Visible = true;
@@ -123,7 +121,7 @@ void Stage1::Update(float deltaTime, float time)
 		MoneyColBox->m_Visible = true;
 	}
 	if (!GameInfo->isPause) {
-		
+
 		GameInfo->SpawnEnemy();
 		MoveBG();
 		ResetBG();
@@ -143,15 +141,17 @@ void Stage1::Update(float deltaTime, float time)
 			}
 			OnCollisionCard();
 		}
-		MoneyColBox->m_Position.x += 100 * dt;
-		GameInfo->MoneyPokeyPos= MoneyColBox->m_Position;
+		if (!GameInfo->CameraStop) {
+			MoneyColBox->m_Position.x += 100 * dt;
+			GameInfo->MoneyPokeyPos = MoneyColBox->m_Position;
+		}
 	}
 	//std::cout << "마우스 위치 y : " << INPUT->GetMousePos().y << std::endl;
 	//GameInfo->CheatKey();
 
 	if (GameInfo->isScoreScene) {
 		NextScene();
-		GameInfo->MoneyPokeyPos.x += 100 * dt;
+		//GameInfo->MoneyPokeyPos.x += 100 * dt;
 
 
 	}

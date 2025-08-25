@@ -68,6 +68,16 @@ void UI::Init()
 	StageText->Init(80, true, false, "굴림");
 	StageText->SetColor(255, 255, 155, 255);
 
+	SoundText = new TextMgr();
+	SoundText->Init(80, true, false, "굴림");
+	SoundText->SetColor(145, 145, 255, 255);
+	TextMgr* msgFont = new TextMgr();
+	msgFont->Init(48, true, false, "굴림");     // 프로젝트 폰트 스타일 맞춤
+	msgFont->SetColor(255, 255, 255, 255);
+
+	// 텍스트바 생성: 화면 중앙 상단 근처(원하는 좌표로 조정)
+	MessageBar = new TextBar(1920 / 2 - 180, 700); // x,y 위치
+	MessageBar->SetFont(msgFont);
 	for (int i = 0; i < 6; ++i) {
 		m_CardLvTxt[i] = new TextMgr();
 		m_CardLvTxt[i]->Init(24, true, false, "굴림"); // 폰트/크기 프로젝트에 맞춰 조정
@@ -88,6 +98,7 @@ void UI::Release()
 
 void UI::Update()
 {
+	if (MessageBar) MessageBar->Update(dt);
 	for (int i = 0; i < 6; i++) {
 		Pack[i]->A = 105;
 	}
@@ -185,9 +196,13 @@ void UI::Render()
 	Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
 
 	m_Test->print(std::to_string(int(GameInfo->m_Score)), 1920 / 2 - 470, 0);
-	Money->print(std::to_string(int(GameInfo->m_Money)), 1920 / 2 + 150, 0);
-	StageText->print("STAGE " + std::to_string(int(GameInfo->Stage)), 1920 - 300, 0);
-	//m_Test->print("Enemy : " + std::to_string(GameInfo->EnemyCount), 1650, 50);
+	Money->print(std::to_string(int(GameInfo->m_Money)), 1920 / 2, 0);
+	StageText->print("STAGE " + std::to_string(int(GameInfo->Stage)), 1920 - 360, 0);
+
+	char buf[32];
+	std::snprintf(buf, sizeof(buf), "%.f%%", SoundMgr::GetMasterVolume() * 100.f);
+	SoundText->print(std::string("소리 : ") + buf, 1920 -800, 0);//m_Test->print("Enemy : " + std::to_string(GameInfo->EnemyCount), 1650, 50);
+	if (MessageBar) MessageBar->Render();  // << 여기
 	ScoreTextUI();
 
 	for (int i = 0; i < 6; ++i) {
@@ -201,7 +216,9 @@ void UI::Render()
 
 	Renderer::GetInst()->GetSprite()->End();
 }
-
+void UI::PushMessage(const std::string& msg) {
+	if (MessageBar) MessageBar->Push(msg);
+}
 void UI::ScoreUI()
 {
 	//UIScoreFrame->m_Visible = true;

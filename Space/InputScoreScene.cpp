@@ -38,7 +38,7 @@ void InputScoreScene::Init()
     SoundMgr::GetInst()->StopAll();
 
 
-    m_Bgm = new SoundMgr("Sound/Store.wav", true);
+    m_Bgm = new SoundMgr("Sound/Die.wav", true);
     m_Bgm->play();
     m_Bgm->volumeSetting(0.1f);
 }

@@ -25,6 +25,7 @@ class MiniBoss : public Object
 	bool isPattern;
 	float Acc;
 	bool One;
+	bool Two;
 	
 	int PatternCount;
 	float PatternTime;

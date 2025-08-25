@@ -61,6 +61,9 @@ void MainScene::Update(float deltaTime, float time)
     if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[0]) && INPUT->GetButtonDown())
     {
         SceneDirector::GetInst()->ChangeScene(new Stage1());
+        SoundMgr* effect = new SoundMgr("Sound/snd_switchpull.wav", false);
+        effect->play();
+        effect->volumeSetting(0.1f);
         INPUT->ButtonDown(false);
     }
     else if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[1]) && INPUT->GetButtonDown())
@@ -69,10 +72,16 @@ void MainScene::Update(float deltaTime, float time)
 
             Exp->m_Visible = isExplain;
             m_Button[4]->m_Visible = isExplain;
+            SoundMgr* effect = new SoundMgr("Sound/snd_switchpull.wav", false);
+            effect->play();
+            effect->volumeSetting(0.1f);
         INPUT->ButtonDown(false);
     }
     else if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[2]) && INPUT->GetButtonDown())
     {
+        SoundMgr* effect = new SoundMgr("Sound/snd_switchpull.wav", false);
+        effect->play();
+        effect->volumeSetting(0.1f);
         App::GetInst()->Release();
         exit(0);
     }
@@ -81,6 +90,9 @@ void MainScene::Update(float deltaTime, float time)
         isExplain = false;
         Exp->m_Visible = isExplain;
         m_Button[4]->m_Visible = isExplain;
+        SoundMgr* effect = new SoundMgr("Sound/snd_switchpull.wav", false);
+        effect->play();
+        effect->volumeSetting(0.1f);
         INPUT->ButtonDown(false);
     }
  

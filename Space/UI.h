@@ -1,4 +1,6 @@
 #pragma once
+#include "TextBar.h"   // 추가
+
 class UI : public Singleton<UI>
 {
 	Sprite* PlayerBar;
@@ -15,6 +17,7 @@ class UI : public Singleton<UI>
 
 	TextMgr* ScoreText;
 	TextMgr* StageText;
+	TextMgr* SoundText;
 
 	Sprite* StateWindow;
 
@@ -24,6 +27,7 @@ class UI : public Singleton<UI>
 	float limit[4];
 
 	float ScoredaleyTime;
+	TextBar* MessageBar = nullptr;  // 추가: 상단 상태/알림 텍스트바
 public:
 	UI();
 	~UI();
@@ -37,5 +41,6 @@ public:
 	void ScoreUI();
 
 	void ScoreTextUI();
+	void PushMessage(const std::string& msg);
 };
 

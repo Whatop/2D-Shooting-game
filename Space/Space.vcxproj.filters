@@ -196,6 +196,12 @@
       <Filter>Game\Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="TextBar.cpp">
+      <Filter>Game\Mgr</Filter>
+    </ClCompile>
+    <ClCompile Include="TextTypeSfx.cpp">
+      <Filter>Game\Mgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -349,5 +355,11 @@
       <Filter>Game\Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="Coin.h" />
+    <ClInclude Include="TextBar.h">
+      <Filter>Game\Mgr</Filter>
+    </ClInclude>
+    <ClInclude Include="TextTypeSfx.h">
+      <Filter>Game\Mgr</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
