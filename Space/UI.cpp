@@ -216,8 +216,8 @@ void UI::Render()
 
 	Renderer::GetInst()->GetSprite()->End();
 }
-void UI::PushMessage(const std::string& msg) {
-	if (MessageBar) MessageBar->Push(msg);
+void UI::PushMessage(const std::wstring& msg, bool stick) {
+	if (MessageBar) MessageBar->Push(msg, stick);
 }
 void UI::ScoreUI()
 {

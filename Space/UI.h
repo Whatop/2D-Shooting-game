@@ -41,6 +41,6 @@ public:
 	void ScoreUI();
 
 	void ScoreTextUI();
-	void PushMessage(const std::string& msg);
+	void PushMessage(const std::wstring& msg,bool stick);
 };
 

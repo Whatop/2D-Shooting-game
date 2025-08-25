@@ -177,10 +177,13 @@ void GameMgr::Update()
 	{
 		SoundMgr::MasterVolumeDown(0.1f);
 	}
-	if (MaxScore > 99999) {
+	if (MaxScore > 99999 && !played) {
 		SoundMgr::GetInst()->StopAll();
-		SoundMgr* sfx = new SoundMgr("Sound/Con.wav", false);
+		SoundMgr* sfx = new SoundMgr("Sound/Thank_you.wav", false);
 		sfx->play();
+		sfx->volumeSetting(1);
+		UI::GetInst()->PushMessage(L"축하해요!!! 점수를 많이 모으셨군요,\n 저한테 치요라는 카톡으로 보내주세요! ",true);
+
 		played = true; // 중복 재생 방지
 	}
 }

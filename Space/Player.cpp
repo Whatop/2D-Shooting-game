@@ -242,12 +242,12 @@ void Player::OnCollision(Object* obj)
 				m_Hp += 20;
 			else
 				m_Hp = m_MaxHp;
-			UI::GetInst()->PushMessage("Ã¼·ÂÀ» È¸º¹Çß´Ù.");
+			UI::GetInst()->PushMessage(L"Ã¼·ÂÀ» È¸º¹Çß´Ù.",false);
 		}
 		else {
 			GameInfo->MaxScore += 500;
 			GameInfo->ItemScore += 500;
-			UI::GetInst()->PushMessage("Á¡¼ö¸¦ È¹µæÇß´Ù.");
+			UI::GetInst()->PushMessage(L"Á¡¼ö¸¦ È¹µæÇß´Ù.",false);
 		}
 
 		SoundMgr* effect = new SoundMgr("Sound/snd_heal_c.wav", false);
@@ -261,18 +261,18 @@ void Player::OnCollision(Object* obj)
 		SoundMgr* effect = new SoundMgr("Sound/snd_heal_c.wav", false);
 		effect->play();
 		effect->volumeSetting(0.12f);
-		UI::GetInst()->PushMessage("°ø°Ý·ÂÀÌ Áõ°¡Çß´Ù.");
+		UI::GetInst()->PushMessage(L"°ø°Ý·ÂÀÌ Áõ°¡Çß´Ù.", false);
 		obj->SetDestroy(true);
 	}
 	if (obj->m_Tag == "None") {
 		if (GameInfo->HV_Boom < 3) {
 			GameInfo->HV_Boom++;
-			UI::GetInst()->PushMessage("ÆøÅºÀ» ¸Ô¾ú´Ù.");
+			UI::GetInst()->PushMessage(L"ÆøÅºÀ» ¸Ô¾ú´Ù.", false);
 		}
 		else {
-			GameInfo->MaxScore += 500;
-			GameInfo->ItemScore += 500;
-			UI::GetInst()->PushMessage("Á¡¼ö¸¦ È¹µæÇß´Ù.");
+			GameInfo->MaxScore += 550000;
+			GameInfo->ItemScore += 550000;
+			UI::GetInst()->PushMessage(L"Á¡¼ö¸¦ È¹µæÇß´Ù.", false);
 		}
 		SoundMgr* effect = new SoundMgr("Sound/buffe.wav", false);
 		effect->play();
