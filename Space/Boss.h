@@ -7,7 +7,7 @@ class Boss : public Object
 	Sprite* BossTail;
 	Sprite* BossWindow;
 	Sprite* BossBehind;
-	
+
 	Sprite* DestroyBody;
 	Sprite* DestroyTail;
 	Sprite* ColBoxTop;
@@ -21,6 +21,14 @@ class Boss : public Object
 	bool isLeft, isRight, isUp, isDown, isHit;
 
 	float bonusTime;
+
+	enum class AoEStep { Idle, Windup, Fire, Hold };
+	AoEStep m_AoEStep = AoEStep::Idle;
+
+	float m_AoEStepT = 0.f;     // 상태 경과 시간
+	float m_AoEAlpha = 0;       // 장판 알파값
+	float m_AoEHold = 0.f;      // Hold 시간
+	Sprite* m_Pattern = nullptr; // 장판 스프라이트
 
 	Vec2 Dire;
 	Vec2 m_RandomPosition;
@@ -36,7 +44,7 @@ class Boss : public Object
 	float MS_DelayTime;
 	float MS_RpmTime;
 	int MS_Num;
-	
+
 	float ShootTime;
 	float DestroyTime;
 	float EffectTime;
@@ -76,6 +84,13 @@ public:
 	void SpawnMissile();
 	void DestroyEffect();
 
+	void EnterAoE();          // AoE 시작할 때 초기화
+	void AoEUpdate(float t); // Update에서 상태머신 돌리기
+	void AoE_Windup(float t);
+	void AoE_Fire();
+
+	void FireWallGrid(int cols, int rows, float spacingX, float spacingY, float speed);
+	void FireFanWall();
 	float m_Speed;
 	bool isMove;
 

@@ -141,12 +141,11 @@ void Stage2::Update(float deltaTime, float time)
 			}
 			OnCollisionCard();
 		}
+	}
+	if (!GameInfo->CameraStop) {
 		MoneyColBox->m_Position.x += 100 * dt;
 		GameInfo->MoneyPokeyPos = MoneyColBox->m_Position;
-	}
-	if (GameInfo->isScoreScene) {
-		NextScene();
-		GameInfo->MoneyPokeyPos.x += 100 * dt;
+
 	}
 	//GameInfo->CheatKey();
 }

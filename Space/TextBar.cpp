@@ -9,9 +9,8 @@ static std::wstring FromUTF8(const std::string& s) {
     const int n = MultiByteToWideChar(CP_UTF8, 0, s.c_str(), -1, nullptr, 0);
     std::wstring w;
     if (n <= 0) return w;
-
-    w.resize(n - 1);                        // 널 제외 크기 확보
-    MultiByteToWideChar(CP_UTF8, 0, s.c_str(), -1, &w[0], n); // &w[0]로 LPWSTR 보장
+    w.resize(n - 1); // exclude null
+    MultiByteToWideChar(CP_UTF8, 0, s.c_str(), -1, &w[0], n);
     return w;
 }
 
@@ -23,6 +22,7 @@ void TextBar::SetTypeSfx(TextTypeSfx* s) { typeSfx_ = s; }
 
 void TextBar::Push(const std::wstring& msg, bool sticky) {
     queue_.push(Item{ msg, sticky });
+    // 비활성 상태면 바로 시작
     if (!active_ && !done_) BeginNextMessage();
 }
 
@@ -32,11 +32,14 @@ void TextBar::PushUTF8(const std::string& utf8, bool sticky) {
 
 void TextBar::BeginNextMessage() {
     if (queue_.empty()) {
-        active_ = false; done_ = false;
+        active_ = false;
+        done_ = false;
         visible_.clear();
         return;
     }
-    cur_ = queue_.front(); queue_.pop();
+
+    cur_ = queue_.front();
+    queue_.pop();
 
     visible_.clear();
     idx_ = 0;
@@ -47,18 +50,23 @@ void TextBar::BeginNextMessage() {
 }
 
 void TextBar::StepType(float t) {
-    acc_ += dt;
-    while (active_ && !done_ && acc_ >= charDelay_) {
+    acc_ += t;
+
+    // 안전 장치: 남은 문자가 없으면 조기 종료
+    if (!active_ || done_) return;
+
+    while (acc_ >= charDelay_ && idx_ < cur_.text.size()) {
         acc_ -= charDelay_;
 
         const wchar_t ch = cur_.text[idx_++];
         visible_.push_back(ch);
 
         if (typeSfx_) {
-            // 필터는 Sfx 쪽 정책으로 처리. 문자당 1회만 호출
-            typeSfx_->OnCharInput('a');
+            // 문자당 1회 호출 (필터링은 Sfx 쪽 정책)
+            typeSfx_->OnCharInput('a'); // 필요 시 실제 문자로 변경 가능
         }
 
+        // 마지막 문자 처리 후 종료
         if (idx_ >= cur_.text.size()) {
             done_ = true;
             active_ = false;
@@ -70,18 +78,19 @@ void TextBar::StepType(float t) {
 void TextBar::Update(float t) {
     if (!font_) return;
 
+    // 타이핑 중
     if (!done_) {
-        StepType(dt);
+        StepType(t);
         return;
     }
 
-    // 여기서부터 '완료 후' 처리
+    // 완료 후 처리
     if (cur_.sticky) {
-        // sticky면 자동 클리어/다음 메시지로 넘어가지 않음
+        // sticky면 자동 전환/클리어 안 함
         return;
     }
 
-    clearAcc_ += dt;
+    clearAcc_ += t;
     if (clearAcc_ >= clearDelay_) {
         visible_.clear();
         done_ = false;
@@ -91,15 +100,13 @@ void TextBar::Update(float t) {
 
 void TextBar::Render() {
     if (!font_) return;
-    // DrawTextW 기반이면 \n 줄바꿈이 자동 처리됨
+    // DrawTextW 기반이면 줄바꿈(\n) 자동 처리
     font_->print(visible_, x_, y_);
 }
 
 void TextBar::ReleaseSticky() {
-    // 현재 표시 중인 게 sticky일 때만 해제
     if (cur_.sticky) {
-        cur_.sticky = false;
-        // 다음 Update에서 평소 로직으로 클리어/전환됨
+        cur_.sticky = false; // 다음 Update에서 평소 로직으로 넘어감
     }
 }
 

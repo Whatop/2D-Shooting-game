@@ -15,6 +15,7 @@
 
 #include "Stage2.h"
 #include "StoreScene.h"
+#include "AudioLibrary.h"
 
 #include "Coin.h"
 #include "Pet.h"
@@ -25,6 +26,7 @@ GameMgr::GameMgr()
 {
 	Hp = 100;
 	SoundMgr::GetInst()->Init();
+	AudioLibrary::Init();
 }
 
 GameMgr::~GameMgr()
@@ -150,7 +152,6 @@ void GameMgr::Update()
 			EnemyCount = 0;
 		}
 	}
-	GameInfo->CheatKey();
 	
 	// 일시정지: ESC 
 	if (INPUT->GetKey(VK_ESCAPE) == KeyState::DOWN) {
@@ -161,7 +162,6 @@ void GameMgr::Update()
 		else {
 			isPause = false;
 			std::cout << "일시정지 OFF" << std::endl;
-			ObjMgr->AddObject(new Item(INPUT->GetMousePos()), "Heal");
 
 		}
 	}

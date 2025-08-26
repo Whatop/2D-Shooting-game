@@ -59,10 +59,10 @@ void Coin::OnCollision(Object* obj)
 	if (obj->m_Tag == "MoneyPoket") {
 		ObjMgr->RemoveObject(this);
 		if (bigger) {
-			GameInfo->MaxMoney += 5;
+			GameInfo->MaxMoney += 5 * pow(1.5f, GameInfo->Stage - 1);;
 		}
 		else 
-			GameInfo->MaxMoney += 1;
+			GameInfo->MaxMoney += 1 * pow(1.5f, GameInfo->Stage - 1);;
 	}
 }
 

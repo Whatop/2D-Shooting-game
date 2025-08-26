@@ -9,7 +9,7 @@ Enemy1::Enemy1(Vec2 Pos)
 	m_Enemy1->SetParent(this);
 
 	SetPosition(Pos);
-	m_Hp = 100 * pow(1.5f, GameInfo->Stage - 1);;
+	m_Hp = 100 * pow(1.5f, GameInfo->Stage - 1);
 	m_Rotation = D3DXToRadian(180);
 	m_Speed = 450.f;
 	m_LastMoveTime = 2.f;

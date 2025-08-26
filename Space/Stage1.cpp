@@ -143,6 +143,7 @@ void Stage1::Update(float deltaTime, float time)
 		}
 		if (!GameInfo->CameraStop) {
 			MoneyColBox->m_Position.x += 100 * dt;
+			MoneyColBox->m_Position.y = 72.f / 2.f - 180;
 			GameInfo->MoneyPokeyPos = MoneyColBox->m_Position;
 		}
 	}

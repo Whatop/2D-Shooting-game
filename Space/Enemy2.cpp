@@ -10,7 +10,7 @@ Enemy2::Enemy2(Vec2 Pos)
 
 	SetPosition(Pos);
 	m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 580));
-	m_Hp = 100 * pow(1.5f, GameInfo->Stage - 1);;
+	m_Hp = 100 * pow(1.5f, GameInfo->Stage - 1);
 	m_Rotation = D3DXToRadian(180);
 	m_Speed = 450.f;
 	m_LastMoveTime = 2.f;
@@ -23,7 +23,6 @@ Enemy2::Enemy2(Vec2 Pos)
 	SetScale(0.85f, 0.85f);
 	OneDamege = false;
 }
-
 Enemy2::~Enemy2()
 {
 }

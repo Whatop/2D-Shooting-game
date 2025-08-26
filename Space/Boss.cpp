@@ -5,6 +5,7 @@
 #include "Box.h"
 #include "Missile.h"
 #include "Item.h"
+#include "EnemyDirBullet.h"
 
 Boss::Boss(Vec2 Pos)
 {
@@ -31,7 +32,10 @@ Boss::Boss(Vec2 Pos)
 	DestroyBody = Sprite::Create(L"Painting/Boss/DestroyBody.png");// 213 x 137
 	DestroyTail = Sprite::Create(L"Painting/Boss/DestroyTail.png");
 	ColBoxTop = Sprite::Create(L"Painting/Boss/ColBox/HitBox.png");
-
+	m_Pattern = Sprite::Create(L"Painting/Enemy/Temp.png"); // 빨간 라인 리소스로 교체 가능
+	m_Pattern->SetScale(1.2f, 0.2f);
+	m_Pattern->A = 0;
+	ObjMgr->AddObject(m_Pattern, "Effect");
 	SetScale(2, 2);
 	SetPosition(Pos);
 
@@ -204,9 +208,124 @@ void Boss::Update(float deltaTime, float Time)
 			}
 
 		}
+		AoEUpdate(dt);
+
 		if (!isDestroyBody)
 			Propeller->Update(deltaTime, Time);
 		State();
+	}
+}
+void Boss::EnterAoE()
+{
+	m_AoEStep = AoEStep::Windup;
+	m_AoEStepT = 0.f;
+	m_AoEAlpha = 0;
+	m_Pattern->A = 0;
+	m_Pattern->SetPosition(Vec2(Camera::GetInst()->m_Position.x + App::GetInst()->m_Width / 2,
+		GetPlayer->m_Position.y));
+}
+
+void Boss::AoEUpdate(float t)
+{
+	m_AoEStepT += dt;
+
+	switch (m_AoEStep)
+	{
+	case AoEStep::Idle:
+		// Stage 3 이상에서 10초마다 실행
+		if (GameInfo->Stage >= 3 && m_AoEStepT >= 10.f)
+		{
+			EnterAoE();
+			// 알파 0→255
+			SoundMgr* effect = new SoundMgr("Sound/mus_sfx_segapower2.wav", false);
+			effect->play();
+			effect->volumeSetting(0.1f);
+		}
+		break;
+
+	case AoEStep::Windup:
+		AoE_Windup(dt);
+		break;
+
+	case AoEStep::Fire:
+		AoE_Fire();
+		break;
+
+	case AoEStep::Hold:
+		if (m_AoEStepT >= m_AoEHold)
+		{
+			m_AoEStep = AoEStep::Idle;
+			m_AoEStepT = 0.f;
+		}
+		break;
+	}
+}
+
+void Boss::AoE_Windup(float t)
+{
+	if (m_AoEAlpha < 255)
+	{
+		m_AoEAlpha = min(255, m_AoEAlpha + int(300 * dt));
+		m_Pattern->A = m_AoEAlpha;
+	}
+	else
+	{
+		m_AoEStep = AoEStep::Fire;
+		m_AoEStepT = 0.f;
+	}
+	m_Pattern->SetPosition(Vec2(Camera::GetInst()->m_Position.x + App::GetInst()->m_Width / 2, m_Pattern->m_Position.y));
+}
+
+void Boss::AoE_Fire()
+{
+	// 미니보스처럼 벽 탄막 + 틈
+	FireWallGrid(12, 3, 350.f, 50.f, 2000.f);
+	//FireFanWall();
+
+	m_AoEStep = AoEStep::Hold;
+	m_AoEStepT = 0.f;
+	m_AoEHold = 10.f; // 후딜
+	m_Pattern->A = 0;
+
+}
+
+void Boss::FireWallGrid(int cols, int rows, float spacingX, float spacingY, float speed)
+{
+	float spawnX = Camera::GetInst()->m_Position.x + App::GetInst()->m_Width + 300.f;
+	float centerY = m_Pattern ? m_Pattern->m_Position.y : GetPlayer->m_Position.y;
+	float startY = centerY - (rows - 1) * 0.5f * spacingY;
+
+	Vec2 vel(-speed, 0.f);
+	for (int r = 0; r < rows; ++r)
+	{
+		float y = startY + r * spacingY;
+		for (int c = 0; c < cols; ++c)
+		{
+			float x = spawnX + c * spacingX * 0.25f;
+			ObjMgr->AddObject(new EnemyDirBullet(Vec2(x, y), vel, speed), "EnemyBullet");
+		}
+	}
+}
+
+void Boss::FireFanWall()
+{
+	int ver = rand() % 2 + 1; // 1=왼→오, 2=오→왼
+	int count = 10;
+	int hole = rand() % count;
+
+	float spawnX = (ver == 1) ? Camera::GetInst()->m_Position.x - 100
+		: Camera::GetInst()->m_Position.x + App::GetInst()->m_Width + 100;
+	Vec2 vel = (ver == 1) ? Vec2(800.f, 0.f) : Vec2(-800.f, 0.f);
+
+	float startY = -100.f;
+	float endY = 430.f;
+	float spacing = (endY - startY) / (count - 1);
+
+	for (int i = 0; i < count; i++)
+	{
+		if (i == hole) continue; // 피할 틈
+		float y = startY + i * spacing;
+		ObjMgr->AddObject(new EnemyDirBullet(Vec2(spawnX, y), vel), "EnemyBullet");
 	}
 }
 void Boss::Render()
@@ -283,7 +402,7 @@ void Boss::OnCollision(Object* obj)
 				float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 				obj->SetDestroy(true);
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-				
+
 			}
 		}
 	}
@@ -350,7 +469,7 @@ void Boss::OnCollision(Object* obj)
 void Boss::Move()
 {
 	if (MoveTime > 1.4f) {
-		if (MoveNum == 0) 
+		if (MoveNum == 0)
 			m_RandomPosition = Vec2(m_Position.x - 100, 150);
 		if (MoveNum == 1)
 			m_RandomPosition = Vec2(m_Position.x + 600, 280);
@@ -444,133 +563,133 @@ void Boss::Fire()
 
 void Boss::State()
 {
-		GameInfo->BossHpUpdate(m_MaxHp, m_Hp);
-		BossBody->SetPosition(m_Position.x + 75, m_Position.y + 21);
-		BossTail->SetPosition(BossBody->m_Position.x - 222 - 75, BossBody->m_Position.y - 138 / 2 - 92 / 2);
-		BossBehind->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
+	GameInfo->BossHpUpdate(m_MaxHp, m_Hp);
+	BossBody->SetPosition(m_Position.x + 75, m_Position.y + 21);
+	BossTail->SetPosition(BossBody->m_Position.x - 222 - 75, BossBody->m_Position.y - 138 / 2 - 92 / 2);
+	BossBehind->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
 
-		DestroyBody->SetPosition(m_Position.x + 74 - 9, m_Position.y + 20 - 1);
-		DestroyTail->SetPosition(BossBody->m_Position.x - 222 - 74, BossBody->m_Position.y - 138 / 2 - 92 / 2);
+	DestroyBody->SetPosition(m_Position.x + 74 - 9, m_Position.y + 20 - 1);
+	DestroyTail->SetPosition(BossBody->m_Position.x - 222 - 74, BossBody->m_Position.y - 138 / 2 - 92 / 2);
 
-		ColBox[LEFT]->SetPosition(m_Position.x - m_Size.x / 2 * m_Scale.x, m_Position.y);
-		ColBox[RIGHT]->SetPosition(m_Position.x + m_Size.x / 2 * m_Scale.x, m_Position.y);
-		ColBox[UP]->SetPosition(m_Position.x, m_Position.y - m_Size.y / 2 * m_Scale.y);
-		ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2 * m_Scale.y);
-		ColBoxTop->SetPosition(BossBody->m_Position.x + 120, BossBody->m_Position.y + 138 / 2 - 26);
+	ColBox[LEFT]->SetPosition(m_Position.x - m_Size.x / 2 * m_Scale.x, m_Position.y);
+	ColBox[RIGHT]->SetPosition(m_Position.x + m_Size.x / 2 * m_Scale.x, m_Position.y);
+	ColBox[UP]->SetPosition(m_Position.x, m_Position.y - m_Size.y / 2 * m_Scale.y);
+	ColBox[DOWN]->SetPosition(m_Position.x, m_Position.y + m_Size.y / 2 * m_Scale.y);
+	ColBoxTop->SetPosition(BossBody->m_Position.x + 120, BossBody->m_Position.y + 138 / 2 - 26);
 
-		if (TailHp <= 0.f) {
-			m_Speed = m_Speed / 1.5f;
-			m_Hp -= 300.f;
-			isDestroyTail = true;
-			DestroyTail->m_Visible = true;
-			TailHp = 99999999.f;
-			for (int i = 0; i < 10; i++) {
-				float randx = (rand() % (int)BossTail->m_Size.x * m_Scale.x) + BossTail->m_Position.x - BossTail->m_Size.x / 2 * m_Scale.x;
-				float randy = (rand() % (int)BossTail->m_Size.y * m_Scale.y) + BossTail->m_Position.y - BossTail->m_Size.y / 2 * m_Scale.y;
-				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-			}
-
-			SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
-			effect->play();
-			effect->volumeSetting(0.2f);
-			
-			isMove = false;
-			GameInfo->MaxScore += 500;
-			GameInfo->KillScore += 500;
+	if (TailHp <= 0.f) {
+		m_Speed = m_Speed / 1.5f;
+		m_Hp -= 300.f;
+		isDestroyTail = true;
+		DestroyTail->m_Visible = true;
+		TailHp = 99999999.f;
+		for (int i = 0; i < 10; i++) {
+			float randx = (rand() % (int)BossTail->m_Size.x * m_Scale.x) + BossTail->m_Position.x - BossTail->m_Size.x / 2 * m_Scale.x;
+			float randy = (rand() % (int)BossTail->m_Size.y * m_Scale.y) + BossTail->m_Position.y - BossTail->m_Size.y / 2 * m_Scale.y;
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 		}
-		if (TopHp <= 0.f) {
-			m_Hp -= 300.f;
-			isDestroyTop = true;
-			TopHp = 99999999.f;
+
+		SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
+		effect->play();
+		effect->volumeSetting(0.2f);
+
+		isMove = false;
+		GameInfo->MaxScore += 500;
+		GameInfo->KillScore += 500;
+	}
+	if (TopHp <= 0.f) {
+		m_Hp -= 300.f;
+		isDestroyTop = true;
+		TopHp = 99999999.f;
+		for (int i = 0; i < 10; i++) {
+			float randx = (rand() % (int)ColBoxTop->m_Size.x * m_Scale.x) + ColBoxTop->m_Position.x - ColBoxTop->m_Size.x / 2 * m_Scale.x;
+			float randy = (rand() % (int)ColBoxTop->m_Size.y * m_Scale.y) + ColBoxTop->m_Position.y - ColBoxTop->m_Size.y / 2 * m_Scale.y;
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+		}
+		PilotAttack->m_CurrentFrame = 4;
+		GameInfo->MaxScore += 500;
+		GameInfo->KillScore += 500;
+		SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
+		effect->play();
+		effect->volumeSetting(0.1f);
+	}
+	if (isDestroyTail) {
+		GameInfo->BossPosition = ColBoxTop->m_Position;
+	}
+	else {
+		GameInfo->BossPosition = BossTail->m_Position;
+	}
+	if (isDestroyTop && isDestroyTail && !isDestroyBody) {
+		if (BodyHp <= 0.f) {
+			m_Hp -= 500.f;
 			for (int i = 0; i < 10; i++) {
-				float randx = (rand() % (int)ColBoxTop->m_Size.x * m_Scale.x) + ColBoxTop->m_Position.x - ColBoxTop->m_Size.x / 2 * m_Scale.x;
-				float randy = (rand() % (int)ColBoxTop->m_Size.y * m_Scale.y) + ColBoxTop->m_Position.y - ColBoxTop->m_Size.y / 2 * m_Scale.y;
+				float randx = (rand() % (int)BossBody->m_Size.x * m_Scale.x) + BossBody->m_Position.x - BossBody->m_Size.x / 2 * m_Scale.x;
+				float randy = (rand() % (int)BossBody->m_Size.y * m_Scale.y) + BossBody->m_Position.y - BossBody->m_Size.y / 2 * m_Scale.y;
 				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
 			}
-			PilotAttack->m_CurrentFrame = 4;
-			GameInfo->MaxScore += 500;
-			GameInfo->KillScore += 500;
+			DestroyBody->m_Visible = true;
+			isDestroyBody = true;
 			SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
 			effect->play();
 			effect->volumeSetting(0.1f);
 		}
-		if(isDestroyTail){
-			GameInfo->BossPosition = ColBoxTop->m_Position;
-		}
-		else {
-			GameInfo->BossPosition = BossTail->m_Position;
-		}
-		if (isDestroyTop && isDestroyTail && !isDestroyBody) {
-			if (BodyHp <= 0.f) {
-				m_Hp -= 500.f;
-				for (int i = 0; i < 10; i++) {
-					float randx = (rand() % (int)BossBody->m_Size.x * m_Scale.x) + BossBody->m_Position.x - BossBody->m_Size.x / 2 * m_Scale.x;
-					float randy = (rand() % (int)BossBody->m_Size.y * m_Scale.y) + BossBody->m_Position.y - BossBody->m_Size.y / 2 * m_Scale.y;
-					ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-				}
-				DestroyBody->m_Visible = true;
-				isDestroyBody = true;
-				SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
-				effect->play();
-				effect->volumeSetting(0.1f);
-			}
-		}
-		if (m_Hp < 0.f) {
-			GameInfo->CameraStop = true;
-			if (!DieScene) {
-				Camera::GetInst()->isVibration = true;
-				Camera::GetInst()->ShakeTimeY = 0;
-				DieScene = true;
-				GameInfo->MaxScore += 1500;
-				GameInfo->KillScore += 1500;
-				GameInfo->isBossSpawn = false;
-				GameInfo->SpawnCoin(m_Position);
+	}
+	if (m_Hp < 0.f) {
+		GameInfo->CameraStop = true;
+		if (!DieScene) {
+			Camera::GetInst()->isVibration = true;
+			Camera::GetInst()->ShakeTimeY = 0;
+			DieScene = true;
+			GameInfo->MaxScore += 1500;
+			GameInfo->KillScore += 1500;
+			GameInfo->isBossSpawn = false;
+			GameInfo->SpawnCoin(m_Position);
 
-				SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
-				effect->play();
-				effect->volumeSetting(0.1f);
-			}
-			DestroyTime += dt;
-			EffectTime += dt;
-			ChangeTime += dt;
-			if (!isDown) {
-				m_Position.y += 75.f * DestroyTime * dt;
-				m_Position.x += (sin(DestroyTime * 10) * powf(0.5f, DestroyTime) * 5);
-			}
-			if (EffectTime > 0.1f) {
-				float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
-				float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
-				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
-				EffectTime = 0;
-			}
-			if (isDown && !isBoom) {
-				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x - 100, m_Position.y - 50), 2, 2), "Effect");
-				ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x + 100, m_Position.y - 50), 2, 2), "Effect");
-				isBoom = true;
-				GameInfo->EnemyCount--;
-			}
-			BonusTime += dt;
-			if (BonusTime < 3) {
-				bonusTime += dt;
-				if (bonusTime > 0.01f) {
-					ObjMgr->AddObject(new Item(m_Position, true), "ITEM");
-					bonusTime = 0.f;
-				}
-			}
-			if (ChangeTime > 10.f) {
-				GameInfo->isScoreScene = true;
-				ChangeTime = 0.f;
+			SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
+			effect->play();
+			effect->volumeSetting(0.1f);
+		}
+		DestroyTime += dt;
+		EffectTime += dt;
+		ChangeTime += dt;
+		if (!isDown) {
+			m_Position.y += 75.f * DestroyTime * dt;
+			m_Position.x += (sin(DestroyTime * 10) * powf(0.5f, DestroyTime) * 5);
+		}
+		if (EffectTime > 0.1f) {
+			float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
+			float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, Vec2(randx, randy)), "Effect");
+			EffectTime = 0;
+		}
+		if (isDown && !isBoom) {
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x - 100, m_Position.y - 50), 2, 2), "Effect");
+			ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Explosion2/", 1, 9, 0.2f, Vec2(m_Position.x + 100, m_Position.y - 50), 2, 2), "Effect");
+			isBoom = true;
+			GameInfo->EnemyCount--;
+		}
+		BonusTime += dt;
+		if (BonusTime < 3) {
+			bonusTime += dt;
+			if (bonusTime > 0.01f) {
+				ObjMgr->AddObject(new Item(m_Position, true), "ITEM");
+				bonusTime = 0.f;
 			}
 		}
-		else {
-			BossBody->A = 100;
-			BossTail->A = 100;
-			BossBehind->A = 100;
-			DestroyBody->A = 100;
-			DestroyTail->A = 100;
-			ColBoxTop->A = 100;
+		if (ChangeTime > 10.f) {
+			GameInfo->isScoreScene = true;
+			ChangeTime = 0.f;
 		}
 	}
+	else {
+		BossBody->A = 100;
+		BossTail->A = 100;
+		BossBehind->A = 100;
+		DestroyBody->A = 100;
+		DestroyTail->A = 100;
+		ColBoxTop->A = 100;
+	}
+}
 
 
 void Boss::SpawnObstacle()
@@ -580,11 +699,11 @@ void Boss::SpawnObstacle()
 
 void Boss::SpawnMissile()
 {
-	if(!isDestroyBody)
-	ObjMgr->AddObject(new Missile(Vec2(m_Position.x, m_Position.y + 180)), "Missile");
+	if (!isDestroyBody)
+		ObjMgr->AddObject(new Missile(Vec2(m_Position.x, m_Position.y + 180)), "Missile");
 }
 
 void Boss::DestroyEffect()
 {
-	
+
 }

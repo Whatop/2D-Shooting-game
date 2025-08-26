@@ -12,7 +12,7 @@ Camera::~Camera()
 
 void Camera::Init()
 {
-	 
+
 	m_Rotation = 0;
 	m_Position = Vec2(0, -180);
 	m_Scale = Vec2(1.f, 1.f);
@@ -40,7 +40,7 @@ void Camera::Follow(Object* obj)
 	}
 }
 
-void Camera::Side_Scroll(Object* obj, float fixed_value,bool Auto)
+void Camera::Side_Scroll(Object* obj, float fixed_value, bool Auto)
 {
 	if (obj != nullptr)
 	{
@@ -48,9 +48,9 @@ void Camera::Side_Scroll(Object* obj, float fixed_value,bool Auto)
 			if (!Auto) {
 				if (m_MinMapSize.x <= obj->m_Position.x && m_MaxMapSize.x >= obj->m_Position.x)
 					m_Position.x = obj->m_Position.x - App::GetInst()->m_Width / 2;
-				
+
 			}
-			else {	
+			else {
 				if (m_MaxMapSize.x >= m_Position.x) {
 					m_Position.x += 100 * dt;
 				}
@@ -63,7 +63,6 @@ void Camera::Side_Scroll(Object* obj, float fixed_value,bool Auto)
 
 void Camera::Update(float deltaTime, float time)
 {
-
 	if (m_Rotation >= 360)
 		m_Rotation = 0;
 

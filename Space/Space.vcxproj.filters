@@ -202,6 +202,12 @@
     <ClCompile Include="TextTypeSfx.cpp">
       <Filter>Game\Mgr</Filter>
     </ClCompile>
+    <ClCompile Include="AudioLibrary.cpp">
+      <Filter>Game\Mgr</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeEffect.cpp">
+      <Filter>Game\Mgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -359,6 +365,12 @@
       <Filter>Game\Mgr</Filter>
     </ClInclude>
     <ClInclude Include="TextTypeSfx.h">
+      <Filter>Game\Mgr</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioLibrary.h">
+      <Filter>Game\Mgr</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeEffect.h">
       <Filter>Game\Mgr</Filter>
     </ClInclude>
   </ItemGroup>

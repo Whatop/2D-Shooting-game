@@ -91,8 +91,8 @@ void StoreScene::Init()
 		ObjMgr->AddObject(PetPack[i], "UI");
 	}
 	// [추가] 가격 롤링
-	for (int i = 0; i < 5; ++i)  m_CardCost[i] = (rand() % 6) + 1;     // 1~6
-	for (int i = 0; i < 6; ++i)  m_PetCost[i] = (rand() % 11) + 10;   // 10~20
+	for (int i = 0; i < 5; ++i)  m_CardCost[i] = ((rand() % 6) + 1)* pow(1.5f, GameInfo->Stage - 1);;     // 1~6
+	for (int i = 0; i < 6; ++i)  m_PetCost[i] = (rand() % 11) + 10 * pow(1.5f, GameInfo->Stage - 1);;   // 10~20
 
 	   // 가격 텍스트 객체 생성(폰트/색상은 UI와 톤 맞춤)
 		for (int i = 0; i < 5; ++i) {

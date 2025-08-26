@@ -270,8 +270,8 @@ void Player::OnCollision(Object* obj)
 			UI::GetInst()->PushMessage(L"ÆøÅºÀ» ¸Ô¾ú´Ù.", false);
 		}
 		else {
-			GameInfo->MaxScore += 550000;
-			GameInfo->ItemScore += 550000;
+			GameInfo->MaxScore += 550;
+			GameInfo->ItemScore += 550;
 			UI::GetInst()->PushMessage(L"Á¡¼ö¸¦ È¹µæÇß´Ù.", false);
 		}
 		SoundMgr* effect = new SoundMgr("Sound/buffe.wav", false);
