@@ -153,7 +153,28 @@ void GameMgr::Update()
 		}
 	}
 	//CheatKey();
-	
+	// 어디든 Update 루프에서
+	if (INPUT->GetKey(VK_F1) == KeyState::DOWN) {
+		//SoundMgr::StopAll();
+		//SoundMgr::SetMasterVolume(1.0f);
+		//
+		//static SoundMgr* test = nullptr;
+		//if (!test) test = new SoundMgr("Sound/SND_TXT2.wav", false); // loop=false
+		//// per-sound 볼륨 최대로 (메서드 이름이 volumeSetting이든 SetVolume이든 네 구현에 맞춰 호출)
+		//// 예시 1: volumeSetting 존재 시
+		//// test->volumeSetting(1.0f);
+		//// 예시 2: volumeUp만 있다면 여러 번 호출
+		//for (int i = 0; i < 20; ++i) test->volumeUp();
+		//
+		//test->stop();  // 중첩 방지
+		//test->play();  // 재생
+		//ObjMgr->AddObject(new Item(INPUT->GetMousePos()), "Heal");
+		// 씬 시작 시
+		UI::GetInst()->PushMessage(L"타자음 테스트 문장!", false);
+
+
+	}
+
 	// 일시정지: ESC 
 	if (INPUT->GetKey(VK_ESCAPE) == KeyState::DOWN) {
 		if (!isPause) {
@@ -165,6 +186,7 @@ void GameMgr::Update()
 			isPause = false;
 			std::cout << "일시정지 OFF" << std::endl;
 			SoundMgr::GetInst()->ResumeAll();
+			
 		}
 	}
 	// 볼륨 업: Numpad '+' 또는 윗줄 '='/'+'(Shift 포함)

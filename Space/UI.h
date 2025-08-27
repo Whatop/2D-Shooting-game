@@ -14,20 +14,21 @@ class UI : public Singleton<UI>
 	Sprite* Boom[3];
 
 	Sprite* UIScoreFrame;
-
 	TextMgr* ScoreText;
-	TextMgr* StageText;
-	TextMgr* SoundText;
+
+	class TextBar* MessageBar = nullptr;
+	class TextMgr* StageText = nullptr;
+	class TextMgr* SoundText = nullptr;
+	class TextMgr* m_CardLvTxt[6] = { nullptr };
+	class TextTypeSfx* m_TypeSfx = nullptr;
 
 	Sprite* StateWindow;
 
-	TextMgr* m_CardLvTxt[6];
 
 	// KILL, ITEM, BONUS, ALL
 	float limit[4];
 
 	float ScoredaleyTime;
-	TextBar* MessageBar = nullptr;  // 추가: 상단 상태/알림 텍스트바
 public:
 	UI();
 	~UI();

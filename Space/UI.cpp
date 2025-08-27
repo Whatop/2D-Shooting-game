@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "UI.h"
+#include "TextBar.h"
+#include "TextMgr.h"
+#include "TextTypeSfx.h"   // ← 반드시 여기에서 include
 
 UI::UI()
 {
@@ -78,6 +81,17 @@ void UI::Init()
 	// 텍스트바 생성: 화면 중앙 상단 근처(원하는 좌표로 조정)
 	MessageBar = new TextBar(1920 / 2 - 180, 700); // x,y 위치
 	MessageBar->SetFont(msgFont);
+
+
+	// UI::Init() 등
+	static SoundMgr* gTypeSound = nullptr;
+	if (!gTypeSound)
+		gTypeSound = new SoundMgr("Sound/SND_TXT2.wav", false);
+
+	m_TypeSfx = new TextTypeSfx(gTypeSound, 30 /*minIntervalMs*/ /*, 0.0f pitchJitter*/);
+	// ↑ pitchJitter 매개변수가 없다면 지우고: new TextTypeSfx(gTypeSound, 30);
+	MessageBar->SetTypeSfx(m_TypeSfx);
+
 	for (int i = 0; i < 6; ++i) {
 		m_CardLvTxt[i] = new TextMgr();
 		m_CardLvTxt[i]->Init(24, true, false, "굴림"); // 폰트/크기 프로젝트에 맞춰 조정
@@ -90,6 +104,9 @@ void UI::Init()
 	UIScoreFrame->m_Visible = false;
 	memset(limit, 0, sizeof(limit));
 	ScoredaleyTime = 0.f;
+}
+void UI::PushMessage(const std::wstring& msg, bool stick) {
+	if (MessageBar) MessageBar->Push(msg, stick);
 }
 
 void UI::Release()
@@ -215,9 +232,6 @@ void UI::Render()
 	}
 
 	Renderer::GetInst()->GetSprite()->End();
-}
-void UI::PushMessage(const std::wstring& msg, bool stick) {
-	if (MessageBar) MessageBar->Push(msg, stick);
 }
 void UI::ScoreUI()
 {
