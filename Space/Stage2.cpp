@@ -33,9 +33,6 @@ void Stage2::Init()
 	Right_Limit->SetScale(1, 6.5f);
 
 
-	MoneyColBox = Sprite::Create(L"Painting/UI/Money.png");
-	MoneyColBox->SetPosition(1920 / 2 - 90.f, 72.f / 2.f - 180);
-	ObjMgr->AddObject(MoneyColBox, "MoneyPoket"); 
 
 	ObjMgr->AddObject(UpWall, "Wall");
 	ObjMgr->AddObject(DownWall, "Wall");
@@ -80,6 +77,9 @@ void Stage2::Init()
 	ScoreText->SetScale(0, 1.f);
 	ScoreText->SetPosition(Camera::GetInst()->m_Position.x + 1920 / 2, 0);
 
+	MoneyColBox = Sprite::Create(L"Painting/UI/Money.png");
+	MoneyColBox->SetPosition(1920 / 2 - 90.f, 72.f / 2.f - 180);
+	ObjMgr->AddObject(MoneyColBox, "MoneyPoket");
 	ScaleScene = 0.f;
 	ScaleText = 0.f;
 
@@ -103,7 +103,6 @@ void Stage2::Release()
 
 void Stage2::Update(float deltaTime, float time)
 {
-	m_Bgm->Update(dt, time);
 	if (!GameInfo->m_DebugMode) {
 		UpWall->m_Visible = false;
 		DownWall->m_Visible = false;
@@ -116,6 +115,7 @@ void Stage2::Update(float deltaTime, float time)
 		DownWall->m_Visible = true;
 		Left_Limit->m_Visible = true;
 		Right_Limit->m_Visible = true;
+		MoneyColBox->m_Visible = true;
 	}
 
 	if (!GameInfo->isPause) {
@@ -141,13 +141,13 @@ void Stage2::Update(float deltaTime, float time)
 			}
 			OnCollisionCard();
 		}
+		if (!GameInfo->CameraStop) {
+			MoneyColBox->m_Position.x += 100 * dt;
+			MoneyColBox->m_Position.y = 72.f / 2.f - 180;
+			GameInfo->MoneyPokeyPos = MoneyColBox->m_Position;
+		}
 	}
-	if (!GameInfo->CameraStop) {
-		MoneyColBox->m_Position.x += 100 * dt;
-		GameInfo->MoneyPokeyPos = MoneyColBox->m_Position;
-
-	}
-	//GameInfo->CheatKey();
+	
 }
 
 void Stage2::Render()
@@ -237,9 +237,6 @@ void Stage2::OnCollisionCard()
 	}
 		if (GameInfo->isScoreScene) {
 		NextScene();
-		GameInfo->MoneyPokeyPos.x += 100 * dt;
-
-
 	}
 }
 

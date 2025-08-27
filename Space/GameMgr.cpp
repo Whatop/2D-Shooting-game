@@ -152,17 +152,19 @@ void GameMgr::Update()
 			EnemyCount = 0;
 		}
 	}
+	//CheatKey();
 	
 	// 일시정지: ESC 
 	if (INPUT->GetKey(VK_ESCAPE) == KeyState::DOWN) {
 		if (!isPause) {
 			isPause = true;
 			std::cout << "일시정지 ON" << std::endl;
+			SoundMgr::GetInst()->PauseAll();
 		}
 		else {
 			isPause = false;
 			std::cout << "일시정지 OFF" << std::endl;
-
+			SoundMgr::GetInst()->ResumeAll();
 		}
 	}
 	// 볼륨 업: Numpad '+' 또는 윗줄 '='/'+'(Shift 포함)
@@ -381,7 +383,9 @@ void GameMgr::SpawnCoin(Vec2 Pos)
 {
 	ObjMgr->AddObject(new Coin(Pos), "Coin");
 }
-
+void GameMgr::SetHp(float i) {
+	Hp = i;
+}
 void GameMgr::SpawnEnemy()
 {
 	if (isSpawnEnemy) {

@@ -47,7 +47,9 @@ void MainScene::Init()
     GameInfo->m_Scene = StageScene::NONE;
     GameInfo->m_Score = 0;
     GameInfo->Stage = 0;
-    isExplain = false;  
+    GameInfo->MaxMoney = 0;
+    GameInfo->SetHp(100);
+    isExplain = false;
     SoundMgr::GetInst()->StopAll();
 }
 

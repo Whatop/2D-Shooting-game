@@ -39,6 +39,7 @@ public:
 	GameMgr();
 	~GameMgr();
 
+	void SetHp(float hp);
 	Vec2 MoneyPokeyPos;
 	std::vector<RankingPlayer*> Ranks;
 

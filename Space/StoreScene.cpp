@@ -106,7 +106,6 @@ void StoreScene::Init()
 		m_PetCostTxt[i]->SetColor(255, 255, 255, 255);
 	}
 
-
 	SoundMgr::GetInst()->StopAll();
 	m_Bgm = new SoundMgr("Sound/Store.wav", false);
 	m_Bgm->play();

@@ -24,7 +24,7 @@ MiniBoss::MiniBoss(Vec2 Pos)
     SetPosition(Pos);
     m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 1080));
 
-    m_MaxHp = 2000;
+    m_MaxHp = 2000 * pow(1.5f, GameInfo->Stage - 1);
     m_Hp = m_MaxHp;
     m_Rotation = D3DXToRadian(270);
     m_Speed = 450.f;
@@ -72,6 +72,21 @@ void MiniBoss::Update(float deltaTime, float Time)
             m_Position.x -= (300 + rand() % 100) * dt;
             ObjMgr->CollisionCheak(this, "Bullet");
             ObjMgr->CollisionCheak(this, "ChargeBullet");
+            if (m_Hp <= 0) {
+                ObjMgr->AddObject(new Item(m_Position), "ITEM");
+                ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
+                GameInfo->EnemyCount--;
+                GameInfo->MaxScore += 1000;
+                GameInfo->KillScore += 1000;
+                GameInfo->isScoreScene = true;
+                ObjMgr->RemoveObject(this);
+                GameInfo->SpawnCoin(m_Position);
+
+                SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
+                effect->play();
+                effect->volumeSetting(0.03f);
+                return;
+            }
         }
         else {
             if (ones) {
