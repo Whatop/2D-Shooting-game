@@ -18,6 +18,7 @@ class Player : public Object
 	bool isBuffOnes;
 
 	bool one;
+	bool two;
 
 	// ´Ü¹ß, ¼¦°Ç , Â÷Áö, À¯µµ, ºÎ¸Þ¶û, ´õºí¼¦
 	int m_GunType;

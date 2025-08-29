@@ -73,11 +73,13 @@ void Player::Init()
 	BuffTime = 0.f;
 	isBuff = false;
 	isBuffOnes = true;
+	two = false;
 
 }
 
 void Player::Update(float deltaTime, float Time)
 {
+	
 	if (GameInfo->isScoreScene) {
 		m_Player->A = 105;
 	}
@@ -142,7 +144,13 @@ void Player::Update(float deltaTime, float Time)
 
 		if (isHit) {
 			if (ones) {
-				m_Hp -= Damage_Received;
+				if (!two  && Damage_Received > m_MaxHp) {
+					two = true;
+					m_Hp = 1;
+				}
+				else {
+					m_Hp -= Damage_Received;
+				}
 				float randx = (rand() % (int)m_Size.x * m_Scale.x) + m_Position.x - m_Size.x / 2 * m_Scale.x;
 				float randy = (rand() % (int)m_Size.y * m_Scale.y) + m_Position.y - m_Size.y / 2 * m_Scale.y;
 
@@ -178,6 +186,9 @@ void Player::Update(float deltaTime, float Time)
 			SceneDirector::GetInst()->ChangeScene(new InputScoreScene());
 		}
 	}
+	if (INPUT->GetKey('I') == KeyState::DOWN) {
+		m_Hp = 0;
+	}
 }
 
 void Player::Render()
@@ -209,7 +220,6 @@ void Player::OnCollision(Object* obj)
 		RECT rc;
 		if (IntersectRect(&rc, &ColBox[4]->m_Collision, &obj->m_Collision)) {
 			isHit = true;
-
 			Damage_Received = obj->m_Atk;
 			obj->SetDestroy(true);
 		}

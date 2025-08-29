@@ -48,7 +48,10 @@ void MainScene::Init()
     GameInfo->m_Score = 0;
     GameInfo->Stage = 0;
     GameInfo->MaxMoney = 0;
+    GameInfo->EnemyCount = 0;
     GameInfo->SetHp(100);
+    GameInfo->OwnedPetTypes.clear();
+
     isExplain = false;
     SoundMgr::GetInst()->StopAll();
 }

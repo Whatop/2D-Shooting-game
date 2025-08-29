@@ -20,10 +20,12 @@ ShotGun::ShotGun(float r, Vec2 spawnPos)
 	DestroyTime = 0.f;
 	m_Rotation = D3DXToRadian(r);
 	m_Atk = 7.5f * GameInfo->HV_ShotType[1] * GameInfo->Player_Coefficient;
+	m_ShotGun->A = 100;
 	m_ShotGun->R = 255;
 	m_ShotGun->G = 10;
 	m_ShotGun->B = 10;
 	m_Layer = 2;
+
 }
 
 ShotGun::~ShotGun()

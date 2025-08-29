@@ -124,6 +124,14 @@ void Boss::Update(float deltaTime, float Time)
 		Propeller->A = 105;
 		BossBody->A = 105;
 		DestroyTail->A = 105;
+
+		m_Boss->A = 105;
+		BossBody->A = 105;
+		BossTail->A = 105;
+		BossBehind->A = 105;
+		DestroyBody->A = 105;
+		DestroyTail->A = 105;
+		ColBoxTop->A = 105;
 	}
 	if (!GameInfo->isPause) {
 		if (!OneDamege)
@@ -332,14 +340,14 @@ void Boss::Render()
 {
 	m_Boss->Render();
 	BossBody->Render();
-	BossTail->Render();
 	BossBehind->Render();
+	BossTail->Render();
 
 	Propeller->Render();
 	PilotAttack->Render();
 
-	DestroyBody->Render();
 	DestroyTail->Render();
+	DestroyBody->Render();
 	ColBoxTop->Render();
 
 	m_ColBox->Render();
@@ -565,7 +573,7 @@ void Boss::State()
 {
 	GameInfo->BossHpUpdate(m_MaxHp, m_Hp);
 	BossBody->SetPosition(m_Position.x + 75, m_Position.y + 21);
-	BossTail->SetPosition(BossBody->m_Position.x - 222 - 75, BossBody->m_Position.y - 138 / 2 - 92 / 2);
+	BossTail->SetPosition(BossBody->m_Position.x - 222 - 74, BossBody->m_Position.y - 138 / 2 - 92 / 2);
 	BossBehind->SetPosition(BossBody->m_Position.x - 210, BossBody->m_Position.y + 138 / 2 - 16);
 
 	DestroyBody->SetPosition(m_Position.x + 74 - 9, m_Position.y + 20 - 1);
@@ -636,6 +644,7 @@ void Boss::State()
 	}
 	if (m_Hp < 0.f) {
 		GameInfo->CameraStop = true;
+		m_Boss->A = 255;
 		if (!DieScene) {
 			Camera::GetInst()->isVibration = true;
 			Camera::GetInst()->ShakeTimeY = 0;
@@ -682,11 +691,12 @@ void Boss::State()
 		}
 	}
 	else {
-		BossBody->A = 100;
-		BossTail->A = 100;
-		BossBehind->A = 100;
-		DestroyBody->A = 100;
-		DestroyTail->A = 100;
+		m_Boss->A = 0;
+		BossBody->A = 255;
+		BossTail->A = 255;
+		BossBehind->A = 255;
+		DestroyBody->A = 255;
+		DestroyTail->A = 255;
 		ColBoxTop->A = 100;
 	}
 }

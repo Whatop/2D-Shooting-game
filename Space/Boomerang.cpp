@@ -8,10 +8,6 @@ Boomerang::Boomerang(Vec2 spawnpoint, bool minibullet)
 	m_Boomerang->SetParent(this);
 	Spawnpoint = Vec2(spawnpoint.x + (GetPlayer->m_Size.x * m_Scale.x) / 2, spawnpoint.y - 2);
 	SetPosition(Spawnpoint);
-	if(!minibullet)
-		SetScale(0.45f, 0.45f);
-	else
-		SetScale(0.25f, 0.25f);
 
 	//m_Boomerang->m_Visible = false;
 	m_Speed = 950.f;
@@ -19,6 +15,12 @@ Boomerang::Boomerang(Vec2 spawnpoint, bool minibullet)
 	DestroyTime = 0.f;
 	m_Atk = 30.f * GameInfo->HV_ShotType[4] * GameInfo->Player_Coefficient;
 	m_Layer = 2;
+	if (!minibullet)
+		SetScale(0.45f, 0.45f);
+	else {
+		SetScale(0.25f, 0.25f);
+		m_Boomerang->A = 105;
+	}
 }
 
 Boomerang::~Boomerang()

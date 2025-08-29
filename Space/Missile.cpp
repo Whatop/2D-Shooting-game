@@ -19,11 +19,11 @@ Missile::Missile(Vec2 Pos)
 	isHoming = false;
 	HomingTime = 1.f;
 	impellent = 1.f;
-	m_Speed = 350.f;
+	m_Speed = 430.f;
 	SetScale(2.f, 2.f);
 	DestroyTime = 0.f;
 	m_Atk = 20.f; 
-}
+} 
 
 Missile::~Missile()
 {

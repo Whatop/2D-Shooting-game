@@ -152,7 +152,7 @@ void GameMgr::Update()
 			EnemyCount = 0;
 		}
 	}
-	//CheatKey();
+
 	// 어디든 Update 루프에서
 	if (INPUT->GetKey(VK_F1) == KeyState::DOWN) {
 		//SoundMgr::StopAll();
@@ -170,11 +170,10 @@ void GameMgr::Update()
 		//test->play();  // 재생
 		//ObjMgr->AddObject(new Item(INPUT->GetMousePos()), "Heal");
 		// 씬 시작 시
-		UI::GetInst()->PushMessage(L"타자음 테스트 문장!", false);
+	//	UI::GetInst()->PushMessage(L"타자음 테스트 문장!", false);
 
 
 	}
-
 	// 일시정지: ESC 
 	if (INPUT->GetKey(VK_ESCAPE) == KeyState::DOWN) {
 		if (!isPause) {

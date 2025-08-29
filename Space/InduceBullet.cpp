@@ -35,6 +35,13 @@ InduceBullet::InduceBullet(Vec2 spawnpoint, bool minibullet)
 	isHoming = true;
 	HomingTime = 1.f;
 	impellent = 1.f;
+
+	if (!minibullet)
+		SetScale(1.5f, 1.5f);
+	else {
+		SetScale(0.75f, 0.75f);
+		m_Induce->A = 105;
+	}
 }
 
 InduceBullet::~InduceBullet()

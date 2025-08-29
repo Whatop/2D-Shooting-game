@@ -85,13 +85,15 @@ void UI::Init()
 
 	// UI::Init() 등
 	static SoundMgr* gTypeSound = nullptr;
-	if (!gTypeSound)
+	if (!gTypeSound) {
 		gTypeSound = new SoundMgr("Sound/SND_TXT2.wav", false);
+		gTypeSound->volumeSetting(0.5f);
+	}
 
 	m_TypeSfx = new TextTypeSfx(gTypeSound, 30 /*minIntervalMs*/ /*, 0.0f pitchJitter*/);
 	// ↑ pitchJitter 매개변수가 없다면 지우고: new TextTypeSfx(gTypeSound, 30);
 	MessageBar->SetTypeSfx(m_TypeSfx);
-
+	
 	for (int i = 0; i < 6; ++i) {
 		m_CardLvTxt[i] = new TextMgr();
 		m_CardLvTxt[i]->Init(24, true, false, "굴림"); // 폰트/크기 프로젝트에 맞춰 조정

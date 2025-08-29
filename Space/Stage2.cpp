@@ -147,7 +147,9 @@ void Stage2::Update(float deltaTime, float time)
 			GameInfo->MoneyPokeyPos = MoneyColBox->m_Position;
 		}
 	}
-	
+	if (GameInfo->isScoreScene) {
+		NextScene();
+	}
 }
 
 void Stage2::Render()

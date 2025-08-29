@@ -72,30 +72,14 @@ void MiniBoss::Update(float deltaTime, float Time)
             m_Position.x -= (300 + rand() % 100) * dt;
             ObjMgr->CollisionCheak(this, "Bullet");
             ObjMgr->CollisionCheak(this, "ChargeBullet");
-            if (m_Hp <= 0) {
-                ObjMgr->AddObject(new Item(m_Position), "ITEM");
-                ObjMgr->AddObject(new EffectMgr(L"Painting/Effect/Big/", 1, 9, 0.1f, m_Position), "Effect");
-                GameInfo->EnemyCount--;
-                GameInfo->MaxScore += 1000;
-                GameInfo->KillScore += 1000;
-                GameInfo->isScoreScene = true;
-                ObjMgr->RemoveObject(this);
-                GameInfo->SpawnCoin(m_Position);
-
-                SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
-                effect->play();
-                effect->volumeSetting(0.03f);
-                return;
-            }
         }
         else {
             if (ones) {
                 m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 360 + 73));
                 ones = false;
             }
-            ObjMgr->CollisionCheak(this, "Bullet");
-            ObjMgr->CollisionCheak(this, "ChargeBullet");
-
+                ObjMgr->CollisionCheak(this, "Bullet");
+                ObjMgr->CollisionCheak(this, "ChargeBullet");
             m_LastMoveTime += dt;
             if (m_LastMoveTime >= 5.f) Move();
 
@@ -140,12 +124,13 @@ void MiniBoss::Update(float deltaTime, float Time)
             GameInfo->MaxScore += 1000;
             GameInfo->KillScore += 1000;
             GameInfo->isScoreScene = true;
-            ObjMgr->RemoveObject(this);
+            GameInfo->isBossSpawn = false;
             GameInfo->SpawnCoin(m_Position);
-
             SoundMgr* effect = new SoundMgr("Sound/explosion.wav", false);
             effect->play();
             effect->volumeSetting(0.03f);
+            GameInfo->MiniBossHpUpdate(m_MaxHp, 0);
+            ObjMgr->RemoveObject(this);
             return;
         }
         // 2페에서도 피격 체크
@@ -163,7 +148,7 @@ void MiniBoss::EnterPhase2()
     m_StepT = 0.f;
     m_RedlineFires = 0;
     m_Phase1Boost = false;
-     
+    m_Hp = m_MaxHp / 2;
 
     // 복귀 목표(우측 내부 400px, 현재 y 근처)
 }
@@ -275,8 +260,6 @@ void MiniBoss::Phase2Update(float t)
             if (SpawnMove < 0.2f) {
                 m_Position.x -= 100 * Acc * dt;
 
-                ObjMgr->CollisionCheak(this, "Bullet");
-                ObjMgr->CollisionCheak(this, "ChargeBullet");
             }
             else {
                 m_RedlineFires = 0;
