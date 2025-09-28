@@ -79,6 +79,7 @@ void Stage2::Init()
 
 	MoneyColBox = Sprite::Create(L"Painting/UI/Money.png");
 	MoneyColBox->SetPosition(1920 / 2 - 90.f, 72.f / 2.f - 180);
+	MoneyColBox->m_Visible = false;
 	ObjMgr->AddObject(MoneyColBox, "MoneyPoket");
 	ScaleScene = 0.f;
 	ScaleText = 0.f;
@@ -109,6 +110,7 @@ void Stage2::Update(float deltaTime, float time)
 
 		Left_Limit->m_Visible = false;
 		Right_Limit->m_Visible = false;
+		MoneyColBox->m_Visible = false;
 	}
 	else {
 		UpWall->m_Visible = true;

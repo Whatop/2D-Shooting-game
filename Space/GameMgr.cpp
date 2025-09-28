@@ -187,6 +187,7 @@ void GameMgr::Update()
 			SoundMgr::GetInst()->ResumeAll();
 			
 		}
+		ObjMgr->AddObject(new Item(INPUT->GetMousePos()), "Heal");
 	}
 	// 볼륨 업: Numpad '+' 또는 윗줄 '='/'+'(Shift 포함)
 	if (INPUT->GetKey(VK_ADD) == KeyState::DOWN ||
@@ -209,6 +210,7 @@ void GameMgr::Update()
 
 		played = true; // 중복 재생 방지
 	}
+	CheatKey();
 }
 
 void GameMgr::Render()

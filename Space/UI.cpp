@@ -18,10 +18,10 @@ void UI::Init()
 	PlayerBar->SetPosition(390, 900);
 
 	BossBar = Sprite::Create(L"Painting/UI/BossHp.png");
-	BossBar->SetPosition(1920 / 2, 100);
+	BossBar->SetPosition(1920 / 2, 700);
 
 	MiniBossBar = Sprite::Create(L"Painting/UI/BossHp.png");
-	MiniBossBar->SetPosition(1920 / 2, 100);
+	MiniBossBar->SetPosition(1920 / 2, 700);
 
 	UIScoreFrame = Sprite::Create(L"Painting/UI/ScoreUI2.png");
 	UIScoreFrame->SetPosition(1920 / 2, 1080/2);
@@ -79,7 +79,7 @@ void UI::Init()
 	msgFont->SetColor(255, 255, 255, 255);
 
 	// 텍스트바 생성: 화면 중앙 상단 근처(원하는 좌표로 조정)
-	MessageBar = new TextBar(1920 / 2 - 180, 700); // x,y 위치
+	MessageBar = new TextBar(200, 750); // x,y 위치
 	MessageBar->SetFont(msgFont);
 
 

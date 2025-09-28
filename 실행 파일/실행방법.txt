@@ -1,0 +1,34 @@
+[2D Shooting Game 실행 방법]
+
+1. 압축 풀기
+   - 다운로드한 zip 파일을 원하는 폴더에 압축 해제하세요.
+   - (예: C:\Games\2DShooting)
+
+2. 필수 구성 요소
+   - Windows 10/11 (32비트 또는 64비트)
+   - Microsoft Visual C++ Redistributable 2015–2022 (x86) 설치 필요
+     (없을 경우: https://learn.microsoft.com/ko-kr/cpp/windows/latest-supported-vc-redist)
+
+3. 실행 방법
+   - "Release" 폴더 안에 있는 Space.exe 실행
+   - 반드시 같은 폴더에 아래 파일/폴더가 함께 있어야 합니다:
+       • Space.exe
+       • fmod.dll (x86 버전)
+       • Painting 폴더
+       • Sound 폴더
+
+
+4. 조작 방법 
+   - 방향키 : 이동
+   - Z 키   : 공격, 넘기기
+   - C 키   : 폭탄
+   - ESC    : 일시정지
+
+5. 문제 해결
+
+   - 사운드가 안 나올 경우:
+       • fmod.dll이 제대로 들어있는지 확인
+
+6. 기타
+   - 게임 창 해상도는 1920x1080 기준으로 제작되었습니다.
+

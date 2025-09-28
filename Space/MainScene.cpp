@@ -36,6 +36,9 @@ void MainScene::Init()
 
     m_Button[2] = Sprite::Create(L"Painting/MainScreen/Button/exit.png");
     m_Button[2]->SetPosition(1920 - 300, 900);
+    
+    m_Button[3] = Sprite::Create(L"Painting/MainScreen/Ranking.png");
+    m_Button[3]->SetPosition(1920 - 200, 500);
 
     m_Button[4] = Sprite::Create(L"Painting/Scene/BackButton.png");
     m_Button[4]->SetPosition(1920-200,400);
@@ -90,15 +93,23 @@ void MainScene::Update(float deltaTime, float time)
         App::GetInst()->Release();
         exit(0);
     }
+    else if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[3]) && INPUT->GetButtonDown())
+    {
+        INPUT->ButtonDown(false);
+        SceneDirector::GetInst()->ChangeScene(new RankScene());
+        SoundMgr* effect = new SoundMgr("Sound/snd_switchpull.wav", false);
+        effect->play();
+        effect->volumeSetting(0.1f);
+    }
     else if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Button[4]) && INPUT->GetButtonDown())
     {
+        INPUT->ButtonDown(false);
         isExplain = false;
         Exp->m_Visible = isExplain;
         m_Button[4]->m_Visible = isExplain;
         SoundMgr* effect = new SoundMgr("Sound/snd_switchpull.wav", false);
         effect->play();
         effect->volumeSetting(0.1f);
-        INPUT->ButtonDown(false);
     }
  
 }
@@ -113,6 +124,7 @@ void MainScene::Render()
         m_MainScene->Render();
         m_Button[0]->Render();
         m_Button[1]->Render();
+        m_Button[3]->Render();
         m_Button[2]->Render();
         m_Title->Render();
     }
