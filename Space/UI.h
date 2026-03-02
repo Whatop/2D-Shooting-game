@@ -6,6 +6,7 @@ class UI : public Singleton<UI>
 	Sprite* PlayerBar;
 	Sprite* BossBar;
 	Sprite* MiniBossBar;
+	Sprite* UiTemp;
 
 	TextMgr* m_Test;
 	TextMgr* Money;

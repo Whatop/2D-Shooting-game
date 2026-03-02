@@ -8,7 +8,7 @@
 class ObjectMgr : public Singleton<ObjectMgr>
 {
 private:
-	std::unordered_map<std::wstring, std::vector<Object*>> m_byTag;
+	std::unordered_map<std::string, std::vector<Object*>> m_byTag;
 public:
 	std::list<Object*> m_Objects;
 
@@ -23,10 +23,10 @@ public:
 		}
 	};
 	// 특정 태그만 정리 (예: "UI"만 싹 정리)
-	void ReleaseByTag(const std::wstring& tag);
+	void ReleaseByTag(const std::string& tag);
 
 	// 특정 태그만 보존하고 나머지 전부 정리 (예: {"UI_PERSIST"}만 살림)
-	void ReleaseExceptTags(const std::unordered_set<std::wstring>& keep);
+	void ReleaseExceptTags(const std::unordered_set<std::string>& keep);
 
 public:
 	ObjectMgr();

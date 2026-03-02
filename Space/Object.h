@@ -26,7 +26,7 @@ public:
 
 public:
 	Object();
-	~Object();
+	virtual ~Object();
 
 
 protected:

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "ObjectMgr.h"
 
 
@@ -19,21 +19,27 @@ void ObjectMgr::Release()
 	}
 }
 
+static void CompactVector(std::vector<Object*>& v)
+{
+	v.erase(std::remove_if(v.begin(), v.end(),
+		[](Object* o) { return o == nullptr || o->GetDestroy(); }), v.end());
+}
+
 void ObjectMgr::DeleteCheak()
 {
-	for (auto iter = m_Objects.begin(); iter != m_Objects.end();)
+	for (auto it = m_Objects.begin(); it != m_Objects.end(); )
 	{
-		if ((*iter)->GetDestroy())
+		Object* obj = *it;
+		if (obj->GetDestroy())
 		{
-			Object* temp = (*iter);
-			iter = m_Objects.erase(iter);
-			SafeDelete(temp);
+			it = m_Objects.erase(it);
+			SafeDelete(obj);
 		}
-		else
-		{
-			++iter;
-		}
+		else ++it;
 	}
+
+	// âœ… ì¸ë±ìŠ¤ ì²­ì†Œ
+	for (auto& kv : m_byTag) CompactVector(kv.second);
 }
 void ObjectMgr::CollisionCheak(Object* obj, const std::string tag)
 {
@@ -50,33 +56,28 @@ void ObjectMgr::CollisionCheak(Object* obj, const std::string tag)
 		}
 	}
 }
-// ObjectMgr.cpp
-void ObjectMgr::ReleaseByTag(const std::wstring& tag) {
-	// m_byTag[tag] ¾ÈÀÇ °´Ã¼µé¸¸ ¾ÈÀüÇÏ°Ô ÆÄ±«/ÇØÁ¦
-	auto it = m_byTag.find(tag);
-	if (it == m_byTag.end()) return;
+void ObjectMgr::ReleaseByTag(const std::string& tag)
+{
+    auto it = m_byTag.find(tag);
+    if (it == m_byTag.end()) return;
 
-	auto& vec = it->second;
-	for (auto* obj : vec) {
-		// ÇÁ·ÎÁ§Æ® ±Ô¾à¿¡ ¸ÂÃç ¾ÈÀü ÆÄ±«
-		// ¿¹: obj->SetDestroy(true); ¶Ç´Â delete obj;
-		// ¿©±â¼­´Â ½ÇÁ¦ ±¸Çö¿¡ ¸ÂÃç ±³Ã¼
-		delete obj;
-	}
-	vec.clear();
+    for (auto* obj : it->second)
+        if (obj) obj->SetDestroy(true);   // ì†Œìœ ê¶Œì€ m_Objects ìª½ì—ì„œë§Œ
+
+    it->second.clear(); // ì¸ë±ìŠ¤ë§Œ ë¹„ì›€
 }
 
-void ObjectMgr::ReleaseExceptTags(const std::unordered_set<std::wstring>& keep) {
-	for (auto& kv : m_byTag) {
-		const auto& tag = kv.first;
-		if (keep.find(tag) != keep.end()) continue; // º¸Á¸ ÅÂ±×´Â ½ºÅµ
+void ObjectMgr::ReleaseExceptTags(const std::unordered_set<std::string>& keep)
+{
+    for (auto& kv : m_byTag)
+    {
+        if (keep.find(kv.first) != keep.end()) continue;
 
-		auto& vec = kv.second;
-		for (auto* obj : vec) {
-			delete obj; // ¶Ç´Â SetDestroy(true)
-		}
-		vec.clear();
-	}
+        for (auto* obj : kv.second)
+            if (obj) obj->SetDestroy(true);
+
+        kv.second.clear();
+    }
 }
 
 void ObjectMgr::DeleteObject(std::string tag)
@@ -113,6 +114,7 @@ void ObjectMgr::AddObject(Object* obj, const std::string tag)
 {
 	m_Objects.push_back(obj);
 	obj->SetTag(tag);
+	m_byTag[tag].push_back(obj); // ì¸ë±ìŠ¤(ë¹„ì†Œìœ )
 }
 
 void ObjectMgr::RemoveObject(Object* obj)

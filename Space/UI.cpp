@@ -28,19 +28,27 @@ void UI::Init()
 	
 	StateWindow = Sprite::Create(L"Painting/UI/StateWindow.png");
 	StateWindow->SetPosition(1920 / 2, 72.f/2.f);
+	
+	UiTemp = Sprite::Create(L"Painting/Scene/Black.png");
+	UiTemp->SetPosition(1920 / 2, 1190);
 
 	UIScoreFrame->m_Layer = 2;
+	UiTemp->m_Layer = 2;
+	PlayerBar->m_Layer = 2;
+	BossBar->m_Layer = 2;
+	MiniBossBar->m_Layer = 2;
 
 	for (int i = 0; i < 6; i++) {
 		Pack[i] = Sprite::Create(L"Painting/UI/Pack/" + std::to_wstring(i) + L".png");
 		Pack[i]->SetScale(0.35f, 0.35f);
 		Pack[i]->SetPosition(790 + i * Pack[i]->m_Size.x * Pack[i]->m_Scale.x, 900);
+		Pack[i]->m_Layer = 3;
 		ObjMgr->AddObject(Pack[i], "UI");
 		Pack[i]->A = 205;
 	}
 
 	if (GameInfo->m_Scene != StageScene::STORE) {
-
+		ObjMgr->AddObject(UiTemp, "UI");
 		ObjMgr->AddObject(PlayerBar, "UI");
 		ObjMgr->AddObject(BossBar, "UI");
 		ObjMgr->AddObject(MiniBossBar, "UI");
@@ -51,6 +59,7 @@ void UI::Init()
 	for (int i = 0; i < 3; i++) {                 
 		Boom[i] = Sprite::Create(L"Painting/UI/Boom.png");
 		Boom[i]->SetPosition(100 + 100 * i, 72.f / 2.f);
+		Boom[i]->m_Layer = 2;
 		ObjMgr->AddObject(Boom[i], "UI");
 	}
 

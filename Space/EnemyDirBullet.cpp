@@ -11,6 +11,7 @@ EnemyDirBullet::EnemyDirBullet(Vec2 Pos, Vec2 Dir, float Speed )
 
 	m_Bullet = Sprite::Create(L"Painting/Bullet/EnemyBullet.png");
 	m_Bullet->SetParent(this);
+
 	SetPosition(Pos);
 	m_Dire = Dir;
 	m_Speed = Speed;

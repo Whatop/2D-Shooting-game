@@ -6,6 +6,7 @@ class ResourceMgr : public Singleton<ResourceMgr>
 private:
 	std::map<std::wstring, Texture*> m_TextureMap;
 
+	void Release();
 public:
 	ResourceMgr();
 	~ResourceMgr();

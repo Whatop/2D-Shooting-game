@@ -2,9 +2,7 @@
 #include "SceneDirector.h"
 
 
-SceneDirector::SceneDirector()
-{
-}
+SceneDirector::SceneDirector() : m_CurrentScene(nullptr) {}
 
 
 SceneDirector::~SceneDirector()
