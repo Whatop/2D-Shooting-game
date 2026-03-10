@@ -1,36 +1,42 @@
 #include "stdafx.h"
 #include "ResourceMgr.h"
-#include"Texture.h"
+#include "Texture.h"
 
 ResourceMgr::ResourceMgr()
 {
 }
 
-
-ResourceMgr::~ResourceMgr() { Release(); }
-
-void ResourceMgr::Release() {
-    for (auto it = m_TextureMap.begin(); it != m_TextureMap.end(); ++it) {
-        SafeDelete(it->second);
-    }
-    m_TextureMap.clear();
+ResourceMgr::~ResourceMgr()
+{
+	Release(); // 매니저 소멸 시 가지고 있던 텍스처 전부 해제
 }
 
-Texture* ResourceMgr::CreateTextureFromFile(std::wstring fileName, D3DCOLOR ColorKey)
+void ResourceMgr::Release()
 {
-	if (!(m_TextureMap.count(fileName)))
+	// map에 저장된 모든 Texture 삭제
+	for (auto& pair : m_TextureMap)
 	{
-		auto texture = new (std::nothrow) Texture();
-		if (texture && texture->Init(fileName, ColorKey))
-		{
-			m_TextureMap[fileName] = texture;
-		}
-		else
-		{
-			SafeDelete(texture);
-			return 0;
-		}
+		SafeDelete(pair.second);
+	}
+	m_TextureMap.clear();
+}
+
+Texture* ResourceMgr::CreateTextureFromFile(const std::wstring& fileName, D3DCOLOR ColorKey)
+{
+	auto it = m_TextureMap.find(fileName);
+	if (it != m_TextureMap.end())
+		return it->second;
+
+	Texture* texture = new (std::nothrow) Texture();
+	if (texture == nullptr)
+		return nullptr;
+
+	if (!texture->Init(fileName, ColorKey))
+	{
+		SafeDelete(texture);
+		return nullptr;
 	}
 
-	return m_TextureMap[fileName];
+	m_TextureMap[fileName] = texture;
+	return texture;
 }
