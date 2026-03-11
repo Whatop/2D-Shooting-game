@@ -9,7 +9,7 @@ class ShotGun : public Object
 	float DelayTime;
 	float DestroyTime;
 public:
-	ShotGun(float r,Vec2 spawnPos = GetPlayer->m_Position);
+	ShotGun(float r,Vec2 spawnPos , bool minibullet);
 	~ShotGun();
 
 	void Update(float deltaTime, float Time);

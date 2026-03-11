@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ShotGun.h"
 
-ShotGun::ShotGun(float r, Vec2 spawnPos)
+ShotGun::ShotGun(float r, Vec2 spawnPos, bool minibullet)
 {
 	m_ShotGun = new Animation();
 	m_ShotGun->Init(0.1f, true);
@@ -20,7 +20,12 @@ ShotGun::ShotGun(float r, Vec2 spawnPos)
 	DestroyTime = 0.f;
 	m_Rotation = D3DXToRadian(r);
 	m_Atk = 7.5f * GameInfo->HV_ShotType[1] * GameInfo->Player_Coefficient;
-	m_ShotGun->A = 100;
+	if (!minibullet)
+		SetScale(1.5f, 1.5f);
+	else {
+		SetScale(0.75f, 0.75f);
+		m_ShotGun->A = 105;
+	}
 	m_ShotGun->R = 255;
 	m_ShotGun->G = 10;
 	m_ShotGun->B = 10;

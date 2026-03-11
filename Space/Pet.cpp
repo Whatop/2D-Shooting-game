@@ -104,11 +104,11 @@ void Pet::Attack()
 	}
 	else if (Gun == 1) {
 		if (ShotTime > 0.35f) {
-			ObjMgr->AddObject(new ShotGun(20,m_Position), "Bullet");
-			ObjMgr->AddObject(new ShotGun(10, m_Position), "Bullet");
-			ObjMgr->AddObject(new ShotGun(0, m_Position), "Bullet");
-			ObjMgr->AddObject(new ShotGun(-10, m_Position), "Bullet");
-			ObjMgr->AddObject(new ShotGun(-20, m_Position), "Bullet");
+			ObjMgr->AddObject(new ShotGun(20,m_Position,true), "Bullet");
+			ObjMgr->AddObject(new ShotGun(10, m_Position, true), "Bullet");
+			ObjMgr->AddObject(new ShotGun(0, m_Position, true), "Bullet");
+			ObjMgr->AddObject(new ShotGun(-10, m_Position, true), "Bullet");
+			ObjMgr->AddObject(new ShotGun(-20, m_Position, true), "Bullet");
 			ShotTime = 0.f;
 		}
 	}

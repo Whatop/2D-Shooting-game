@@ -7,7 +7,6 @@ Coin::Coin(Vec2 Pos)
 	LoopCoin->Init(0.15f, true);
 	LoopCoin->SetParent(this);
 	LoopCoin->AddContinueFrame(L"Painting/Coin/", 0, 7);
-
 	m_Coin = Sprite::Create(L"Painting/Coin/0.png");
 	m_Coin->SetParent(this);
 	m_Coin->m_Visible = false;

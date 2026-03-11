@@ -1,24 +1,48 @@
 #include "stdafx.h"
 #include "Texture.h"
 
-
 Texture::Texture()
 	: m_pDev(Renderer::GetInst()->GetDevice())
-	, m_pTexture(0)
+	, m_pTexture(nullptr)
+	, m_Size(0.f, 0.f)
 {
-	m_pDev->AddRef();
+	if (m_pDev)
+		m_pDev->AddRef();
 }
-
 
 Texture::~Texture()
 {
+	if (m_pTexture)
+	{
+		m_pTexture->Release();
+		m_pTexture = nullptr;
+	}
+
+	if (m_pDev)
+	{
+		m_pDev->Release();
+		m_pDev = nullptr;
+	}
 }
 
 bool Texture::Init(std::wstring fileName, D3DCOLOR ColorKey)
 {
 	HRESULT hr;
-	hr = D3DXCreateTextureFromFileEx(m_pDev, fileName.c_str(), D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, 0,
-		D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, ColorKey, 0, 0, &m_pTexture);
+	hr = D3DXCreateTextureFromFileEx(
+		m_pDev,
+		fileName.c_str(),
+		D3DX_DEFAULT_NONPOW2,
+		D3DX_DEFAULT_NONPOW2,
+		1,
+		0,
+		D3DFMT_A8R8G8B8,
+		D3DPOOL_MANAGED,
+		D3DX_DEFAULT,
+		D3DX_DEFAULT,
+		ColorKey,
+		0,
+		0,
+		&m_pTexture);
 
 	if FAILED(hr)
 	{

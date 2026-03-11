@@ -34,6 +34,7 @@ void Player::Init()
 {
 	m_Player = Sprite::Create(L"Painting/Player/Player0.png");
 	m_Player->SetParent(this);
+	m_Player->m_Layer = 3;
 	SetScale(0.65f, 0.65f);
 
 	LEFT = 0;
@@ -354,9 +355,9 @@ void Player::GunType()
 	}
 	else if (m_GunType == shotgun) {
 		if ((INPUT->GetKey('Z') == KeyState::PRESS || INPUT->GetKey('Z') == KeyState::DOWN) && RpmDelayTime > m_Rpm) {
-				ObjMgr->AddObject(new ShotGun(0), "Bullet");
-				ObjMgr->AddObject(new ShotGun(5), "Bullet");
-				ObjMgr->AddObject(new ShotGun(-5), "Bullet");
+				ObjMgr->AddObject(new ShotGun(0,m_Position, false), "Bullet");
+				ObjMgr->AddObject(new ShotGun(5, m_Position, false), "Bullet");
+				ObjMgr->AddObject(new ShotGun(-5, m_Position, false), "Bullet");
 			RpmDelayTime = 0;
 			m_Rpm = 0.2f;
 		}

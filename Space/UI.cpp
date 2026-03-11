@@ -32,11 +32,12 @@ void UI::Init()
 	UiTemp = Sprite::Create(L"Painting/Scene/Black.png");
 	UiTemp->SetPosition(1920 / 2, 1190);
 
-	UIScoreFrame->m_Layer = 2;
+	UIScoreFrame->m_Layer = 3;
 	UiTemp->m_Layer = 2;
-	PlayerBar->m_Layer = 2;
-	BossBar->m_Layer = 2;
-	MiniBossBar->m_Layer = 2;
+	PlayerBar->m_Layer = 3;
+	BossBar->m_Layer = 3;
+	MiniBossBar->m_Layer = 3;
+	StateWindow->m_Layer = 3;
 
 	for (int i = 0; i < 6; i++) {
 		Pack[i] = Sprite::Create(L"Painting/UI/Pack/" + std::to_wstring(i) + L".png");
@@ -59,7 +60,7 @@ void UI::Init()
 	for (int i = 0; i < 3; i++) {                 
 		Boom[i] = Sprite::Create(L"Painting/UI/Boom.png");
 		Boom[i]->SetPosition(100 + 100 * i, 72.f / 2.f);
-		Boom[i]->m_Layer = 2;
+		Boom[i]->m_Layer = 3;
 		ObjMgr->AddObject(Boom[i], "UI");
 	}
 
