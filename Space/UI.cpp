@@ -123,6 +123,19 @@ void UI::PushMessage(const std::wstring& msg, bool stick) {
 
 void UI::Release()
 {
+	delete m_Test;      m_Test = nullptr;
+	delete Money;       Money = nullptr;
+	delete ScoreText;   ScoreText = nullptr;
+	delete StageText;   StageText = nullptr;
+	delete SoundText;   SoundText = nullptr;
+
+	delete MessageBar;  MessageBar = nullptr;
+	delete m_TypeSfx;   m_TypeSfx = nullptr;
+
+	for (int i = 0; i < 6; ++i) {
+		delete m_CardLvTxt[i];
+		m_CardLvTxt[i] = nullptr;
+	}
 }
 
 void UI::Update()

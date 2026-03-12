@@ -59,7 +59,7 @@ void MiniBoss::Update(float deltaTime, float Time)
     if (GameInfo->isPause) return;
 
     // 气藕 乔拜 公利 贸府
-    if (!OneDamege) ObjMgr->CollisionCheak(this, "Boom");
+    if (!OneDamege) ObjMgr->CollisionCheck(this, "Boom");
     else {
         DamegeCoolTime += dt;
         if (DamegeCoolTime > 4.f) { DamegeCoolTime = 0.f; OneDamege = false; }
@@ -70,16 +70,16 @@ void MiniBoss::Update(float deltaTime, float Time)
         SpawnMove += dt;
         if (SpawnMove < 2.f) {
             m_Position.x -= (300 + rand() % 100) * dt;
-            ObjMgr->CollisionCheak(this, "Bullet");
-            ObjMgr->CollisionCheak(this, "ChargeBullet");
+            ObjMgr->CollisionCheck(this, "Bullet");
+            ObjMgr->CollisionCheck(this, "ChargeBullet");
         }
         else {
             if (ones) {
                 m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 360 + 73));
                 ones = false;
             }
-                ObjMgr->CollisionCheak(this, "Bullet");
-                ObjMgr->CollisionCheak(this, "ChargeBullet");
+                ObjMgr->CollisionCheck(this, "Bullet");
+                ObjMgr->CollisionCheck(this, "ChargeBullet");
             m_LastMoveTime += dt;
             if (m_LastMoveTime >= 5.f) Move();
 
@@ -113,8 +113,8 @@ void MiniBoss::Update(float deltaTime, float Time)
         if (m_Phase1Boost) {
             Attack(); // 固荤老+醚舅
 
-            ObjMgr->CollisionCheak(this, "Bullet");
-            ObjMgr->CollisionCheak(this, "ChargeBullet");
+            ObjMgr->CollisionCheck(this, "Bullet");
+            ObjMgr->CollisionCheck(this, "ChargeBullet");
         }
 
         if (m_Hp <= 0) {

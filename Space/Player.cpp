@@ -112,10 +112,10 @@ void Player::Update(float deltaTime, float Time)
 		isDown = false;
 		isHit = false;
 
-		ObjMgr->CollisionCheak(this, "Wall");
-		ObjMgr->CollisionCheak(this, "EnemyBullet");
-		ObjMgr->CollisionCheak(this, "BossBullet");
-		ObjMgr->CollisionCheak(this, "Missile");
+		ObjMgr->CollisionCheck(this, "Wall");
+		ObjMgr->CollisionCheck(this, "EnemyBullet");
+		ObjMgr->CollisionCheck(this, "BossBullet");
+		ObjMgr->CollisionCheck(this, "Missile");
 
 		GameInfo->PlayerHpUpdate(m_MaxHp, m_Hp);
 

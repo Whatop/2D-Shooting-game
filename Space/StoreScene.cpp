@@ -108,8 +108,14 @@ void StoreScene::Init()
 
 	SoundMgr::GetInst()->StopAll();
 	m_Bgm = new SoundMgr("Sound/Store.wav", false);
-	m_Bgm->play();
 	m_Bgm->volumeSetting(0.1f);
+	m_Bgm->play();
+
+	m_Clickeffect = new SoundMgr("Sound/Click.wav", false);
+	m_Clickeffect->volumeSetting(0.1f);
+	
+	m_BuyEffect = new SoundMgr("Sound/snd_buyitem.wav", false);
+	m_BuyEffect->volumeSetting(0.5f);
 }
 
 void StoreScene::Update(float deltaTime, float Time)
@@ -174,16 +180,12 @@ void StoreScene::OnCollisionCard()
 					CardFrame[i]->SetDestroy(true);
 					CardPack[i]->SetDestroy(true);
 					m_CardCost[i] = -1; // 렌더에서 가격표시 중단
-					SoundMgr* effect = new SoundMgr("Sound/snd_buyitem.wav", false);
-					effect->play();
-					effect->volumeSetting(0.1f);
+					m_BuyEffect->play();
+
 				}
 				else {
-					SoundMgr* effect = new SoundMgr("Sound/Click.wav", false);
-					effect->play();
-					effect->volumeSetting(0.1f);
+					m_BuyEffect->play();
 					INPUT->ButtonDown(false);
-
 				}
 			}
 			break; // 한 슬롯만 활성 처리
@@ -217,14 +219,11 @@ void StoreScene::OnCollisionCard()
 					PetPack[i]->SetDestroy(true);
 					m_PetCost[i] = -1;
 
-					SoundMgr* effect = new SoundMgr("Sound/snd_buyitem.wav", false);
-					effect->play();
-					effect->volumeSetting(0.1f);
+					m_BuyEffect->play();
+
 				}
 				else {
-					SoundMgr* effect = new SoundMgr("Sound/Click.wav", false);
-					effect->play();
-					effect->volumeSetting(0.1f);
+					m_Clickeffect->play();
 					INPUT->ButtonDown(false);
 				}
 			}

@@ -135,7 +135,7 @@ void Boss::Update(float deltaTime, float Time)
 	}
 	if (!GameInfo->isPause) {
 		if (!OneDamege)
-			ObjMgr->CollisionCheak(this, "Boom");
+			ObjMgr->CollisionCheck(this, "Boom");
 		else {
 			DamegeCoolTime += dt;
 			if (DamegeCoolTime > 4) {
@@ -169,9 +169,9 @@ void Boss::Update(float deltaTime, float Time)
 			isRight = false;
 			isUp = false;
 			isDown = false;
-			ObjMgr->CollisionCheak(this, "Wall");
-			ObjMgr->CollisionCheak(this, "Bullet");
-			ObjMgr->CollisionCheak(this, "ChargeBullet");
+			ObjMgr->CollisionCheck(this, "Wall");
+			ObjMgr->CollisionCheck(this, "Bullet");
+			ObjMgr->CollisionCheck(this, "ChargeBullet");
 
 
 			if (!GameInfo->m_DebugMode) {

@@ -3,7 +3,7 @@
 #include "TypeEffect.h"
 #include "AudioLibrary.h"
 
-// local helper to avoid <algorithm> / Windows max macro conflicts
+// Windows 매크로 충돌 피하려고 직접 만든 max 함수
 static inline float Maxf(float a, float b) { return (a > b) ? a : b; }
 
 void TypeEffect::SetTypeSfx(TypeSfx key) {
@@ -19,21 +19,25 @@ void TypeEffect::Start(const std::string& text, float cps) {
     sfxCooldown_ = 0.f;
 }
 
-void TypeEffect::Update(float t) {             // <-- 파라미터 이름 t
+void TypeEffect::Update(float t) {
+    // 이미 전부 출력했으면 종료
     if (idx_ >= (int)cur_.size()) return;
 
-    acc_ += t;                                  // <-- 내부도 t 사용
+    // 프레임 dt 누적
+    acc_ += t;
     sfxCooldown_ -= t;
 
+    // cps가 0 이하로 들어와도 최소 1로 처리
     const float perChar = 1.0f / Maxf(1.0f, cps_);
+
     while (acc_ >= perChar && idx_ < (int)cur_.size()) {
         acc_ -= perChar;
 
         char ch = cur_[idx_++];
         bool isPunct = (ch == '.' || ch == ',' || ch == '!' || ch == '?' || ch == ' ');
 
+        // 문장부호/공백이 아닐 때만 타자 효과음 재생
         if (!isPunct && typeSfx_ && sfxCooldown_ <= 0.f) {
-            typeSfx_->stop();
             typeSfx_->play();
             sfxCooldown_ = sfxInterval_;
         }

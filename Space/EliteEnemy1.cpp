@@ -34,7 +34,7 @@ void EliteEnemy1::Update(float deltaTime, float Time)
 	
 	if (!GameInfo->isPause) {
 		if (!OneDamege)
-			ObjMgr->CollisionCheak(this, "Boom");
+			ObjMgr->CollisionCheck(this, "Boom");
 		else {
 			DamegeCoolTime += dt;
 			if (DamegeCoolTime > 4) {
@@ -45,12 +45,12 @@ void EliteEnemy1::Update(float deltaTime, float Time)
 		SpawnMove += dt;
 		if (SpawnMove < 2) {
 			m_Position.x -= (300 + rand() % 100) * dt; 
-			ObjMgr->CollisionCheak(this, "Bullet");
-			ObjMgr->CollisionCheak(this, "ChargeBullet");
+			ObjMgr->CollisionCheck(this, "Bullet");
+			ObjMgr->CollisionCheck(this, "ChargeBullet");
 		}
 		else {
-			ObjMgr->CollisionCheak(this, "Bullet");
-			ObjMgr->CollisionCheak(this, "ChargeBullet");
+			ObjMgr->CollisionCheck(this, "Bullet");
+			ObjMgr->CollisionCheck(this, "ChargeBullet");
 			if (ones) {
 				m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 360 + 73));
 				ones = false;

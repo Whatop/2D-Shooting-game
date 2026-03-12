@@ -43,7 +43,7 @@ void Enemy3::Update(float deltaTime, float Time)
 	if (!GameInfo->isPause) {
 		SpawnMove += dt;
 		if (!OneDamege)
-			ObjMgr->CollisionCheak(this, "Boom");
+			ObjMgr->CollisionCheck(this, "Boom");
 		else {
 			DamegeCoolTime += dt;
 			if (DamegeCoolTime > 4) {
@@ -53,16 +53,16 @@ void Enemy3::Update(float deltaTime, float Time)
 		}
 		if (SpawnMove < 2) {
 			m_Position.x -= (300 + rand() % 100) * dt;
-			ObjMgr->CollisionCheak(this, "Bullet");
-			ObjMgr->CollisionCheak(this, "ChargeBullet");
+			ObjMgr->CollisionCheck(this, "Bullet");
+			ObjMgr->CollisionCheck(this, "ChargeBullet");
 		}
 		else {
 			if (ones) {
 				m_RandomPosition = Vec2((rand() % 100 + 400) + m_Position.x, (rand() % 360 + 73));
 				ones = false;
 			}
-			ObjMgr->CollisionCheak(this, "Bullet");
-			ObjMgr->CollisionCheak(this, "ChargeBullet");
+			ObjMgr->CollisionCheck(this, "Bullet");
+			ObjMgr->CollisionCheck(this, "ChargeBullet");
 			m_LastMoveTime += dt;
 			if (m_LastMoveTime >= 2/ pow(1.5f, GameInfo->Stage - 1) || isBoomMode)
 				Move();

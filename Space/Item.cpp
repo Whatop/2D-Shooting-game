@@ -45,7 +45,7 @@ void Item::Update(float deltaTime, float Time)
 		m_Tag = "Bonus";
 	}
 	if (!GameInfo->isPause) {
-		ObjMgr->CollisionCheak(this, "Player");
+		ObjMgr->CollisionCheck(this, "Player");
 		DestroyTime += dt;
 		Move();
 		if (m_Position.y > 470 - m_Size.y / 2)

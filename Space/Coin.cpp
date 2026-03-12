@@ -32,7 +32,7 @@ void Coin::Update(float deltaTime, float Time)
 {
 	if (!GameInfo->isPause) {
 		AccTime += dt;
-		ObjMgr->CollisionCheak(this, "MoneyPoket");
+		ObjMgr->CollisionCheck(this, "MoneyPoket");
 	
 		Vec2 PoketDir = GameInfo->MoneyPokeyPos  - m_Position;
 		D3DXVec2Normalize(&Dire, &PoketDir);

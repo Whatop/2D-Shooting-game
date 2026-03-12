@@ -80,15 +80,14 @@ void InputScoreScene::Update(float deltaTime, float Time)
 
     m_OverOne = !name.empty();
 
-    if (m_OverOne)
-    {
-        if (CollisionMgr::GetInst()->MouseWithBoxSize(m_BackButton) && INPUT->GetButtonDown())
-        {
-            GameInfo->m_Rank->name = name;
-            GameInfo->m_Rank->score = GameInfo->m_Score;
-            SceneDirector::GetInst()->ChangeScene(new MainScene());
-        }
-    }
+	if (m_OverOne)
+	{
+		if (CollisionMgr::GetInst()->MouseWithBoxSize(m_BackButton) && INPUT->GetButtonDown())
+		{
+			GameInfo->AddCurrentPlayerRanking(name);
+			SceneDirector::GetInst()->ChangeScene(new MainScene());
+		}
+	}
 }
 
 void InputScoreScene::Render()

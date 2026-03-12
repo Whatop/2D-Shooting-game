@@ -37,8 +37,8 @@ void Boom::Update(float deltaTime, float Time)
 			if (ScaleUp < 10)
 				ScaleUp += 15 * dt;
 
-		ObjMgr->CollisionCheak(this, "EnemyBullet");
-		ObjMgr->CollisionCheak(this, "Missile");
+		ObjMgr->CollisionCheck(this, "EnemyBullet");
+		ObjMgr->CollisionCheck(this, "Missile");
 		if (m_Boom->m_CurrentFrame < 5) {
 			m_Boom->Update(deltaTime, Time);
 		}

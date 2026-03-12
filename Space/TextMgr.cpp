@@ -53,11 +53,17 @@ int TextMgr::print(const std::string& str, int x, int y)
 }
 int TextMgr::print(const std::wstring& str, int x, int y)
 {
-	if (!m_pFont) return 0;
-	RECT rc = { x, y, m_FontRect.right, m_FontRect.bottom };
-	// DrawTextW »ç¿ë
-	m_pFont->DrawTextW(nullptr, str.c_str(), -1, &rc, DT_NOCLIP, m_Color);
-	return 0;
+	if (!m_pFont)
+		return 0;
+
+	m_FontRect.top = y;
+	m_FontRect.left = x;
+
+	Vec2 rCenter = Vec2((float)x, (float)y);
+	D3DXMatrixTransformation2D(&m_wMat, NULL, 0.0f, NULL, &rCenter, m_Angle, NULL);
+	Renderer::GetInst()->GetSprite()->SetTransform(&m_wMat);
+
+	return m_pFont->DrawTextW(Renderer::GetInst()->GetSprite(), str.c_str(), -1, &m_FontRect, DT_LEFT, m_Color);
 }
 
 void TextMgr::SetColor(int a, int r, int g, int b)
